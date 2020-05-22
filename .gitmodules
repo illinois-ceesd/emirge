@@ -7,3 +7,9 @@
 [submodule "grudge"]
 	path = grudge
 	url = git@github.com:inducer/grudge
+[submodule "leap"]
+	path = leap
+	url = git@github.com:inducer/leap
+[submodule "dagrt"]
+	path = dagrt
+	url = git@github.com:inducer/dagrt
