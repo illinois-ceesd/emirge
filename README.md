@@ -37,7 +37,7 @@ $ spack install pocl
 $ for m in dagrt grudge leap loopy meshmode; do cd $m && pip install -e . && cd ..; done
 ```
 
-## Run wavelet0
+### Run wavelet0
 
 ```bash
 $ cd mirgecom; python wave-eager.py
