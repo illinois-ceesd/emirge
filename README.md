@@ -7,7 +7,7 @@
 
 #### Install POCL
 
-##### Installation with conda
+##### Installation with conda-miniforge
 
 ```bash
 $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
