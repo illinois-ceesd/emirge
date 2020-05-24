@@ -25,7 +25,7 @@ $ conda install pocl
 
 ```bash
 $ git clone git@github.com:spack/spack
-$ source spack/source share/spack/setup-env.sh
+$ source spack/share/spack/setup-env.sh
 # Maybe edit your Spack config
 # $ spack config edit packages
 $ spack install pocl
