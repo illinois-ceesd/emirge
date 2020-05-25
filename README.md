@@ -3,7 +3,7 @@
 ## Running wavelet0
 
 
-### Install prerequesites
+### Prerequesites
 
 #### Install POCL
 
