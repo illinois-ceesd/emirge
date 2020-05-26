@@ -1,5 +1,7 @@
 # emirge - environment for MirgeCom
 
+![CI test](https://github.com/illinois-ceesd/emirge/workflows/CI%20test/badge.svg)
+
 ## Running wavelet0
 
 
