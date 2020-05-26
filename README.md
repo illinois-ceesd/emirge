@@ -5,6 +5,8 @@
 
 ### Prerequesites
 
+You can run `./install.sh` to install the required packages, or follow the manual instructions below.
+
 #### Install POCL
 
 ##### Installation with conda-miniforge
