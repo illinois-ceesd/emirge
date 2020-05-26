@@ -21,6 +21,7 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 # $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
 
 $ bash ./Miniforge3-Linux-x86_64.sh
+# make sure the installer runs 'conda init' at the end of installation, or run it manually.
 
 $ conda install pocl
 ```
@@ -38,6 +39,10 @@ $ spack install pocl
 #### Install Python packages
 
 ```bash
+$ export CONDA=$HOME/miniforge3
+$ export PATH=$HOME/miniforge3/bin:$PATH
+$ export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+$ pip install pyvisfile
 $ for m in dagrt grudge leap loopy meshmode; do cd $m && pip install -e . && cd ..; done
 ```
 
