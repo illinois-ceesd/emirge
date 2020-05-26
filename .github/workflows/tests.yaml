@@ -1,7 +1,10 @@
 name: CI test
 
 # Trigger the workflow on push
-on: [push]
+on:
+  push:
+  schedule:
+  - cron:  '5 0 * * *'
 
 jobs:
   Linux:
