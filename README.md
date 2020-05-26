@@ -42,6 +42,7 @@ $ spack install pocl
 $ export CONDA=$HOME/miniforge3
 $ export PATH=$HOME/miniforge3/bin:$PATH
 $ export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+
 $ pip install pyvisfile
 $ for m in dagrt grudge leap loopy meshmode; do cd $m && pip install -e . && cd ..; done
 ```
