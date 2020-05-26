@@ -23,6 +23,7 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 $ bash ./Miniforge3-Linux-x86_64.sh
 # make sure the installer runs 'conda init' at the end of installation, or run it manually.
 
+$ exec bash
 $ conda install pocl
 ```
 
