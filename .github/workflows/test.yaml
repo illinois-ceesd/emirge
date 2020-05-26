@@ -1,0 +1,13 @@
+name: JustKernels test
+
+# Trigger the workflow on push
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install prerequisites
+      run: ./install.sh
