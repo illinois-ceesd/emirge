@@ -31,7 +31,7 @@ export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
 which conda
-
+echo "XXXX"
 bash -c which conda
 
 echo "Installing conda packages"
