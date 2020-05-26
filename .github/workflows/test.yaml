@@ -15,5 +15,6 @@ jobs:
       run: ./install.sh
     - name: Run mirgelet
       run: |
+        export PATH=$HOME/miniforge3/bin:$PATH
         which python
         cd mirgecom && python ./wave-eager.py
