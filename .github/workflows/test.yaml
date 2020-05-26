@@ -13,3 +13,5 @@ jobs:
         submodules: true
     - name: Install prerequisites
       run: ./install.sh
+    - name: Run mirgelet
+      run: cd mirgecom && python ./wave-eager.py
