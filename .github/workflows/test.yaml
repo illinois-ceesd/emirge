@@ -14,4 +14,6 @@ jobs:
     - name: Install prerequisites
       run: ./install.sh
     - name: Run mirgelet
-      run: cd mirgecom && python ./wave-eager.py
+      run: |
+        which python
+        cd mirgecom && python ./wave-eager.py
