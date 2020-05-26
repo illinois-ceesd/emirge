@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bashiiiiii
 
 set -o nounset -o errexit
 
