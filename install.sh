@@ -21,13 +21,14 @@ myarch=$(uname -m)
 
 if [[ ! -d ~/miniforge3 ]]; then
     echo "Installing Miniforge"
-    wget -c https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
+    wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
     bash Miniforge3-$myos-$myarch.sh -b
 fi
 
-export PATH=$PATH:~/miniforge3/bin
-export OCL_ICD_VENDORS=~/miniforge3/etc/OpenCL/vendors/
-echo 'export OCL_ICD_VENDORS=~/miniforge3/etc/OpenCL/vendors/' >> ~/.bashrc
+export CONDA=$HOME/miniforge3
+export PATH=$PATH:$HOME/miniforge3/bin
+export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+echo 'export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
 echo "Installing conda packages"
 bash -c 'conda init'
