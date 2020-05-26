@@ -30,14 +30,14 @@ export OCL_ICD_VENDORS=~/miniforge3/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=~/miniforge3/etc/OpenCL/vendors/' >> ~/.bashrc
 
 echo "Installing conda packages"
-conda init
-conda update --all --yes
-conda install --yes pocl clinfo
+bash -c 'conda init'
+bash -c 'conda update --all --yes'
+bash -c 'conda install --yes pocl clinfo'
 
 echo "Installing pip packages"
-pip install pyvisfile
+bash -c 'pip install pyvisfile'
 
-for module in dagrt leap loopy meshmode grudge; do (cd $module && pip install -e .); done
+for module in dagrt leap loopy meshmode grudge; do bash -c "cd $module && pip install -e ."; done
 
 echo
 echo "############################################################"
