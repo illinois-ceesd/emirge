@@ -45,7 +45,7 @@ $ export PATH=$HOME/miniforge3/bin:$PATH
 $ export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
 
 $ pip install pyvisfile
-$ for m in dagrt grudge leap loopy meshmode; do cd $m && pip install -e . && cd ..; done
+$ for m in dagrt leap loopy meshmode grudge; do cd $m && pip install -e . && cd ..; done
 ```
 
 ### Run wavelet0
