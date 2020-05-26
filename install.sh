@@ -26,13 +26,9 @@ if [[ ! -d ~/miniforge3 ]]; then
 fi
 
 export CONDA=$HOME/miniforge3
-export PATH=$PATH:$HOME/miniforge3/bin
+export PATH=$HOME/miniforge3/bin:$PATH
 export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/' >> $HOME/.bashrc
-
-which conda
-echo "XXXX"
-bash -c which conda
 
 echo "Installing conda packages"
 bash -c 'conda init'
