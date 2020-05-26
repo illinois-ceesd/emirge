@@ -16,5 +16,5 @@ jobs:
     - name: Run mirgelet
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
-        which python
+        export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
         cd mirgecom && python ./wave-eager.py
