@@ -1,0 +1,35 @@
+name: CI test
+
+# Trigger the workflow on push
+on: [push]
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Install prerequisites
+      run: ./install.sh
+    - name: Run wave-eager
+      run: |
+        export PATH=$HOME/miniforge3/bin:$PATH
+        export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+        cd mirgecom && python ./wave-eager.py
+
+  MacOS:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Install prerequisites
+      run: ./install.sh
+    - name: Run wave-eager
+      run: |
+        export PATH=$HOME/miniforge3/bin:$PATH
+        export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+        cd mirgecom && python ./wave-eager.py

@@ -21,23 +21,24 @@ myarch=$(uname -m)
 
 if [[ ! -d ~/miniforge3 ]]; then
     echo "Installing Miniforge"
-    wget -c https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
+    wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
     bash Miniforge3-$myos-$myarch.sh -b
 fi
 
-export PATH=$PATH:~/miniforge3/bin
-export OCL_ICD_VENDORS=~/miniforge3/etc/OpenCL/vendors/
-echo 'export OCL_ICD_VENDORS=~/miniforge3/etc/OpenCL/vendors/' >> ~/.bashrc
+export CONDA=$HOME/miniforge3
+export PATH=$HOME/miniforge3/bin:$PATH
+export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+echo 'export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
 echo "Installing conda packages"
-conda init
-conda update --all --yes
-conda install --yes pocl clinfo
+bash -c 'conda init'
+bash -c 'conda update --all --yes'
+bash -c 'conda install --yes pocl clinfo'
 
 echo "Installing pip packages"
-pip install pyvisfile
+bash -c 'pip install pyvisfile numpy'
 
-for module in dagrt leap loopy meshmode grudge; do (cd $module && pip install -e .); done
+for module in dagrt leap loopy meshmode grudge; do bash -c "cd $module && pip install -e ."; done
 
 echo
 echo "############################################################"
