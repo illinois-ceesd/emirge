@@ -33,6 +33,7 @@ echo 'export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/' >> $HOME/.bas
 
 echo "Installing conda packages"
 bash -c 'conda init'
+bash -c 'conda config --add channels conda-forge'
 bash -c 'conda update --all --yes'
 bash -c 'conda install --yes pocl clinfo'
 
