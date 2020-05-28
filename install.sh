@@ -8,9 +8,9 @@ echo "#####################################################"
 echo
 
 if [[ ! -f meshmode/setup.py ]]; then
-	echo "ERROR: incomplete git clone. Please run:"
-	echo "  git submodule init && git submodule update"
-	echo "to fetch emirge's submodules."
+	echo "==== ERROR: incomplete git clone. Please run:"
+	echo "====   git submodule init && git submodule update"
+	echo "==== to fetch emirge's submodules."
 	exit 1
 fi
 
@@ -20,27 +20,29 @@ myos=$(uname)
 myarch=$(uname -m)
 have_conda=$(which conda || echo "notfound")
 
-if [[ $have_conda == "notfound" && ! -d ~/miniforge3 && ! -d ~/miniconda3 ]]; then
-    echo "Installing Miniforge"
+if [[ $have_conda == "notfound" ]]; then
+    echo "==== Installing Miniforge."
     wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
     bash Miniforge3-$myos-$myarch.sh -b
+    export PATH=$HOME/miniforge3/bin:$PATH
+else
+    echo "==== Conda found, skipping Miniforge installation."
 fi
 
-export CONDA=$HOME/miniforge3
-export PATH=$HOME/miniforge3/bin:$PATH
-export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
-echo 'export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
-echo "Installing conda packages"
-bash -c 'conda init'
-bash -c 'conda config --add channels conda-forge'
-bash -c 'conda update --all --yes'
-bash -c 'conda install --yes pocl clinfo'
+echo "==== Installing conda packages"
+conda init
+conda config --add channels conda-forge
+conda update --all --yes
+conda install --yes pocl clinfo
 
-echo "Installing pip packages"
-bash -c 'pip install wheel pyvisfile numpy'
+export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/
+echo 'export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
-for module in dagrt leap loopy meshmode grudge; do bash -c "cd $module && pip install -e ."; done
+echo "==== Installing pip packages"
+pip install wheel pyvisfile numpy
+
+for module in dagrt leap loopy meshmode grudge; do (cd $module && pip install -e .) ; done
 
 echo
 echo "############################################################"
