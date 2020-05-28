@@ -38,7 +38,7 @@ bash -c 'conda update --all --yes'
 bash -c 'conda install --yes pocl clinfo'
 
 echo "Installing pip packages"
-bash -c 'pip install pyvisfile numpy'
+bash -c 'pip install wheel pyvisfile numpy'
 
 for module in dagrt leap loopy meshmode grudge; do bash -c "cd $module && pip install -e ."; done
 
