@@ -32,6 +32,7 @@ fi
 
 echo "==== Installing conda packages"
 conda init
+conda activate
 conda config --add channels conda-forge
 conda update --all --yes
 conda install --yes pocl clinfo
