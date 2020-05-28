@@ -20,7 +20,7 @@ myos=$(uname)
 myarch=$(uname -m)
 have_conda=$(which conda || echo "notfound")
 
-if [[ $have_conda != "notfound" && ! -d ~/miniforge3 && ! -d ~/miniconda3 ]]; then
+if [[ $have_conda == "notfound" && ! -d ~/miniforge3 && ! -d ~/miniconda3 ]]; then
     echo "Installing Miniforge"
     wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
     bash Miniforge3-$myos-$myarch.sh -b
