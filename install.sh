@@ -14,12 +14,19 @@ if [[ ! -f meshmode/setup.py ]]; then
 	exit 1
 fi
 
+NOCONDA="false"
+
+if [[ $1 == "--noconda" ]]; then
+	NOCONDA="true"
+fi
+	
+
 myos=$(uname)
 [[ $myos == "Darwin" ]] && myos="MacOSX"
 
 myarch=$(uname -m)
 
-if [[ ! -d ~/miniforge3 ]]; then
+if [[ ! -d ~/miniforge3 && $NOCONDA = "false" ]]; then
     echo "Installing Miniforge"
     wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
     bash Miniforge3-$myos-$myarch.sh -b
