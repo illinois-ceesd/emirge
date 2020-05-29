@@ -14,7 +14,6 @@ for m in $MY_MODULES; do
 done
 
 echo "==== Installing pip packages"
-conda install --yes numpy pyvisfile pyopencl
 
 for module in $MY_MODULES; do 
     (cd $module && pip install --user -e .)
