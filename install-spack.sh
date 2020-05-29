@@ -45,5 +45,5 @@ EOF
 echo
 echo "####################################################"
 echo "# Emirge is now installed. Please run              #"
-echo "# mirgecom/wave-eager.py to test the installation. #"
+echo "# mirgecom/examples/wave-eager.py to test the installation. #"
 echo "####################################################"
