@@ -38,7 +38,7 @@ echo 'export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/' >> $HOME/.bashrc
 echo "==== Installing pip packages"
 pip install wheel pyvisfile numpy
 
-for module in dagrt leap loopy meshmode grudge; do (cd $module && pip install -e .) ; done
+for module in dagrt leap loopy meshmode grudge mirgecom; do (cd $module && pip install -e .) ; done
 EOF
 
 
