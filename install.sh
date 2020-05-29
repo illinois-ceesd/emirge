@@ -7,37 +7,19 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
-myos=$(uname)
-[[ $myos == "Darwin" ]] && myos="MacOSX"
+export MY_CONDA_DIR=$HOME/miniforge3
 
-myarch=$(uname -m)
-
-MY_CONDA_DIR=$HOME/miniforge3
-
-if [[ ! -d $MY_CONDA_DIR ]]; then
-    echo "==== Installing Miniforge in $MY_CONDA_DIR."
-    wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
-    bash Miniforge3-$myos-$myarch.sh -b -p $MY_CONDA_DIR
-    
-else
-    echo "==== Conda found in $MY_CONDA_DIR, skipping Miniforge installation."
-fi
+./install-conda.sh
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
 
-echo "==== Installing conda packages"
+echo "==== Create 'dgfem' conda environment"
 conda init
-conda create -n dgfem --yes
+conda create --name dgfem --yes
 
 $MY_CONDA_DIR/bin/activate dgfem
 
-conda update --all --yes
-conda install --yes pocl numpy pyvisfile pyopencl
-
-export OCL_ICD_VENDORS=$MY_CONDA_DIR/etc/OpenCL/vendors/
-echo 'export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/' >> $HOME/.bashrc
-
-./install-pip.sh
+./install-dependencies.sh
 
 echo
 echo "##############################################################"
