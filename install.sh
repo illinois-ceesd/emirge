@@ -41,9 +41,11 @@ export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
 echo "==== Installing pip packages"
-pip install wheel pyvisfile numpy
 
-for module in dagrt leap loopy meshmode grudge; do (cd $module && pip install -e .) ; done
+for module in dagrt leap loopy meshmode grudge mirgecom; do
+  bash -c "cd $module && pip install -e ."
+done
+
 
 echo
 echo "############################################################"
