@@ -32,7 +32,7 @@ conda create -n dgfem --yes
 $MY_CONDA_DIR/bin/activate dgfem
 
 conda update --all --yes
-conda install --yes pocl clinfo
+conda install --yes pocl
 
 export OCL_ICD_VENDORS=$MY_CONDA_DIR/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/' >> $HOME/.bashrc
