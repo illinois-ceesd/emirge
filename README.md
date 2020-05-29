@@ -1,6 +1,6 @@
 # emirge - environment for MirgeCom
 
-![CI test](https://github.com/illinois-ceesd/emirge/workflows/CI%20test/badge.svg)
+[![CI test](https://github.com/illinois-ceesd/emirge/workflows/CI%20test/badge.svg)](https://github.com/illinois-ceesd/emirge/actions?query=workflow%3A%22CI+test%22+event%3Apush)
 
 ## Running wavelet0
 
@@ -45,11 +45,11 @@ $ export PATH=$HOME/miniforge3/bin:$PATH
 $ export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
 
 $ pip install pyvisfile
-$ for m in dagrt leap loopy meshmode grudge; do cd $m && pip install -e . && cd ..; done
+$ for m in dagrt leap loopy meshmode grudge mirgecom; do cd $m && pip install -e . && cd ..; done
 ```
 
 ### Run wavelet0
 
 ```bash
-$ cd mirgecom; python wave-eager.py
+$ cd mirgecom/examples; python wave-eager.py
 ```
