@@ -16,7 +16,7 @@ fi
 
 NOCONDA="false"
 
-if [[ $1 == "--noconda" ]]; then
+if [[ $# -gt 1 && $1 == "--noconda" ]]; then
 	NOCONDA="true"
 fi
 	
