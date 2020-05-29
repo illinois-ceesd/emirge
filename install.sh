@@ -7,48 +7,40 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
-if [[ ! -f meshmode/setup.py ]]; then
-	echo "==== ERROR: incomplete git clone. Please run:"
-	echo "====   git submodule init && git submodule update"
-	echo "==== to fetch emirge's submodules."
-	exit 1
-fi
-
 myos=$(uname)
 [[ $myos == "Darwin" ]] && myos="MacOSX"
 
 myarch=$(uname -m)
-have_conda=$(which conda || echo "notfound")
 
-if [[ $have_conda == "notfound" ]]; then
-    echo "==== Installing Miniforge."
+MY_CONDA_DIR=$HOME/miniforge3
+
+if [[ ! -d $MY_CONDA_DIR ]]; then
+    echo "==== Installing Miniforge in $MY_CONDA_DIR."
     wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
-    bash Miniforge3-$myos-$myarch.sh -b
-    export PATH=$HOME/miniforge3/bin:$PATH
+    bash Miniforge3-$myos-$myarch.sh -b -p $MY_CONDA_DIR
+    
 else
-    echo "==== Conda found, skipping Miniforge installation."
+    echo "==== Conda found in $MY_CONDA_DIR, skipping Miniforge installation."
 fi
 
+export PATH=$MY_CONDA_DIR/bin:$PATH
 
 echo "==== Installing conda packages"
 conda init
-conda activate
-conda config --add channels conda-forge
+conda create -n dgfem --yes
+
+$MY_CONDA_DIR/bin/activate dgfem
+
 conda update --all --yes
 conda install --yes pocl clinfo
 
-export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/
+export OCL_ICD_VENDORS=$MY_CONDA_DIR/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=$CONDA_PREFIX/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
-echo "==== Installing pip packages"
-
-for module in dagrt leap loopy meshmode grudge mirgecom; do
-  bash -c "cd $module && pip install -e ."
-done
-
+./install-pip.sh
 
 echo
-echo "############################################################"
-echo "# Emirge is now installed. Please restart your shell       #"
-echo "# and run mirgecom/wave-eager.py to test the installation. #"
-echo "############################################################"
+echo "##############################################################"
+echo "# Emirge is now installed. Please restart your shell and run #"
+echo "# mirgecom/examples/wave-eager.py to test the installation.  #"
+echo "##############################################################"
