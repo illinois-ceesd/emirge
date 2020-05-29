@@ -20,7 +20,7 @@ jobs:
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
         export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
-        cd mirgecom && python ./wave-eager.py
+        cd mirgecom/examples && python ./wave-eager.py
 
   MacOS:
     runs-on: macos-latest
@@ -35,4 +35,4 @@ jobs:
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
         export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
-        cd mirgecom && python ./wave-eager.py
+        cd mirgecom/examples && python ./wave-eager.py
