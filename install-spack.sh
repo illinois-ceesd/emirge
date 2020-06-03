@@ -7,13 +7,6 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
-if [[ ! -f meshmode/setup.py ]]; then
-    echo "==== ERROR: incomplete git clone. Please run:"
-    echo "====   git submodule init && git submodule update"
-    echo "==== to fetch emirge's submodules."
-    exit 1
-fi
-
 have_spack=$(which spack || echo "notfound")
 
 if [[ $have_spack == "notfound" ]]; then
@@ -35,15 +28,10 @@ pocl_dir=$(spack find -p pocl| tail -1 | awk '{print $2}')
 export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
-echo "==== Installing pip packages"
-pip install wheel pyvisfile numpy
-
-for module in dagrt leap loopy meshmode grudge mirgecom; do (cd $module && pip install -e .) ; done
-EOF
-
+./install-pip-dependencies.sh
 
 echo
-echo "####################################################"
-echo "# Emirge is now installed. Please run              #"
+echo "#############################################################"
+echo "# Emirge is now installed. Please run                       #"
 echo "# mirgecom/examples/wave-eager.py to test the installation. #"
-echo "####################################################"
+echo "#############################################################"
