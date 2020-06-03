@@ -44,7 +44,7 @@ $ git clone git@github.com:spack/spack
 $ source spack/share/spack/setup-env.sh
 # Maybe edit your Spack config
 # $ spack config edit packages
-$ spack install pocl
+$ spack install pocl numpy pyvisfile pyopencl
 ```
 
 #### Install Python packages
