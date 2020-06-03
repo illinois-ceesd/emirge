@@ -19,7 +19,8 @@ conda create --name dgfem --yes
 
 $MY_CONDA_DIR/bin/activate dgfem
 
-./install-dependencies.sh
+./install-conda-dependencies.sh
+./install-pip-dependencies.sh
 
 echo
 echo "##############################################################"

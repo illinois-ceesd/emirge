@@ -28,7 +28,7 @@ pocl_dir=$(spack find -p pocl| tail -1 | awk '{print $2}')
 export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/
 echo 'export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/' >> $HOME/.bashrc
 
-./install-pip.sh
+./install-pip-dependencies.sh
 
 echo
 echo "#############################################################"
