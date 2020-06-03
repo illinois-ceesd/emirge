@@ -7,43 +7,23 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
-if [[ ! -f meshmode/setup.py ]]; then
-	echo "ERROR: incomplete git clone. Please run:"
-	echo "  git submodule init && git submodule update"
-	echo "to fetch emirge's submodules."
-	exit 1
-fi
+export MY_CONDA_DIR=$HOME/miniforge3
 
-myos=$(uname)
-[[ $myos == "Darwin" ]] && myos="MacOSX"
+./install-conda.sh
 
-myarch=$(uname -m)
+export PATH=$MY_CONDA_DIR/bin:$PATH
 
-if [[ ! -d ~/miniforge3 ]]; then
-    echo "Installing Miniforge"
-    wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
-    bash Miniforge3-$myos-$myarch.sh -b
-fi
+echo "==== Create 'dgfem' conda environment"
+conda init
+conda create --name dgfem --yes
 
-export CONDA=$HOME/miniforge3
-export PATH=$HOME/miniforge3/bin:$PATH
-export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
-echo 'export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/' >> $HOME/.bashrc
+$MY_CONDA_DIR/bin/activate dgfem
 
-echo "Installing conda packages"
-bash -c 'conda init'
-bash -c 'conda update --all --yes'
-bash -c 'conda install --yes pocl clinfo'
-
-echo "Installing pip packages"
-bash -c 'pip install pyvisfile numpy'
-
-for module in dagrt leap loopy meshmode grudge mirgecom; do
-  bash -c "cd $module && pip install -e ."
-done
+./install-conda-dependencies.sh
+./install-pip-dependencies.sh
 
 echo
-echo "############################################################"
-echo "# Emirge is now installed. Please restart your shell       #"
-echo "# and run mirgecom/wave-eager.py to test the installation. #"
-echo "############################################################"
+echo "##############################################################"
+echo "# Emirge is now installed. Please restart your shell and run #"
+echo "# mirgecom/examples/wave-eager.py to test the installation.  #"
+echo "##############################################################"
