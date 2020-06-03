@@ -31,7 +31,7 @@ $ conda create -n dgfem
 $ conda activate dgfem
 
 # Install required conda packages:
-$ conda install pocl
+$ conda install pocl numpy pyvisfile pyopencl
 
 # Install optional conda packages:
 $ conda install clinfo
@@ -44,7 +44,7 @@ $ git clone git@github.com:spack/spack
 $ source spack/share/spack/setup-env.sh
 # Maybe edit your Spack config
 # $ spack config edit packages
-$ spack install pocl numpy pyvisfile pyopencl
+$ spack install pocl
 ```
 
 #### Install Python packages
