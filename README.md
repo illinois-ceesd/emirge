@@ -23,8 +23,18 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 $ bash ./Miniforge3-Linux-x86_64.sh
 # make sure the installer runs 'conda init' at the end of installation, or run it manually.
 
+# Restart shell to load conda integration
 $ exec bash
-$ conda install pocl
+
+# Optional: create conda environment
+$ conda create -n dgfem
+$ conda activate dgfem
+
+# Install required conda packages:
+$ conda install pocl numpy pyvisfile pyopencl
+
+# Install optional conda packages:
+$ conda install clinfo
 ```
 
 ##### Installation with Spack
