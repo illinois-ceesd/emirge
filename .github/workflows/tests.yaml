@@ -17,7 +17,7 @@ jobs:
     - name: Install prerequisites
       run: ./install.sh
     - name: Version info
-      run: ./version.sh
+      run: PATH=$HOME/miniforge3/bin:$PATH ./version.sh
     - name: Run wave-eager
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
@@ -34,7 +34,7 @@ jobs:
     - name: Install prerequisites
       run: ./install.sh
     - name: Version info
-      run: ./version.sh
+      run: PATH=$HOME/miniforge3/bin:$PATH ./version.sh
     - name: Run wave-eager
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
