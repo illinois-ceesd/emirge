@@ -5,14 +5,21 @@ set -o nounset -o errexit
 
 echo "*** Pip info"
 
-echo -n "Pip path: "
-which pip && pip freeze || echo "No pip found."
+python3 -m pip freeze
+
 
 echo
 echo "*** Conda info"
 
 echo -n "Conda path: "
-which conda && conda info || echo "No conda found."
+which conda || echo "No conda found."
+
+conda info
+
+conda info --envs
+
+conda list
+
 
 echo
 echo "*** OS info"
@@ -46,7 +53,7 @@ function print_git_status {
 }
 
 
-MY_MODULES=$(git submodule status | awk '{print $2}' | tr '\n' ' ')
+MY_MODULES=$(git submodule status | awk '{print $2}')
 
 text="Package|Branch|Commit|Date\n"
 text+="=======|======|======|====\n"
