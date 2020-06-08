@@ -27,8 +27,9 @@ $ sh ./Miniforge3-Linux-x86_64.sh
 $ exec $SHELL
 
 # Optional: create conda environment
-$ $CONDA_EXE create -n dgfem
-$ $CONDA_EXE activate dgfem
+$ export MY_CONDA=/path/to/installed/conda # Default installation path: $HOME/miniforge3
+$ $MY_CONDA/bin/conda create -n dgfem
+$ $MY_CONDA/bin/conda activate dgfem
 
 # Install required conda packages:
 $ conda install pocl numpy pyvisfile pyopencl
