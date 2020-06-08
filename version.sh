@@ -25,7 +25,7 @@ echo
 echo "*** OS info"
 
 which lsb_release >/dev/null && lsb_release -ds
-which sw_vers >/dev/null && echo "MacOSX $(sw_vers -productVersion)"
+which sw_vers >/dev/null && echo "MacOS $(sw_vers -productVersion)"
 uname -a
 
 
