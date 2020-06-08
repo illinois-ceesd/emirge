@@ -23,13 +23,11 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 $ sh ./Miniforge3-Linux-x86_64.sh
 # make sure the installer runs 'conda init' at the end of installation, or run it manually.
 
-# Restart shell to load conda integration
-$ exec $SHELL
 
 # Optional: create conda environment
 $ export MY_CONDA=/path/to/installed/conda # Default installation path: $HOME/miniforge3
 $ $MY_CONDA/bin/conda create -n dgfem
-$ $MY_CONDA/bin/conda activate dgfem
+$ . $MY_CONDA/bin/activate dgfem
 
 # Install required conda packages:
 $ conda install pocl numpy pyvisfile pyopencl
