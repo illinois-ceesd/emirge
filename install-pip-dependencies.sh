@@ -16,5 +16,5 @@ done
 echo "==== Installing pip packages"
 
 for module in $MY_MODULES; do 
-    (cd $module && pip install --user -e .)
+    (cd $module && pip install -e .)
 done
