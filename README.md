@@ -48,9 +48,6 @@ $ spack install pocl
 #### Install Python packages
 
 ```bash
-$ export CONDA=$HOME/miniforge3
-$ export PATH=$HOME/miniforge3/bin:$PATH
-
 $ for m in dagrt leap loopy meshmode grudge mirgecom; do cd $m && pip install -e . && cd ..; done
 ```
 
