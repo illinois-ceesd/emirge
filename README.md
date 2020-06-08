@@ -20,11 +20,11 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 # For MacOS:
 # $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
 
-$ bash ./Miniforge3-Linux-x86_64.sh
+$ sh ./Miniforge3-Linux-x86_64.sh
 # make sure the installer runs 'conda init' at the end of installation, or run it manually.
 
 # Restart shell to load conda integration
-$ exec bash
+$ exec $SHELL
 
 # Optional: create conda environment
 $ conda create -n dgfem
