@@ -14,4 +14,4 @@ for m in $MY_MODULES; do
     cd ..
 done
 
-echo "Pulled updated modules. Now commit the changes."
+echo "Pulled updated modules. Maybe you want to commit the submodule changes to emirge?"
