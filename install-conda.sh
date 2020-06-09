@@ -19,5 +19,4 @@ else
 fi
 
 # Update packages, since the Miniforge script might not install the most recent versions
-export PATH=$MY_CONDA_DIR/bin:$PATH
-conda update --all --yes
+$MY_CONDA_DIR/bin/conda update --all --yes
