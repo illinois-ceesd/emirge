@@ -25,7 +25,7 @@ jobs:
         echo $SHELL
         source $HOME/miniforge3/bin/activate dgfem
         which python
-        conda install clinfo
+        conda install clinfo pocl pyopencl
         clinfo
         export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
         cd mirgecom/examples && python ./wave-eager.py
