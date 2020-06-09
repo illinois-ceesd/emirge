@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+# Conda does not like 'set -o nounset'
 
 echo "#####################################################"
 echo "# This script installs the dependencies for emirge. #"
