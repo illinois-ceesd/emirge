@@ -7,7 +7,23 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
-export MY_CONDA_DIR=$HOME/miniforge3
+conda_prefix=$HOME/miniforge3
+
+while [[ $# -gt 0 ]]; do
+  arg=$1
+  shift
+  case $arg in
+    --prefix=*)
+        conda_prefix=${arg#*=}
+        ;;
+    *)
+        echo "Usage: $0 [--prefix=DIR]"
+        exit 1
+        ;;
+  esac
+done
+
+export MY_CONDA_DIR=$conda_prefix
 
 ./install-conda.sh
 
