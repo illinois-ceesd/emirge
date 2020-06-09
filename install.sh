@@ -31,6 +31,7 @@ export PATH=$MY_CONDA_DIR/bin:$PATH
 
 echo "==== Create 'dgfem' conda environment"
 conda init
+which finger 2>/dev/null >/dev/null && conda init $(finger $USER | grep 'Shell:*' | cut -f3)
 conda create --name dgfem --yes
 
 source $MY_CONDA_DIR/bin/activate dgfem
