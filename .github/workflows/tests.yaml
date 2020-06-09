@@ -23,8 +23,7 @@ jobs:
         export PATH=$HOME/miniforge3/bin:$PATH
         which conda
         echo $SHELL
-        conda init
-        conda activate dgfem
+        source PATH=$HOME/miniforge3/bin/activate dgfem
         export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
         cd mirgecom/examples && python ./wave-eager.py
 
