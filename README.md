@@ -21,7 +21,7 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 # $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
 
 # Install Miniforge/conda:
-$ sh ./Miniforge3-Linux-x86_64.sh
+$ bash ./Miniforge3-Linux-x86_64.sh
 
 # Optional: create conda environment
 $ export MY_CONDA=/path/to/installed/conda # Default installation path: $HOME/miniforge3
