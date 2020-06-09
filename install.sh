@@ -33,7 +33,7 @@ echo "==== Create 'dgfem' conda environment"
 conda init
 conda create --name dgfem --yes
 
-$MY_CONDA_DIR/bin/activate dgfem
+source $MY_CONDA_DIR/bin/activate dgfem
 
 ./install-conda-dependencies.sh
 ./install-pip-dependencies.sh
