@@ -21,7 +21,10 @@ jobs:
     - name: Run wave-eager
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
-        activate dgfem
+        which conda
+        echo $SHELL
+        conda init
+        conda activate dgfem
         export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
         cd mirgecom/examples && python ./wave-eager.py
 
