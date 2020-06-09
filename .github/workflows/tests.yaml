@@ -23,12 +23,13 @@ jobs:
         export PATH=$HOME/miniforge3/bin:$PATH
         which conda
         echo $SHELL
+        conda info --envs
         source $HOME/miniforge3/bin/activate dgfem
         which python
         conda install clinfo pocl pyopencl
         clinfo
         ./version.sh
-        export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+        export OCL_ICD_VENDORS=$HOME/miniforge3/envs/dgfem/etc/OpenCL/vendors/
         ls $OCL_ICD_VENDORS
         cd mirgecom/examples && python ./wave-eager.py
 
