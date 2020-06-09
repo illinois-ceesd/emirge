@@ -1,12 +1,13 @@
 #!/bin/bash
 
-set -o nounset -o errexit
+set -o errexit
 
 echo "#####################################################"
 echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
+# Default conda location
 conda_prefix=$HOME/miniforge3
 
 while [[ $# -gt 0 ]]; do
@@ -22,6 +23,9 @@ while [[ $# -gt 0 ]]; do
         ;;
   esac
 done
+
+# Conda does not like ~
+conda_prefix=$(echo $conda_prefix | sed s,~,$HOME,)
 
 export MY_CONDA_DIR=$conda_prefix
 
