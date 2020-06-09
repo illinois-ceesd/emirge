@@ -28,6 +28,7 @@ jobs:
         conda install clinfo pocl pyopencl
         clinfo
         export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+        ls $OCL_ICD_VENDORS
         cd mirgecom/examples && python ./wave-eager.py
 
   MacOS:
