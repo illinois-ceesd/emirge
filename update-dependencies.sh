@@ -9,9 +9,12 @@ for m in $MY_MODULES; do
 
     echo $m
 
-    git pull
+    # Skip directories that have local modifications
+    git diff-index --quiet HEAD || { echo "  Skipping update of '$m' due to local modifications."; cd ..; continue; }
+
+    git pull origin master
 
     cd ..
 done
 
-echo "Pulled updated modules. Maybe you want to commit the submodule changes to emirge?"
+echo "==== Pulled updated modules. Maybe you want to commit the submodule changes to emirge?"
