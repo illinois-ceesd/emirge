@@ -14,11 +14,9 @@ if [[ ! -d $MY_CONDA_DIR ]]; then
     echo "==== Installing Miniforge in $MY_CONDA_DIR."
     wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh
     bash Miniforge3-$myos-$myarch.sh -b -p $MY_CONDA_DIR
-    
 else
     echo "==== Conda found in $MY_CONDA_DIR, skipping Miniforge installation."
 fi
 
 # Update packages, since the Miniforge script might not install the most recent versions
-export PATH=$MY_CONDA_DIR/bin:$PATH
-conda update --all --yes
+$MY_CONDA_DIR/bin/conda update --all --yes

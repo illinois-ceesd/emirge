@@ -21,7 +21,8 @@ jobs:
     - name: Run wave-eager
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
-        export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+        source $HOME/miniforge3/bin/activate dgfem
+        export OCL_ICD_VENDORS=$HOME/miniforge3/envs/dgfem/etc/OpenCL/vendors/
         cd mirgecom/examples && python ./wave-eager.py
 
   MacOS:
@@ -38,5 +39,6 @@ jobs:
     - name: Run wave-eager
       run: |
         export PATH=$HOME/miniforge3/bin:$PATH
-        export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
+        source $HOME/miniforge3/bin/activate dgfem
+        export OCL_ICD_VENDORS=$HOME/miniforge3/envs/dgfem/etc/OpenCL/vendors/
         cd mirgecom/examples && python ./wave-eager.py
