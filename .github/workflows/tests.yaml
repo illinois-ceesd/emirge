@@ -1,33 +1,18 @@
 name: CI test
 
-# Trigger the workflow on push
+# Trigger the workflow on push and daily cron job
 on:
   push:
   schedule:
   - cron:  '5 0 * * *'
 
 jobs:
-  Linux:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-    - name: Install prerequisites
-      run: ./install.sh
-    - name: Version info
-      run: PATH=$HOME/miniforge3/bin:$PATH ./version.sh
-    - name: Run wave-eager
-      run: |
-        export PATH=$HOME/miniforge3/bin:$PATH
-        source $HOME/miniforge3/bin/activate dgfem
-        export OCL_ICD_VENDORS=$HOME/miniforge3/envs/dgfem/etc/OpenCL/vendors/
-        cd mirgecom/examples && python ./wave-eager.py
-
-  MacOS:
-    runs-on: macos-latest
-
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
       with:
