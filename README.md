@@ -29,10 +29,13 @@ $ $MY_CONDA/bin/conda create -n dgfem
 $ . $MY_CONDA/bin/activate dgfem
 
 # Install required conda packages:
-$ conda install pocl numpy pyvisfile pyopencl islpy
+$ conda install pip pocl numpy pyopencl islpy flake8 mypy pudb
 
 # Install optional conda packages:
 $ conda install clinfo
+
+# Make sure to reactivate the environment after installation:
+. $MY_CONDA/bin/activate dgfem
 ```
 
 ##### Installation with Spack
@@ -48,6 +51,7 @@ $ spack install pocl
 #### Install Python packages
 
 ```bash
+$ pip install pyvisfile
 $ for m in dagrt leap loopy meshmode grudge mirgecom; do cd $m && pip install -e . && cd ..; done
 ```
 
