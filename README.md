@@ -34,7 +34,7 @@ $ conda install pip pocl numpy pyopencl islpy flake8 mypy pudb
 # Install optional conda packages:
 $ conda install clinfo
 
-# Make sure to reactivate the environment after installation:
+# In a new session, you may reactivate this environment using:
 . $MY_CONDA/bin/activate dgfem
 ```
 
