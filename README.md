@@ -20,21 +20,22 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 # For MacOS:
 # $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
 
+# Install Miniforge/conda:
 $ bash ./Miniforge3-Linux-x86_64.sh
-# make sure the installer runs 'conda init' at the end of installation, or run it manually.
-
-# Restart shell to load conda integration
-$ exec bash
 
 # Optional: create conda environment
-$ conda create -n dgfem
-$ conda activate dgfem
+$ export MY_CONDA=/path/to/installed/conda # Default installation path: $HOME/miniforge3
+$ $MY_CONDA/bin/conda create -n dgfem
+$ . $MY_CONDA/bin/activate dgfem
 
 # Install required conda packages:
-$ conda install pocl numpy pyvisfile pyopencl
+$ conda install pip pocl numpy pyopencl islpy flake8 mypy pudb
 
 # Install optional conda packages:
 $ conda install clinfo
+
+# In a new session, you may reactivate this environment using:
+. $MY_CONDA/bin/activate dgfem
 ```
 
 ##### Installation with Spack
@@ -50,10 +51,6 @@ $ spack install pocl
 #### Install Python packages
 
 ```bash
-$ export CONDA=$HOME/miniforge3
-$ export PATH=$HOME/miniforge3/bin:$PATH
-$ export OCL_ICD_VENDORS=$HOME/miniforge3/etc/OpenCL/vendors/
-
 $ pip install pyvisfile
 $ for m in dagrt leap loopy meshmode grudge mirgecom; do cd $m && pip install -e . && cd ..; done
 ```
