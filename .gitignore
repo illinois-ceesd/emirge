@@ -132,3 +132,6 @@ dmypy.json
 # emirge stuff
 Miniforge*.sh
 *.vtu
+
+
+modules.zip
