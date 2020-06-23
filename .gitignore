@@ -134,4 +134,12 @@ Miniforge*.sh
 *.vtu
 
 
+# Zipped modules
 modules.zip
+
+dagrt*.whl
+grudge*.whl
+leap*.whl
+loo.py*.whl
+meshmode*.whl
+mirgecom*.whl
