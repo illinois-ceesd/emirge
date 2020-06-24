@@ -16,3 +16,6 @@
 [submodule "mirgecom"]
 	path = mirgecom
 	url = git@github.com:illinois-ceesd/mirgecom.git
+[submodule "pytools"]
+	path = pytools
+	url = https://github.com/inducer/pytools

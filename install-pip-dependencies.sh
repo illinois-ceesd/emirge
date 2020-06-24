@@ -2,7 +2,7 @@
 
 set -o nounset -o errexit
 
-MY_MODULES="dagrt leap loopy meshmode grudge mirgecom"
+MY_MODULES="dagrt leap loopy meshmode grudge pytools mirgecom"
 
 for m in $MY_MODULES; do
     if [[ ! -f $m/setup.py ]]; then

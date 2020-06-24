@@ -52,7 +52,7 @@ $ spack install pocl
 
 ```bash
 $ pip install pyvisfile
-$ for m in dagrt leap loopy meshmode grudge mirgecom; do cd $m && pip install -e . && cd ..; done
+$ for m in dagrt leap loopy meshmode grudge pytools mirgecom; do cd $m && pip install -e . && cd ..; done
 ```
 
 ### Run wavelet0
