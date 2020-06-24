@@ -18,4 +18,4 @@
 	url = git@github.com:illinois-ceesd/mirgecom.git
 [submodule "pytools"]
 	path = pytools
-	url = https://github.com/inducer/pytools
+	url = git@github.com:inducer/pytools
