@@ -19,3 +19,6 @@
 [submodule "pytools"]
 	path = pytools
 	url = git@github.com:inducer/pytools
+[submodule "pymbolic"]
+	path = pymbolic
+	url = git@github.com:inducer/pymbolic
