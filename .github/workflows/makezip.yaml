@@ -13,6 +13,11 @@ jobs:
       with:
         submodules: true
     - name: Build modules.zip
-      run: ./makezip.sh
+      run: |
+        python3 -m venv myenv
+        source myenv/bin/activate
+        ./makezip.sh
     - name: Test modules.zip
-      run: python3 -c 'import dagrt; print(dagrt.__path__)'
+      run: |
+        source myenv/bin/activate
+        python3 -c 'import dagrt; print(dagrt.__path__)'
