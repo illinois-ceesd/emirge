@@ -2,7 +2,7 @@
 
 set -o errexit -o nounset
 
-MY_MODULES=$(git submodule status | awk '{print $2}')
+MY_MODULES=$(git submodule status | awk '{print $2}' | tr '\n' ' ')
 
 MY_PYTHON=$(command -v python3)
 
@@ -28,6 +28,6 @@ sitefile="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')/emirg
 echo "$zipfile" > "$sitefile"
 
 echo "=== Done. Make sure to uninstall other copies of the emirge modules:"
-echo "=== $MY_PYTHON -m pip uninstall $(echo $MY_MODULES | tr '\n' ' ')"
+echo "=== $MY_PYTHON -m pip uninstall $MY_MODULES"
 echo "=== and verify that the correct modules can be loaded by running:"
 echo "=== $MY_PYTHON -c 'import dagrt; print(dagrt.__path__)'"
