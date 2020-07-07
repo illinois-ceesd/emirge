@@ -29,4 +29,4 @@ echo "$zipfile" > "$sitefile"
 
 echo "=== Done. Make sure to uninstall other copies of the emirge modules and"
 echo "=== verify that the correct modules can be loaded by running:"
-echo "=== $MY_PYTHON -c 'import dagrt; print(dagrt.__path__)"
+echo "=== $MY_PYTHON -c 'import dagrt; print(dagrt.__path__)'"

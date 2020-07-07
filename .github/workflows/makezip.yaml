@@ -1,0 +1,18 @@
+name: Makezip test
+
+on:
+  push:
+
+jobs:
+  build:
+    name:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Build modules.zip
+      run: ./makezip.sh
+    - name: Test modules.zip
+      run: python3 -c 'import dagrt; print(dagrt.__path__)'
