@@ -14,6 +14,7 @@ jobs:
         submodules: true
     - name: Build modules.zip
       run: |
+        sudo apt install -y python3-venv
         python3 -m venv myenv
         source myenv/bin/activate
         ./makezip.sh
