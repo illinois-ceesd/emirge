@@ -11,12 +11,18 @@ echo
 # Default conda location
 conda_prefix=$HOME/miniforge3
 
+# Build modules.zip? (via makezip.sh)
+opt_modules=0
+
 while [[ $# -gt 0 ]]; do
   arg=$1
   shift
   case $arg in
     --prefix=*)
         conda_prefix=${arg#*=}
+        ;;
+    --modules)
+        opt_modules=1
         ;;
     *)
         echo "Usage: $0 [--prefix=DIR]"
@@ -46,6 +52,9 @@ source $MY_CONDA_DIR/bin/activate dgfem
 
 ./install-conda-dependencies.sh
 ./install-pip-dependencies.sh
+
+
+[[ $opt_modules -eq 1 ]] && ./makezip.sh
 
 echo
 echo "#########################################################################"

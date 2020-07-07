@@ -27,6 +27,7 @@ sitefile="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')/emirg
 
 echo "$zipfile" > "$sitefile"
 
-echo "=== Done. Make sure to uninstall other copies of the emirge modules and"
-echo "=== verify that the correct modules can be loaded by running:"
+echo "=== Done. Make sure to uninstall other copies of the emirge modules:"
+echo "=== $MY_PYTHON -m pip uninstall $(echo $MY_MODULES | tr '\n' ' ')"
+echo "=== and verify that the correct modules can be loaded by running:"
 echo "=== $MY_PYTHON -c 'import dagrt; print(dagrt.__path__)'"
