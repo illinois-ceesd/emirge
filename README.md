@@ -4,16 +4,15 @@
 
 Emirge is a set of dependencies for mirgecom (https://github.com/illinois-ceesd/mirgecom).
 
-
-# Installation
-
-In most cases, running `./install.sh` should be sufficient to install all dependencies for emirge and mirgecom.
-
 These dependencies are:
 
 1. Miniforge/Conda and conda packages (e.g., pocl)
 2. Pip packages (e.g., pyopencl)
 3. Python packages that are git submodules of emirge (e.g., loopy)
+
+# Installation
+
+In most cases, running `./install.sh` should be sufficient to install all dependencies for emirge and mirgecom.
 
 `./install.sh` takes several arguments:
 - `--prefix=DIR`: Install conda in `DIR` instead of the default directory (`$HOME/miniforge3`).
