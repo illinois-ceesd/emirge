@@ -2,12 +2,48 @@
 
 [![CI test](https://github.com/illinois-ceesd/emirge/workflows/CI%20test/badge.svg)](https://github.com/illinois-ceesd/emirge/actions?query=workflow%3A%22CI+test%22+event%3Apush)
 
+Emirge is a repository with some tools that captures a set of dependencies for [mirgecom](https://github.com/illinois-ceesd/mirgecom).
+
+These dependencies are:
+
+1. Miniforge/Conda and conda packages (e.g., pocl)
+2. Pip packages (e.g., pyopencl)
+3. Python packages that are git submodules of emirge (e.g., loopy)
+
+# Installation
+
+In most cases, running `./install.sh` should be sufficient to install all dependencies for emirge and mirgecom.
+
+`./install.sh` takes several arguments:
+- `--prefix=DIR`: Install conda in `DIR` instead of the default directory (`$HOME/miniforge3`).
+- `--modules`: Install a modules.zip file that contains a copy of all python packages that are git submodules (see below for details).
+
+## Testing the installation
+
+Testing can be done by:
+
+```bash
+$ cd mirgecom/examples; python wave-eager.py
+```
+
+## Running on systems with lots of nodes (>256)
+On large systems, the file system can become a bottleneck for loading Python
+packages. On these systems, it is recommended to create a zip file with the
+modules to speed up the startup process. This can be done by specifying the
+`--modules` parameter to `install.sh`, or by running `makezip.sh` after
+installation.
+
+See https://github.com/illinois-ceesd/planning/issues/26 for more details.
+
+
+# Manual installation
+
+Pleaes use the instructions above instead.
+
 ## Running wavelet0
 
 
 ### Prerequesites
-
-You can run `./install.sh` to install the required packages, or follow the manual instructions below.
 
 #### Install POCL
 
