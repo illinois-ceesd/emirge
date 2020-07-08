@@ -2,7 +2,7 @@
 
 [![CI test](https://github.com/illinois-ceesd/emirge/workflows/CI%20test/badge.svg)](https://github.com/illinois-ceesd/emirge/actions?query=workflow%3A%22CI+test%22+event%3Apush)
 
-Emirge is a set of dependencies for mirgecom (https://github.com/illinois-ceesd/mirgecom).
+Emirge is a repository with some tools that captures a set of dependencies for [mirgecom](https://github.com/illinois-ceesd/mirgecom).
 
 These dependencies are:
 
