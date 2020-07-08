@@ -8,6 +8,14 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
+usage()
+{
+  echo "Usage: $0 [--prefix=DIR] [--modules] [--help]"
+  echo "  --prefix=DIR      Install conda in non-default prefix."
+  echo "  --modules         Create modules.zip and add to Python path."
+  echo "  --help            Print this help text."
+}
+
 # Default conda location
 conda_prefix=$HOME/miniforge3
 
@@ -19,13 +27,19 @@ while [[ $# -gt 0 ]]; do
   shift
   case $arg in
     --prefix=*)
+        # Install conda in non-default prefix
         conda_prefix=${arg#*=}
         ;;
     --modules)
+        # Create modules.zip
         opt_modules=1
         ;;
+    --help)
+        usage
+        exit 0
+        ;;
     *)
-        echo "Usage: $0 [--prefix=DIR]"
+        usage
         exit 1
         ;;
   esac

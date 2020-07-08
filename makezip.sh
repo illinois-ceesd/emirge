@@ -12,8 +12,9 @@ zipfile=$PWD/modules.zip
 rm -f "$zipfile"
 
 for m in $MY_MODULES; do
-    echo "=== Zipping $m"
+    [[ -f "$m/setup.py" ]] || continue # Skip non-Python submodules
     cd "$m"
+    echo "=== Zipping $m"
     zip -r "$zipfile" "$m/"
     cd ..
 done
