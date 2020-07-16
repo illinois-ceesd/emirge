@@ -2,19 +2,38 @@
 
 set -o nounset -o errexit
 
-MY_MODULES="pytools pymbolic dagrt leap loopy meshmode grudge mirgecom"
 
-for m in $MY_MODULES; do
-    if [[ ! -f $m/setup.py ]]; then
-        echo "==== ERROR: incomplete git clone. Please run:"
-        echo "====   git submodule init && git submodule update"
-        echo "==== to fetch emirge's submodules."
-        exit 1
-    fi
-done
+MY_MODULES=$(wget -qO- https://github.com/illinois-ceesd/mirgecom/raw/master/requirements.txt)
 
 echo "==== Installing pip packages"
 
 for module in $MY_MODULES; do
-    (cd $module && pip install -e .)
+    if [[ $module == git+* ]]; then
+        module=${module/\#egg=[a-z]*/}
+
+        if [[ $module == *@* ]]; then
+            modulebranch="--branch ${module/*@/}"
+            module=${module/@*/}
+        else
+            modulebranch=""
+        fi
+
+        moduleurl=${module/git+/}
+        modulename=$(basename $module)
+        modulename=${modulename/.git/}
+
+        if [[ -d $modulename ]]; then
+            echo "Git module $modulename already exists, skipping."
+            continue
+        fi
+
+        echo "Git module $modulename $moduleurl $modulebranch"
+
+        git clone $modulebranch $moduleurl
+
+        (cd $modulename && pip install -e .)
+    else
+        echo "Non-git module $module"
+        pip install --upgrade $module
+    fi
 done

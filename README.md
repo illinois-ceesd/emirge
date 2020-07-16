@@ -8,7 +8,6 @@ These dependencies are:
 
 1. Miniforge/Conda and conda packages (e.g., pocl)
 2. Pip packages (e.g., pyopencl)
-3. Python packages that are git submodules of emirge (e.g., loopy)
 
 # Installation
 
@@ -16,7 +15,7 @@ In most cases, running `./install.sh` should be sufficient to install all depend
 
 `./install.sh` takes several arguments:
 - `--prefix=DIR`: Install conda in `DIR` instead of the default directory (`$HOME/miniforge3`).
-- `--modules`: Install a modules.zip file that contains a copy of all python packages that are git submodules (see below for details).
+- `--modules`: Install a modules.zip file that contains a copy of all python packages that are installed through git (see below for details).
 
 ## Testing the installation
 
@@ -38,7 +37,7 @@ See https://github.com/illinois-ceesd/planning/issues/26 for more details.
 
 # Manual installation
 
-Pleaes use the instructions above instead.
+Please use the instructions above instead.
 
 ## Running wavelet0
 
