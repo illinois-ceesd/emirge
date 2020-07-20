@@ -9,7 +9,8 @@ parse_requirements
 
 echo "==== Installing pip packages"
 
-python -m pip install pybind11
+# Required for pyopencl
+python -m pip install pybind11 mako
 
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
