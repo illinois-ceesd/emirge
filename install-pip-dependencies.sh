@@ -18,7 +18,7 @@ for i in "${!module_names[@]}"; do
         echo "=== Installing non-git module $name"
         pip install --upgrade $name
     else
-        echo "=== Installing git module $name $moduleurl $modulebranch"
+        echo "=== Installing git module $name $url ${branch/--branch /}"
         [[ ! -d $name ]] && git clone $branch $url
         (cd $name && pip install -e .)
     fi
