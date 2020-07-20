@@ -11,6 +11,8 @@ echo "==== Installing pip packages"
 
 # Required for pyopencl
 python -m pip install pybind11 mako
+export CPATH="$(conda info --envs | grep dgfem | awk '{print $3}')/include"
+
 
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
