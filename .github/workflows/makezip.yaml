@@ -16,7 +16,6 @@ jobs:
       run: |
         sudo apt install -y python3-venv
         python3 -m venv myenv
-        wget
         source myenv/bin/activate
         ./makezip.sh
     - name: Test modules.zip
