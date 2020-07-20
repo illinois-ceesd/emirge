@@ -56,9 +56,6 @@ export PATH=$MY_CONDA_DIR/bin:$PATH
 
 echo "==== Create 'dgfem' conda environment"
 
-# Attempt to also run conda init for the users shell (in case it is not bash):
-which finger 2>/dev/null >/dev/null && conda init $(finger $USER | grep 'Shell:*' | cut -f3)
-
 conda create --name dgfem --yes
 
 source $MY_CONDA_DIR/bin/activate dgfem
@@ -73,8 +70,7 @@ echo
 echo "#########################################################################"
 echo "# Emirge is now installed. Please run the following commands            #"
 echo "# to test the installation:                                             #"
-echo "# $ exec bash (or whatever your shell is)                               #"
-echo "# $ conda activate dgfem                                                #"
+echo "# $ source $conda_prefix/bin/activate dgfem                             #"
 echo "# $ export OCL_ICD_VENDORS=$MY_CONDA_DIR/envs/dgfem/etc/OpenCL/vendors  #"
 echo "# $ python mirgecom/examples/wave_eager.py                              #"
 echo "#########################################################################"
