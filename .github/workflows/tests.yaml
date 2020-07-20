@@ -24,5 +24,7 @@ jobs:
         export PATH=$HOME/miniforge3/bin:$PATH
         source $HOME/miniforge3/bin/activate dgfem
         export OCL_ICD_VENDORS=$HOME/miniforge3/envs/dgfem/etc/OpenCL/vendors/
-        git clone https://github.com/illinois-ceesd/mirgecom && cd mirgecom && pip install -e .
+        git clone https://github.com/illinois-ceesd/mirgecom
+        cd mirgecom
+        pip install -e .
         python examples/wave-eager.py
