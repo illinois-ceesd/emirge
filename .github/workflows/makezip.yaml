@@ -18,4 +18,5 @@ jobs:
     - name: Test modules.zip
       run: |
         source $HOME/miniforge3/bin/activate dgfem
+        pip uninstall dagrt
         [[ $(python3 -c 'import dagrt; print(dagrt.__path__[0])') == *modules.zip* ]] || exit 1
