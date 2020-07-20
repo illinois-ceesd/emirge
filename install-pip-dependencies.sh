@@ -9,6 +9,8 @@ parse_requirements
 
 echo "==== Installing pip packages"
 
+python -m pip install pybind11
+
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
     branch=${module_branches[$i]}
