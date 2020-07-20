@@ -15,8 +15,6 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
-      with:
-        submodules: true
     - name: Install prerequisites
       run: ./install.sh
     - name: Version info
