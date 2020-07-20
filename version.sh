@@ -27,3 +27,27 @@ echo "*** OS info"
 which lsb_release >/dev/null && lsb_release -ds
 which sw_vers >/dev/null && echo "MacOS $(sw_vers -productVersion)"
 uname -a
+
+
+echo
+echo "*** Emirge modules"
+
+source ./parse_requirements.sh
+
+parse_requirements
+
+res="Package|Branch|URL\n"
+res+="=======|======|======\n"
+
+for i in "${!module_names[@]}"; do
+    name=${module_names[$i]}
+    branch=${module_branches[$i]/--branch /}
+    url=${module_urls[$i]}
+
+    branch=${branch:----}
+    url=${url:----}
+
+    res+="$name|$branch|$url\n"
+done
+
+echo -e $res | column -t -s '|'

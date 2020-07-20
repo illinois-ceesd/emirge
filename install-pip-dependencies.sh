@@ -3,37 +3,23 @@
 set -o nounset -o errexit
 
 
-MY_MODULES=$(wget -qO- https://github.com/illinois-ceesd/mirgecom/raw/master/requirements.txt)
+source ./parse_requirements.sh
+
+parse_requirements
 
 echo "==== Installing pip packages"
 
-for module in $MY_MODULES; do
-    if [[ $module == git+* ]]; then
-        module=${module/\#egg=[a-z]*/}
+for i in "${!module_names[@]}"; do
+    name=${module_names[$i]}
+    branch=${module_branches[$i]}
+    url=${module_urls[$i]}
 
-        if [[ $module == *@* ]]; then
-            modulebranch="--branch ${module/*@/}"
-            module=${module/@*/}
-        else
-            modulebranch=""
-        fi
-
-        moduleurl=${module/git+/}
-        modulename=$(basename $module)
-        modulename=${modulename/.git/}
-
-        if [[ -d $modulename ]]; then
-            echo "Git module $modulename already exists, skipping."
-            continue
-        fi
-
-        echo "Git module $modulename $moduleurl $modulebranch"
-
-        git clone $modulebranch $moduleurl
-
-        (cd $modulename && pip install -e .)
+    if [[ -z $url ]]; then
+        echo "=== Installing non-git module $name"
+        pip install --upgrade $name
     else
-        echo "Non-git module $module"
-        pip install --upgrade $module
+        echo "=== Installing git module $name $moduleurl $modulebranch"
+        [[ ! -d $name ]] && git clone $branch $url
+        (cd $name && pip install -e .)
     fi
 done
