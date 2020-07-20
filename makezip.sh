@@ -11,6 +11,8 @@ rm -f "$zipfile"
 
 MY_MODULES=""
 
+echo ${module_names[@]}
+
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
     url=${module_urls[$i]}
