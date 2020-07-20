@@ -4,7 +4,6 @@ declare -a module_branches
 
 parse_requirements() {
     local MY_MODULES=$(wget -qO- https://github.com/illinois-ceesd/mirgecom/raw/master/requirements.txt)
-    echo $MY_MODULES
 
     for module in $MY_MODULES; do
 

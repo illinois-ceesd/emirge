@@ -17,11 +17,9 @@ jobs:
         sudo apt install -y python3-venv
         python3 -m venv myenv
         source myenv/bin/activate
+        ./install-pip-dependencies.sh
         ./makezip.sh
     - name: Test modules.zip
       run: |
         source myenv/bin/activate
-        which python3
-        pwd
-        ls
         [[ $(python3 -c 'import dagrt; print(dagrt.__path__[0])') == *modules.zip* ]] || exit 1

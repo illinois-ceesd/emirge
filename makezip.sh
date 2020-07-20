@@ -11,14 +11,9 @@ rm -f "$zipfile"
 
 MY_MODULES=""
 
-echo "yyyy ${module_names[@]} xxxxx"
-echo "zzzz ${module_urls[@]} vvvvvv"
-
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
     url=${module_urls[$i]}
-
-    echo "$name $url"
 
     # Skip packages that are not git clone'd inside emirge
     [[ -z $url ]] && continue
