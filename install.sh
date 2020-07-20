@@ -66,6 +66,8 @@ source $MY_CONDA_DIR/bin/activate dgfem
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
+[[ ! -d mirgecom ]] && git clone https://github.com/illinois-ceesd/mirgecom
+
 echo
 echo "#########################################################################"
 echo "# Emirge is now installed. Please run the following commands            #"
