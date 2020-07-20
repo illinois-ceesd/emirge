@@ -6,4 +6,4 @@ echo "==== Installing Conda packages for $(which conda)"
 
 conda info --envs
 
-conda install --yes pocl numpy pyvisfile pyopencl islpy
+conda install --yes pocl numpy pyvisfile
