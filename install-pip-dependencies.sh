@@ -19,7 +19,7 @@ for i in "${!module_names[@]}"; do
         pip install --upgrade $name
     else
         echo "=== Installing git module $name $url ${branch/--branch /}"
-        [[ ! -d $name ]] && git clone --recursive $branch $url
+        [[ ! -d $name ]] && git clone --recursive -v $branch $url
         (cd $name && pip install -e .)
     fi
 done

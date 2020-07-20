@@ -16,6 +16,7 @@ jobs:
       run: |
         sudo apt install -y python3-venv
         python3 -m venv myenv
+        python3 -m pip install pybind11 wheel
         source myenv/bin/activate
         ./install-pip-dependencies.sh
         ./makezip.sh
