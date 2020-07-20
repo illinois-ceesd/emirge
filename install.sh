@@ -55,7 +55,6 @@ export MY_CONDA_DIR=$conda_prefix
 export PATH=$MY_CONDA_DIR/bin:$PATH
 
 echo "==== Create 'dgfem' conda environment"
-conda init
 
 # Attempt to also run conda init for the users shell (in case it is not bash):
 which finger 2>/dev/null >/dev/null && conda init $(finger $USER | grep 'Shell:*' | cut -f3)
