@@ -19,7 +19,7 @@ if [[ -z $has_conda ]]; then
     exit 1
 fi
 
-conda_prefix=$(cd -P "$(dirname "$(which conda)")/.." && pwd)
+conda_prefix=$(cd -P "$(dirname $(which conda))/.." && pwd)
 
 # Check that we have a valid dir
 if [[ ! -w $conda_prefix ]]; then
@@ -54,7 +54,7 @@ echo "  $conda_prefix"
 
 echo "Is this the correct location? (y/N)"
 
-[[ $ans != "yes" ]] && read -r ans
+[[ $ans != "yes" ]] && read ans
 
 case $ans in
     y|yes|Yes|YES|Y)
