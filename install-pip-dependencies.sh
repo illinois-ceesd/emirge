@@ -31,3 +31,5 @@ for i in "${!module_names[@]}"; do
         (cd $name && pip install -v -e .)
     fi
 done
+
+(cd mirgecom && pip install -v -e .)

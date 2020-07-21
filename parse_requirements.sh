@@ -1,5 +1,5 @@
 
-[[ -f mirgecom/setup.py ]] || (git clone https://github.com/illinois-ceesd/mirgecom && cd mirgecom && pip install -e .)
+[[ -f mirgecom/setup.py ]] || git clone https://github.com/illinois-ceesd/mirgecom
 
 declare -a module_names
 declare -a module_urls

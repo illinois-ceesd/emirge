@@ -17,6 +17,3 @@ if [[ ! -d $MY_CONDA_DIR || ! -x $MY_CONDA_DIR/bin/conda ]]; then
 else
     echo "==== Conda found in $MY_CONDA_DIR, skipping Miniforge installation."
 fi
-
-# Update packages, since the Miniforge script might not install the most recent versions
-$MY_CONDA_DIR/bin/conda update --all --yes
