@@ -11,7 +11,7 @@ echo "==== Installing pip packages"
 
 # Required for pyopencl
 python -m pip install pybind11 mako
-export CPATH="$(conda info --envs | grep dgfem | awk '{print $3}')/include"
+MY_CONDA_PATH="$(conda info --envs | grep dgfem | awk '{print $3}')"
 
 
 for i in "${!module_names[@]}"; do
@@ -25,6 +25,9 @@ for i in "${!module_names[@]}"; do
     else
         echo "=== Installing git module $name $url ${branch/--branch /}"
         [[ ! -d $name ]] && git clone --recursive $branch $url
+
+        [[ $name == "pyopencl" ]] && (cd $name && ./configure.py --cl-inc-dir=$MY_CONDA_PATH/include --cl-lib-dir=$MY_CONDA_PATH/lib )
+
         (cd $name && pip install -v -e .)
     fi
 done
