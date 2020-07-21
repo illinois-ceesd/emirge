@@ -135,3 +135,18 @@ Miniforge*.sh
 
 
 modules.zip
+
+
+dagrt/
+loopy/
+mirgecom/
+grudge/
+islpy/
+leap/
+meshmode/
+meshpy/
+modepy/
+pymbolic/
+pyopencl/
+pytools/
+myenv/
