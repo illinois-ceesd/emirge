@@ -1,9 +1,12 @@
+
+[[ -f mirgecom/setup.py ]] || git clone https://github.com/illinois-ceesd/mirgecom
+
 declare -a module_names
 declare -a module_urls
 declare -a module_branches
 
 parse_requirements() {
-    local MY_MODULES=$(wget -qO- https://github.com/illinois-ceesd/mirgecom/raw/master/requirements.txt)
+    local MY_MODULES=$(cat mirgecom/requirements.txt)
 
     for module in $MY_MODULES; do
 
