@@ -23,6 +23,7 @@ jobs:
       run: |
         # export PATH=$HOME/miniforge3/bin:$PATH
         source $HOME/miniforge3/bin/activate dgfem
+        export LD_LIBRARY_PATH=$HOME/miniforge3/envs/dgfem/lib
         which python
         export OCL_ICD_VENDORS=$HOME/miniforge3/envs/dgfem/etc/OpenCL/vendors/
         git clone https://github.com/illinois-ceesd/mirgecom
