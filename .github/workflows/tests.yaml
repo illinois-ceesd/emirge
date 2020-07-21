@@ -23,7 +23,6 @@ jobs:
         ./version.sh
     - name: Run wave-eager
       run: |
-        # export PATH=$HOME/miniforge3/bin:$PATH
         source $HOME/miniforge3/bin/activate dgfem
         export LD_LIBRARY_PATH=$HOME/miniforge3/envs/dgfem/lib
         which python
