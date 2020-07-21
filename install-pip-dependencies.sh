@@ -25,6 +25,6 @@ for i in "${!module_names[@]}"; do
     else
         echo "=== Installing git module $name $url ${branch/--branch /}"
         [[ ! -d $name ]] && git clone --recursive $branch $url
-        (cd $name && pip install -e .)
+        (cd $name && pip install -v -e .)
     fi
 done
