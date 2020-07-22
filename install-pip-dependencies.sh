@@ -2,19 +2,34 @@
 
 set -o nounset -o errexit
 
-MY_MODULES="pytools pymbolic dagrt leap loopy meshmode grudge mirgecom"
 
-for m in $MY_MODULES; do
-    if [[ ! -f $m/setup.py ]]; then
-        echo "==== ERROR: incomplete git clone. Please run:"
-        echo "====   git submodule init && git submodule update"
-        echo "==== to fetch emirge's submodules."
-        exit 1
-    fi
-done
+source ./parse_requirements.sh
+
+parse_requirements
 
 echo "==== Installing pip packages"
 
-for module in $MY_MODULES; do
-    (cd $module && pip install -e .)
+# Required for pyopencl
+python -m pip install pybind11 mako
+MY_CONDA_PATH="$(conda info --envs | grep dgfem | awk '{print $3}')"
+
+
+for i in "${!module_names[@]}"; do
+    name=${module_names[$i]}
+    branch=${module_branches[$i]}
+    url=${module_urls[$i]}
+
+    if [[ -z $url ]]; then
+        echo "=== Installing non-git module $name"
+        pip install --upgrade $name
+    else
+        echo "=== Installing git module $name $url ${branch/--branch /}"
+        [[ ! -d $name ]] && git clone --recursive $branch $url
+
+        [[ $name == "pyopencl" ]] && (cd $name && ./configure.py --cl-inc-dir=$MY_CONDA_PATH/include --cl-lib-dir=$MY_CONDA_PATH/lib --ldflags="" --cl-libname=OpenCL)
+
+        (cd $name && pip install -v -e .)
+    fi
 done
+
+(cd mirgecom && pip install -v -e .)

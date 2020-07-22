@@ -15,15 +15,13 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
-      with:
-        submodules: true
     - name: Install prerequisites
       run: ./install.sh
     - name: Version info
-      run: PATH=$HOME/miniforge3/bin:$PATH ./version.sh
+      run: |
+        source $HOME/miniforge3/bin/activate dgfem
+        ./version.sh
     - name: Run wave-eager
       run: |
-        export PATH=$HOME/miniforge3/bin:$PATH
         source $HOME/miniforge3/bin/activate dgfem
-        export OCL_ICD_VENDORS=$HOME/miniforge3/envs/dgfem/etc/OpenCL/vendors/
-        cd mirgecom/examples && python ./wave-eager.py
+        python mirgecom/examples/wave-eager.py

@@ -32,41 +32,22 @@ uname -a
 echo
 echo "*** Emirge modules"
 
-function print_git_status {
-    res=""
+source ./parse_requirements.sh
 
-    # Modified/untracked files?
-    [[ -n $(git status -s) ]] && res+="*"
+parse_requirements
 
-    # Package name
-    res+="$(basename $PWD)|"
+res="Package|Branch|URL\n"
+res+="=======|======|======\n"
 
-    # Branch name
-    res+="$(git describe --all --always| sed s,^heads/,, | sed s,remotes/origin/,,)|"
+for i in "${!module_names[@]}"; do
+    name=${module_names[$i]}
+    branch=${module_branches[$i]/--branch /}
+    url=${module_urls[$i]}
 
-    # Commit message
-    res+="$(git log -1 --pretty --oneline)|"
+    branch=${branch:----}
+    url=${url:----}
 
-    # Date
-    res+="$(git log -1 --format=%cd --date=format:"%Y-%m-%d %H:%M")\n"
-    echo $res
-}
-
-
-MY_MODULES=$(git submodule status | awk '{print $2}')
-
-text="Package|Branch|Commit|Date\n"
-text+="=======|======|======|====\n"
-
-for m in $MY_MODULES; do
-    cd $m
-
-    text+=$(print_git_status)
-
-    cd ..
+    res+="$name|$branch|$url\n"
 done
 
-# Emirge status
-text+=$(print_git_status)
-
-echo -e $text | column -t -s '|'
+echo -e $res | column -t -s '|'

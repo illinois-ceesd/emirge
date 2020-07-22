@@ -67,10 +67,9 @@ source $MY_CONDA_DIR/bin/activate dgfem
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
 echo
-echo "#########################################################################"
-echo "# Emirge is now installed. Please run the following commands            #"
-echo "# to test the installation (assuming your shell is bash):               #"
-echo "# $ source $conda_prefix/bin/activate dgfem                             #"
-echo "# $ export OCL_ICD_VENDORS=$MY_CONDA_DIR/envs/dgfem/etc/OpenCL/vendors  #"
-echo "# $ python mirgecom/examples/wave-eager.py                              #"
-echo "#########################################################################"
+echo "==================================================================="
+echo "Emirge is now installed. Please run the following commands"
+echo "to test the installation (assuming your shell is bash):"
+echo " $ source $conda_prefix/bin/activate dgfem"
+echo " $ python mirgecom/examples/wave-eager.py"
+echo "==================================================================="

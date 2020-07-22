@@ -1,24 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -o errexit -o nounset
 
-MY_MODULES=$(git submodule status | awk '{print $2}' | tr '\n' ' ')
-
-MY_PYTHON=$(command -v python3)
-
+source ./parse_requirements.sh
+parse_requirements
 
 zipfile=$PWD/modules.zip
 
 rm -f "$zipfile"
 
-for m in $MY_MODULES; do
-    [[ -f "$m/setup.py" ]] || continue # Skip non-Python submodules
-    cd "$m"
-    echo "=== Zipping $m"
-    zip -r "$zipfile" "$m/"
+MY_MODULES=""
+
+for i in "${!module_names[@]}"; do
+    name=${module_names[$i]}
+    url=${module_urls[$i]}
+
+    # Skip packages that are not git clone'd inside emirge
+    [[ -z $url ]] && continue
+
+    # Skip non-Python submodules
+    [[ -f "$name/setup.py" ]] || continue
+
+    MY_MODULES+="$name "
+
+    cd "$name"
+    echo "=== Zipping $name"
+    zip -r "$zipfile" "$name/"
     cd ..
 done
 
+MY_PYTHON=$(command -v python3)
 
 echo "=== Preparing path file of '$MY_PYTHON'"
 echo "=== for importing modules from '$zipfile'"
