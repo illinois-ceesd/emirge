@@ -11,12 +11,15 @@ if [[ $# -ne 1 || $1 !=  "-x" ]]; then
     exit 1
 fi
 
-MY_MODULES=$(wget -qO- https://github.com/illinois-ceesd/mirgecom/raw/master/requirements.txt)
 
-for m in $MY_MODULES; do
+
+for m in */; do
+    # Skip non-git directories
+    [[ -d $m/.git/ ]] || continue
+
     cd $m
 
-    echo === $m
+    echo "=== Updating $m"
 
     # Skip directories that have local modifications
     git diff-index --quiet HEAD || { echo "  Skipping update of '$m' due to local modifications."; cd ..; continue; }
