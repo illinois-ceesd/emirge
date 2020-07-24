@@ -10,6 +10,6 @@ conda install --yes pocl pyvisfile
 
 # We need an MPI installation to build mpi4py.
 # Install OpenMPI if none is available.
-if [[ $(which mpicc) ]]; then
+if [[ ! $(which mpicc) ]]; then
     conda install --yes openmpi
 fi
