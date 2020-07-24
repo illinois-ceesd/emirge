@@ -49,16 +49,21 @@ done
 conda_prefix=$(echo $conda_prefix | sed s,~,$HOME,)
 
 export MY_CONDA_DIR=$conda_prefix
+printf "MY_CONDA_DIR = ${MY_CONDA_DIR}\n"
 
 ./install-conda.sh
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
 
-echo "==== Create 'dgfem' conda environment"
+if [-z "${MY_CONDA_ENV}" ]; then
+    echo "==== Create 'dgfem' conda environment"
+    conda create --name dgfem --yes
+    source $MY_CONDA_DIR/bin/activate dgfem
+else
+    printf "Activating ${MY_CONDA_ENV}\n"
+    #    conda activate ${MY_CONDA_ENV}
+fi
 
-conda create --name dgfem --yes
-
-source $MY_CONDA_DIR/bin/activate dgfem
 
 ./install-conda-dependencies.sh
 ./install-pip-dependencies.sh

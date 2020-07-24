@@ -1,13 +1,13 @@
 
-MIRGECOM=$(cat ./requirements.txt)
-if [[ $MIRGECOM == *@* ]]; then
-    mcbranch="--branch ${MIRGECOM/*@/}"
-    mcmodule=${MIRGECOM/@*/}
+mcmodule=$(cat ./requirements.txt)
+if [[ $mcmodule == *@* ]]; then
+    mcbranch="--branch ${mcmodule/*@/}"
+    mcmodule=${mcmodule/@*/}
 else
     mcbranch=""
 fi
 mcurl=${mcmodule/git+/}
-mcame=$(basename $mcmodule)
+mcname=$(basename $mcmodule)
 mcname=${mcname/.git/}
 
 [[ -f mirgecom/setup.py ]] || git clone --recursive ${mcbranch} ${mcurl}

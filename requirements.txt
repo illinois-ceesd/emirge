@@ -1,1 +1,1 @@
-git+https://github.com/illinois-ceesd/mirgecom.git@mtc/euler
+git+https://github.com/illinois-ceesd/mirgecom.git@teesd
