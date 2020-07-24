@@ -16,7 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install prerequisites
-      run: ./install.sh
+      run: |
+        [[ $(uname) == Linux ]] && sudo apt-get install -y libpthread-stubs0-dev libc6-dev
+        ./install.sh
     - name: Version info
       run: |
         source $HOME/miniforge3/bin/activate dgfem
