@@ -14,6 +14,9 @@ if ! command -v mpicc &> /dev/null ;then
     # conda install --yes mpich mpich-mpicc
 
     mv $MY_CONDA_DIR/envs/dgfem/compiler_compat/ld $MY_CONDA_DIR/envs/dgfem/compiler_compat/ld_donotuse
+
+    echo 'int main(){}' > t.c
+    mpicc t.c
     # source $MY_CONDA_DIR/bin/activate base
     # source $MY_CONDA_DIR/bin/activate dgfem
 fi
