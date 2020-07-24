@@ -12,6 +12,8 @@ conda install --yes pocl pyvisfile
 # Install OpenMPI if none is available.
 if ! command -v mpicc &> /dev/null ;then
     conda install --yes mpich mpich-mpicc
-    source $MY_CONDA_DIR/bin/activate base
-    source $MY_CONDA_DIR/bin/activate dgfem
+
+    mv $MY_CONDA_DIR/envs/dgfem/compiler_compat/ld $MY_CONDA_DIR/envs/dgfem/compiler_compat/ld_donotuse
+    # source $MY_CONDA_DIR/bin/activate base
+    # source $MY_CONDA_DIR/bin/activate dgfem
 fi
