@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o nounset -o errexit
+set -o errexit
 
 echo "==== Installing Conda packages for $(which conda)"
 
@@ -12,6 +12,6 @@ conda install --yes pocl pyvisfile
 # Install OpenMPI if none is available.
 if ! command -v mpicc &> /dev/null ;then
     conda install --yes openmpi openmpi-mpicc
-    conda activate base
-    conda activate dgfem
+    source $MY_CONDA_DIR/bin/activate base
+    source $MY_CONDA_DIR/bin/activate dgfem
 fi
