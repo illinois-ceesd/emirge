@@ -16,9 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install prerequisites
-      run: |
-        sudo apt-get -y install libpthread-stubs0-dev
-        ./install.sh
+      run: ./install.sh
     - name: Version info
       run: |
         source $HOME/miniforge3/bin/activate dgfem
