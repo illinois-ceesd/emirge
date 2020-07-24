@@ -150,3 +150,5 @@ pymbolic/
 pyopencl/
 pytools/
 myenv/
+cgen/
+genpy/

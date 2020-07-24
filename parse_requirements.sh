@@ -1,5 +1,16 @@
 
-[[ -f mirgecom/setup.py ]] || git clone https://github.com/illinois-ceesd/mirgecom
+MIRGECOM=$(cat ./requirements.txt)
+if [[ $MIRGECOM == *@* ]]; then
+    mcbranch="--branch ${MIRGECOM/*@/}"
+    mcmodule=${MIRGECOM/@*/}
+else
+    mcbranch=""
+fi
+mcurl=${mcmodule/git+/}
+mcame=$(basename $mcmodule)
+mcname=${mcname/.git/}
+
+[[ -f mirgecom/setup.py ]] || git clone --recursive ${mcbranch} ${mcurl}
 
 declare -a module_names
 declare -a module_urls

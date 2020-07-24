@@ -11,8 +11,9 @@ echo "==== Installing pip packages"
 
 # Required for pyopencl
 python -m pip install pybind11 mako
-MY_CONDA_PATH="$(conda info --envs | grep dgfem | awk '{print $3}')"
-
+[ -z "${CEESD_CONDA_KEY}" ] && CEESD_CONDA_KEY="dgfem"
+MY_CONDA_PATH="$(conda info --envs | grep ${CEESD_CONDA_KEY} | awk '{print $NF}')"
+printf "Using Conda Environment Path: ${MY_CONDA_PATH}\n"
 
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
