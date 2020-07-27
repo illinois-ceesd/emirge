@@ -18,6 +18,7 @@ jobs:
     - name: Install prerequisites
       run: |
         [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
+        [[ $(uname) == Darwin ]] && brew install openmpi
         ./install.sh
     - name: Version info
       run: |
