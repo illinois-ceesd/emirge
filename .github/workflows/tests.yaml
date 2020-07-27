@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install prerequisites
       run: |
-        [[ $(uname) == Linux ]] && sudo apt-get install -y libpthread-stubs0-dev libc6-dev
+        [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
         ./install.sh
     - name: Version info
       run: |
