@@ -1,9 +1,17 @@
 #!/bin/bash
 
-set -o nounset -o errexit
+set -o errexit
 
 echo "==== Installing Conda packages for $(which conda)"
 
 conda info --envs
 
 conda install --yes git pip pocl pyvisfile islpy pyopencl xmltodict fparser matplotlib pep8 flake8
+#=======
+#conda install --yes pocl pyvisfile
+
+# We need an MPI installation to build mpi4py.
+# Install OpenMPI if none is available.
+if ! command -v mpicc &> /dev/null ;then
+    conda install --yes openmpi openmpi-mpicc
+fi

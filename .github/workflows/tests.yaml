@@ -16,7 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install prerequisites
-      run: ./install.sh
+      run: |
+        [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
+        [[ $(uname) == Darwin ]] && brew install openmpi
+        ./install.sh
     - name: Version info
       run: |
         source $HOME/miniforge3/bin/activate dgfem
