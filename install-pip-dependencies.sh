@@ -32,4 +32,5 @@ for i in "${!module_names[@]}"; do
     fi
 done
 
-(cd mirgecom && pip install -v -e .)
+# See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
+(cd mirgecom && python setup.py develop)
