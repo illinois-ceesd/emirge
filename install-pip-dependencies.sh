@@ -28,8 +28,10 @@ for i in "${!module_names[@]}"; do
 
         [[ $name == "pyopencl" ]] && (cd $name && ./configure.py --cl-inc-dir=$MY_CONDA_PATH/include --cl-lib-dir=$MY_CONDA_PATH/lib --ldflags="" --cl-libname=OpenCL)
 
-        (cd $name && pip install -v -e .)
+        # See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
+        (cd $name && python setup.py develop)
     fi
 done
 
-(cd mirgecom && pip install -v -e .)
+# See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
+(cd mirgecom && python setup.py develop)
