@@ -128,6 +128,10 @@ if [ -z "${MY_CONDA_EXE}" ]
 then
    MY_CONDA_EXE=${MY_CONDA_DIR}/bin/conda
 fi
+MYGREP=`which grep`
+MYCUT=`which cut`
+printf "Using conda exe (${MY_CONDA_EXE}) grep(${MYGREP}) cut(${MYCUT}).\n"
+
 
 printf "Checking conda environment settings...\n"
 create_environment="yes"

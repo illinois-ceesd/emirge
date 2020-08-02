@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build modules.zip
       run: |
-        [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
+        [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev grep
         ./install.sh --force-conda-install
         source $HOME/miniforge3/bin/activate dgfem
         ./makezip.sh
