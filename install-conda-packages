@@ -4,11 +4,9 @@
 # "conda_packages.txt" or the default ones.
 
 set -o errexit
-resource_path=$1
+package_list=$1
 echo "==== Installing Conda packages with $(which conda)"
-
 conda info --envs
-package_list=${resource_path}/conda_packages.txt
 
 if [ -f ${package_list} ]
 then
