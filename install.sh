@@ -130,7 +130,8 @@ then
 fi
 MYGREP=`which grep`
 MYCUT=`which cut`
-printf "Using conda exe (${MY_CONDA_EXE}) grep(${MYGREP}) cut(${MYCUT}).\n"
+MYAWK=`which awk`
+printf "Using conda(${MY_CONDA_EXE}) grep(${MYGREP}) cut(${MYCUT}) awk($MYAWK).\n"
 
 
 printf "Checking conda environment settings...\n"
