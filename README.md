@@ -1,4 +1,4 @@
-# emirge - environment for MirgeCom
+# emirge - environment and installation for mirgecom
 
 [![CI test](https://github.com/illinois-ceesd/emirge/workflows/CI%20test/badge.svg)](https://github.com/illinois-ceesd/emirge/actions?query=workflow%3A%22CI+test%22+event%3Apush)
 
@@ -6,8 +6,9 @@ Emirge is a repository with some tools that captures a set of dependencies for [
 
 These dependencies are:
 
-1. Miniforge/Conda and conda packages (e.g., pocl)
+1. Conda and conda packages (e.g., pocl)
 2. Pip packages (e.g., pyopencl)
+3. Packages listed in mirgecom/requirements.txt
 
 # Installation
 

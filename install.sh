@@ -11,7 +11,7 @@ echo
 usage()
 {
     echo "Usage: $0 [--install-prefix=DIR] [--conda-prefix=DIR] [--env-path=DIR]"
-    echo "                    [--env-name=NAME] [--modules] [--help]"
+    echo "                    [--config-path=DIR] [--env-name=NAME] [--modules] [--help]"
     echo 
     echo "  --install-prefix=DIR  Path to install mirgecom in (default=./)."
     echo "  --config-path=DIR     Path to look for package lists and other config."

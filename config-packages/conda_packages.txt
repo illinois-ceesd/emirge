@@ -1,4 +1,5 @@
 git
+python
 pip
 pocl
 pyvisfile
