@@ -102,25 +102,28 @@ then
     if [ "${yesno}" == "" ]; then yesno="no"; fi
     yesno="$(echo ${yesno^} | head -c 1)"
     if [ "${yesno}" == "Y" ]; then install_conda="yes"; fi
-    printf "${yesno}\n"
+    printf "You chose: ${yesno}\n"
 fi
 
 
 # Install conda if directed or necessary
 if [ "${install_conda}" == "yes" ]
-then
-    export MY_CONDA_DIR=$conda_prefix
+then    
     printf "Installing conda in: ${MY_CONDA_DIR}\n"
+    export MY_CONDA_DIR=$conda_prefix
     ./install-conda.sh
     export PATH=$MY_CONDA_DIR/bin:$PATH
 fi
 
+printf "Checking conda environment settings...\n"
 create_environment="yes"
 existing_env=""
 if [ ! -z "${env_path}" ]
 then
+    printf "Checking for user-specified conda environment (${env_path})\n" 
     existing_env="$(conda info --envs | grep ${env_path} | awk '{print $NF}')"
 else
+    printf "Checking for conda environment name(${env_name})\n" 
     existing_env="$(conda info --envs | cut -d ' ' -f 1 | grep ${env_name})"
     if [ "${existing_env}" != "${env_name}" ]; then existing_env=""; fi
 fi
@@ -178,9 +181,8 @@ then
 else
     printf "Conda env(${active_env}) already activated.\n"
 fi
-
 # ^^^^^^^^^^ Install, create, activate conda environment(s) ^^^^^^^^^
-# After this point we assume conda and its environment are all set up
+# After this, conda is installed, and mirgecom environment is active
 
 # -- Set up installation location with info about this install
 if [ ! -d ${install_path}/config ]; then mkdir -p ${install_path}/config; fi
@@ -191,7 +193,7 @@ then
     cp mirgecom_package.txt ${config_path}
     cp conda_packages.txt ${config_path}
     cp pip_packages.txt ${config_path}
-else
+fi
 cp -r ${config_path}/* ${install_path}/config
 cp update-packages ${install_path}/config
 cp version.sh ${install_path}/config
@@ -209,7 +211,6 @@ printf "${MY_CONDA_ENV}" > ${install_path}/config/conda_env_name
 ./install-pip-packages ${install_path} ${install_path}/mirgecom/requirements.txt
 ./install-pip-package ${install_path}/mirgecom
 
-# TODO: makezip.sh still needs mods to use ${install_path}!!
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
 echo
