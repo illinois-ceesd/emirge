@@ -123,6 +123,11 @@ then
     ./install-conda.sh
     export PATH=$MY_CONDA_DIR/bin:$PATH
 fi
+MY_CONDA_EXE=`which conda`
+if [ -z "${MY_CONDA_EXE}" ]
+then
+   MY_CONDA_EXE=${MY_CONDA_DIR}/bin/conda
+fi
 
 printf "Checking conda environment settings...\n"
 create_environment="yes"
@@ -130,10 +135,10 @@ existing_env=""
 if [ ! -z "${env_path}" ]
 then
     printf "Checking for user-specified conda environment (${env_path})\n" 
-    existing_env="$(conda info --envs | grep ${env_path} | awk '{print $NF}')"
+    existing_env="$(${MY_CONDA_EXE} info --envs | grep ${env_path} | awk '{print $NF}')"
 else
     printf "Checking for conda environment name(${env_name})\n" 
-    existing_env="$(conda info --envs | cut -d ' ' -f 1 | grep ${env_name})"
+    existing_env="$(${MY_CONDA_EXE} info --envs | cut -d ' ' -f 1 | grep ${env_name})"
     if [ "${existing_env}" != "${env_name}" ]; then existing_env=""; fi
 fi
 if [ ! -z "${existing_env}" ]
@@ -160,12 +165,12 @@ then
     if [ ! -z "${env_path}" ]
     then
         printf "Creating conda env at path: (${env_path}).\n"
-        conda create -p ${env_path} --yes
+        ${MY_CONDA_EXE} create -p ${env_path} --yes
         env_name=${env_path}
         export MY_CONDA_ENV=${env_name}
     else
         printf "Creating conda env with name: (${env_name}).\n"
-        conda create --name ${env_name} --yes
+        ${MY_CONDA_EXE} create --name ${env_name} --yes
         export MY_CONDA_ENV=${env_name}
     fi
     # suspect 'conda activate ${env_name}' must fail some places? 
@@ -174,10 +179,10 @@ then
 fi
 
 # Activate (if necessary)
-active_env="$(conda info --envs | grep '*' | cut -d ' ' -f 1)"
+active_env="$(${MY_CONDA_EXE} info --envs | grep '*' | cut -d ' ' -f 1)"
 if [ -z "${active_env}" ]
 then
-    active_env="$(conda info --envs | grep '*' | awk '{print $NF}')"
+    active_env="$(${MY_CONDA_EXE} info --envs | grep '*' | awk '{print $NF}')"
 fi
 
 if [ "${active_env}" != "${MY_CONDA_ENV}" ]
@@ -186,7 +191,7 @@ then
     printf "> conda activate ${MY_CONDA_ENV}\n"
     printf "Then restart the (install.sh) script to continue.\n"
     printf "Attempting to activate conda env(${MY_CONDA_ENV})\n"
-    conda activate ${MY_CONDA_ENV}
+    ${MY_CONDA_EXE} activate ${MY_CONDA_ENV}
 else
     printf "Conda env(${active_env}) already activated.\n"
 fi
@@ -208,7 +213,7 @@ cp update-packages ${install_path}/config
 cp version.sh ${install_path}/config
 rm -rf ${install_path}/config/conda_env_name
 printf "${MY_CONDA_ENV}" > ${install_path}/config/conda_env_name
-
+export MY_CONDA_EXE
 # Finally, install the packages
 # (1) Install some things in the base environment
 #  -- install base conda packages

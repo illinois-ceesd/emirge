@@ -23,5 +23,5 @@ fi
 for conda_package in ${conda_packages}
 do
     printf "Installing conda package: ${conda_package}\n"
-    conda install --yes ${conda_package}
+    ${MY_CONDA_EXE} install --yes ${conda_package}
 done
