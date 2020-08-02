@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 set -o errexit -o nounset
+install_path=$1
+if [ -z "${install_path}" ]; then install_path=`pwd`; fi
 
 source ./parse_requirements.sh
-parse_requirements
+parse_requirements ${install_path}/mirgecom/requirements.txt
 
-zipfile=$PWD/modules.zip
+zipfile=${install_path}/modules.zip
 
 rm -f "$zipfile"
 
