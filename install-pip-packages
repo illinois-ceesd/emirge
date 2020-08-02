@@ -2,16 +2,17 @@
 
 set -o nounset -o errexit
 
-requirements_file=$1
+install_dir=$1
+requirements_file=$2
 source ./parse_requirements.sh
 parse_requirements ${requirements_file}
 
 echo "==== Installing pip packages"
 
 MY_CONDA_PATH="$(conda info --envs | grep ${MY_CONDA_ENV} | awk '{print $NF}')"
-existing_opencl=false
+existing_opencl="no"
 conda_opencl="$(conda list | grep pyopencl | cut -d ' ' -f 1)"
-if [ "${conda_opencl}" == "pyopencl" ]; then existing_opencl=true; fi
+if [ "${conda_opencl}" == "pyopencl" ]; then existing_opencl="yes"; fi
 
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
@@ -22,20 +23,21 @@ for i in "${!module_names[@]}"; do
         echo "=== Installing non-git module $name"
         pip install --upgrade $name
     else
+        package_path=${install_dir}/${name}
         echo "=== Installing git module $name $url ${branch/--branch /}"
-        [[ ! -d $name ]] && git clone --recursive $branch $url
+        [[ ! -d $package_path ]] && git clone --recursive $branch $url $package_path
         if [ "${name}" == "pyopencl" ]
         then
-            if [ "${existing_opencl}" == false ]
+            if [ "${existing_opencl}" == "no" ]
             then
                 python -m pip install pybind11 mako
-                (cd $name && ./configure.py --cl-inc-dir=$MY_CONDA_PATH/include --cl-lib-dir=$MY_CONDA_PATH/lib --ldflags="" --cl-libname=OpenCL)
-                ./install-pip-package ${name}
+                (cd ${package_path} && ./configure.py --cl-inc-dir=${MY_CONDA_PATH}/include --cl-lib-dir=${MY_CONDA_PATH}/lib --ldflags="" --cl-libname=OpenCL)
+                ./install-pip-package ${package_path}
             else
                 printf "Found existing OpenCL in in conda env, skipping installation.\n"
             fi
         else
-            ./install-pip-package ${name}
+            ./install-pip-package ${package_path}
         fi
     fi
 done

@@ -1,23 +1,11 @@
 
-mcmodule=$(cat ./requirements.txt)
-if [[ $mcmodule == *@* ]]; then
-    mcbranch="--branch ${mcmodule/*@/}"
-    mcmodule=${mcmodule/@*/}
-else
-    mcbranch=""
-fi
-mcurl=${mcmodule/git+/}
-mcname=$(basename $mcmodule)
-mcname=${mcname/.git/}
-
-[[ -f mirgecom/setup.py ]] || git clone --recursive ${mcbranch} ${mcurl}
-
 declare -a module_names
 declare -a module_urls
 declare -a module_branches
 
-parse_requirements() {
-    local MY_MODULES=$(cat mirgecom/requirements.txt)
+function parse_requirements() {
+    requirements_file=$1
+    local MY_MODULES=$(cat ${requirements_file})
 
     for module in $MY_MODULES; do
 
