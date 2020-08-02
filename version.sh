@@ -2,6 +2,8 @@
 
 set -o nounset -o errexit
 
+install_path=$1
+if [ -z "${install_path}" ]; then install_path="./"; fi
 
 echo "*** Pip info"
 
@@ -34,7 +36,7 @@ echo "*** Emirge modules"
 
 source ./parse_requirements.sh
 
-parse_requirements
+parse_requirements ${install_path}/mirgecom/requirements.txt
 
 res="Package|Branch|URL\n"
 res+="=======|======|======\n"

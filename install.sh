@@ -194,6 +194,7 @@ then
 else
 cp -r ${config_path}/* ${install_path}/config
 cp update-packages ${install_path}/config
+cp version.sh ${install_path}/config
 rm -rf ${install_path}/config/conda_env_name
 printf "${MY_CONDA_ENV}" > ${install_path}/config/conda_env_name
 
