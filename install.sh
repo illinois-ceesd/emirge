@@ -12,7 +12,8 @@ usage()
 {
     echo "Usage: $0 [--install-prefix=DIR] [--conda-prefix=DIR] [--env-path=DIR]"
     echo "                    [--config-path=DIR] [--env-name=NAME] [--modules] [--help]"
-    echo 
+    echo
+    echo "  --force-conda-install Force the script to install conda."
     echo "  --install-prefix=DIR  Path to install mirgecom in (default=./)."
     echo "  --config-path=DIR     Path to look for package lists and other config."
     echo "  --conda-prefix=DIR    Install conda in non-default prefix."
@@ -33,6 +34,7 @@ env_name_spec="no"
 opt_modules=0
 install_path="./"
 config_path="./config-packages"
+force_conda="no"
 
 while [[ $# -gt 0 ]]; do
     arg=$1
@@ -59,6 +61,10 @@ while [[ $# -gt 0 ]]; do
             # Install conda in non-default prefix
             env_name=${arg#*=}
             env_name_spec="yes"
+            ;;
+        --force-conda-install)
+            # Force install of conda without prompting
+            force_conda="yes"
             ;;
         --modules)
             # Create modules.zip
@@ -94,15 +100,18 @@ fi
 # If a system version of conda is found, use it by default
 # Subvert this check using `yes`.
 install_conda="yes"
-if [ ! -z ${system_conda} ]
+if [ "${force_conda}" == "no" ]
 then
-    install_conda="no"
-    printf "Found system conda (${system_conda}), do you want to install a new one? (y/N): "
-    read yesno
-    if [ "${yesno}" == "" ]; then yesno="no"; fi
-    yesno="$(echo ${yesno^} | head -c 1)"
-    if [ "${yesno}" == "Y" ]; then install_conda="yes"; fi
-    printf "You chose: ${yesno}\n"
+    if [ ! -z ${system_conda} ]
+    then
+        install_conda="no"
+        printf "Found system conda (${system_conda}), do you want to install a new one? (y/N): "
+        read yesno
+        if [ "${yesno}" == "" ]; then yesno="no"; fi
+        yesno="$(echo ${yesno^} | head -c 1)"
+        if [ "${yesno}" == "Y" ]; then install_conda="yes"; fi
+        printf "You chose: ${yesno}\n"
+    fi
 fi
 
 

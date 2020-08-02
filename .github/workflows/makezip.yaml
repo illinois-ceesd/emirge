@@ -13,7 +13,7 @@ jobs:
     - name: Build modules.zip
       run: |
         [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
-        ./install.sh
+        ./install.sh --force-conda-install
         source $HOME/miniforge3/bin/activate dgfem
         ./makezip.sh
     - name: Test modules.zip
