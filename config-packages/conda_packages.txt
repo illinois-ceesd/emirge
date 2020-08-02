@@ -1,0 +1,11 @@
+git
+pip
+pocl
+pyvisfile
+islpy
+pyopencl
+xmltodict
+fparser
+matplotlib
+pep8
+flake8
