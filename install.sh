@@ -32,7 +32,7 @@ env_name_spec="no"
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
 install_path="./"
-config_path="./"
+config_path="./config-packages"
 
 while [[ $# -gt 0 ]]; do
     arg=$1
@@ -141,7 +141,7 @@ else
     fi
 fi
 
-# Create and/or activate the environment if directed or necessary
+# Create environment if directed or necessary
 if [ "${create_environment}" == "yes" ]
 then
     printf "==== Creating conda environment\n"
@@ -158,50 +158,69 @@ then
     fi
     # suspect 'conda activate ${env_name}' must fail some places? 
     #    source $MY_CONDA_DIR/bin/activate dgfem
-    conda activate ${env_name}
-else
-    # Activate (if necessary)
-    active_env="$(conda info --envs | grep '*' | cut -d ' ' -f 1)"
-    if [ -z "${active_env}" ]
-    then
-        active_env="$(conda info --envs | grep '*' | awk '{print $NF}')"
-    fi
-    if [ "${active_env}" != "${MY_CONDA_ENV}" ]
-    then
-        printf "If conda activation fails, activate manually with:\n"
-        printf "> conda activate ${MY_CONDA_ENV}\n"
-        printf "Then restart the (install.sh) script to continue.\n"
-        printf "Attempting to activate conda env(${MY_CONDA_ENV})\n"
-        conda activate ${MY_CONDA_ENV}
-    else
-        printf "Conda env(${active_env}) already activated.\n"
-    fi
+    #    conda activate ${env_name}
 fi
+
+# Activate (if necessary)
+active_env="$(conda info --envs | grep '*' | cut -d ' ' -f 1)"
+if [ -z "${active_env}" ]
+then
+    active_env="$(conda info --envs | grep '*' | awk '{print $NF}')"
+fi
+
+if [ "${active_env}" != "${MY_CONDA_ENV}" ]
+then
+    printf "If conda activation fails, activate manually with:\n"
+    printf "> conda activate ${MY_CONDA_ENV}\n"
+    printf "Then restart the (install.sh) script to continue.\n"
+    printf "Attempting to activate conda env(${MY_CONDA_ENV})\n"
+    conda activate ${MY_CONDA_ENV}
+else
+    printf "Conda env(${active_env}) already activated.\n"
+fi
+
 # ^^^^^^^^^^ Install, create, activate conda environment(s) ^^^^^^^^^
 # After this point we assume conda and its environment are all set up
+
+# -- Set up installation location with info about this install
 if [ ! -d ${install_path}/config ]; then mkdir -p ${install_path}/config; fi
-if [ -d ${config_path} ]; then cp -r ${config_path}/* ${install_path}/config; fi
+if [ ! -d ${config_path} ]
+then
+    printf "Creating configuration path (${config_path}) with default packages.\n"
+    mkdir -p ${config_path}
+    cp mirgecom_package.txt ${config_path}
+    cp conda_packages.txt ${config_path}
+    cp pip_packages.txt ${config_path}
+else
+cp -r ${config_path}/* ${install_path}/config
+cp update-packages ${install_path}/config
 rm -rf ${install_path}/config/conda_env_name
 printf "${MY_CONDA_ENV}" > ${install_path}/config/conda_env_name
-./install-conda-packages ${config_path}
-./install-pip-packages ${install_path} ./pip_packages.txt
-./fetch-mirgecom ${install_path}
+
+# Finally, install the packages
+# (1) Install some things in the base environment
+#  -- install base conda packages
+./install-conda-packages ${config_path}/conda_packages.txt
+#  -- install base pip packages (use install path for git package-types)
+./install-pip-packages ${install_path} ${config_path}/pip_packages.txt
+# (2) Install mirgecom and its dependencies to the installation location
+./fetch-mirgecom ${config_path}/mirgecom_package.txt ${install_path}
 ./install-pip-packages ${install_path} ${install_path}/mirgecom/requirements.txt
 ./install-pip-package ${install_path}/mirgecom
 
-# TODO: makezip.sh still needs ported!
+# TODO: makezip.sh still needs mods to use ${install_path}!!
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
 echo
 echo "==================================================================="
 echo "Emirge has installed mirgecom in ${install_path}."
-echo "Before using, make sure to activate the conda environment:"
+echo "To use mirgecom, activate the conda environment:"
 echo " $ conda activate ${MY_CONDA_ENV}"
 echo "To test mirgecom: "
-echo " $ cd ${install_path}/test"
+echo " $ cd ${install_path}/mirgecom/test"
 echo " $ pytest *.py"
 echo "To run mirgecom examples:"
-echo " $ cd ${install_path}"
+echo " $ cd ${install_path}/mirgecom"
 echo " $ mkdir run_examples"
 echo " $ cd run_examples"
 echo " $ ../examples/run_examples.sh ../examples"
