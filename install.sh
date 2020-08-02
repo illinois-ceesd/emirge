@@ -136,14 +136,16 @@ printf "Using conda exe (${MY_CONDA_EXE}) grep(${MYGREP}) cut(${MYCUT}).\n"
 printf "Checking conda environment settings...\n"
 create_environment="yes"
 existing_env=""
+set -x
 if [ ! -z "${env_path}" ]
 then
     printf "Checking for user-specified conda environment (${env_path})\n" 
     existing_env="$(${MY_CONDA_EXE} info --envs | grep ${env_path} | awk '{print $NF}')"
 else
     printf "Checking for conda environment name(${env_name})\n" 
-    existing_env="$(${MY_CONDA_EXE} info --envs | cut -d ' ' -f 1 | grep ${env_name})"
+    existing_env="$(${MY_CONDA_EXE} info --envs | awk '{print $1}' | grep ${env_name})"
     if [ "${existing_env}" != "${env_name}" ]; then existing_env=""; fi
+    printf "Existing env(${existing_env})\n"
 fi
 if [ ! -z "${existing_env}" ]
 then
