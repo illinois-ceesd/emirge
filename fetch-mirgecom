@@ -1,7 +1,19 @@
 #!/bin/bash
 
-install_path=$1
-mcmodule=$(cat ./requirements.txt)
+mirgecom_package=$1
+install_path=$2
+if [ ! -f ${mirgecom_package} ]
+then
+    printf "Did not find specified mirgecom package: (${mirgecom_package})\n"
+    exit 1
+fi
+if [ -z ${install_path} ]; then install_path="./"; fi
+if [ ! -d ${install_path} ]
+then
+    printf "Creating install path (${install_path})\n"
+    mkdir -p ${install_path}
+fi
+mcmodule=$(cat ${mirgecom_package})
 if [[ $mcmodule == *@* ]]; then
     mcbranch="--branch ${mcmodule/*@/}"
     mcmodule=${mcmodule/@*/}
