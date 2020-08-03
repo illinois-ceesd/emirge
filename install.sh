@@ -122,7 +122,10 @@ then
     export MY_CONDA_DIR=$conda_prefix
     ./install-conda.sh
     export PATH=$MY_CONDA_DIR/bin:$PATH
+else
+    export MY_CONDA_DIR="$(dirname "${system_conda}/../")"
 fi
+
 MY_CONDA_EXE=`which conda`
 if [ -z "${MY_CONDA_EXE}" ]
 then
@@ -143,11 +146,12 @@ then
     printf "Checking for user-specified conda environment (${env_path})\n" 
     existing_env="$(${MY_CONDA_EXE} info --envs | grep ${env_path} | awk '{print $NF}')"
 else
-    printf "Checking for conda environment name(${env_name})\n" 
-    existing_env="$(${MY_CONDA_EXE} info --envs | awk '{print $1}' | grep ${env_name})"
+    printf "Checking for conda environment name(${env_name})\n"
+  
+    existing_env="$(${MY_CONDA_EXE} info --envs | awk '{print $1}' | grep ${env_name})"  
     if [ "${existing_env}" != "${env_name}" ]; then existing_env=""; fi
-    printf "Existing env(${existing_env})\n"
 fi
+
 if [ ! -z "${existing_env}" ]
 then
     printf "Found existing conda environment (${existing_env}), skipping env creation.\n"
@@ -164,6 +168,8 @@ else
         MY_CONDA_ENV=${env_name}
     fi
 fi
+
+printf "Environment creation step.\n"
 
 # Create environment if directed or necessary
 if [ "${create_environment}" == "yes" ]
@@ -198,7 +204,8 @@ then
     printf "> conda activate ${MY_CONDA_ENV}\n"
     printf "Then restart the (install.sh) script to continue.\n"
     printf "Attempting to activate conda env(${MY_CONDA_ENV})\n"
-    ${MY_CONDA_EXE} activate ${MY_CONDA_ENV}
+    #    ${MY_CONDA_EXE} activate ${MY_CONDA_ENV}
+    source ${MY_CONDA_DIR}/bin/activate ${MY_CONDA_ENV}
 else
     printf "Conda env(${active_env}) already activated.\n"
 fi
