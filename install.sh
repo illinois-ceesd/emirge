@@ -53,7 +53,7 @@ done
 
 # Conda does not like ~
 conda_prefix=$(echo $conda_prefix | sed s,~,$HOME,)
-export EMIRGE_MIRGECOM_BRANCH=${mirgecom_branch}
+export EMIRGE_MIRGECOM_BRANCH=$mirgecom_branch
 export MY_CONDA_DIR=$conda_prefix
 
 ./install-conda.sh
