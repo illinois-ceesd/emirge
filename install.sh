@@ -10,10 +10,10 @@ echo
 
 usage()
 {
-  echo "Usage: $0 [--prefix=DIR] [--modules] [--help]"
+  echo "Usage: $0 [--prefix=DIR] [--branch=NAME] [--modules] [--help]"
   echo "  --prefix=DIR      Install conda in non-default prefix."
   echo "  --modules         Create modules.zip and add to Python path."
-  echo "  --branch          Install specific branch of mirgecom (default=master)."
+  echo "  --branch=NAME     Install specific branch of mirgecom (default=master)."
   echo "  --help            Print this help text."
 }
 
