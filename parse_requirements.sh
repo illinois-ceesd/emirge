@@ -1,5 +1,6 @@
 
-[[ -f mirgecom/setup.py ]] || git clone https://github.com/illinois-ceesd/mirgecom
+EMIRGE_MIRGECOM_BRANCH="${EMIRGE_MIRGECOM_BRANCH:-master}"
+[[ -f mirgecom/setup.py ]] || git clone -b $EMIRGE_MIRGECOM_BRANCH https://github.com/illinois-ceesd/mirgecom
 
 declare -a module_names
 declare -a module_urls

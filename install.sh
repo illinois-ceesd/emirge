@@ -10,14 +10,16 @@ echo
 
 usage()
 {
-  echo "Usage: $0 [--prefix=DIR] [--modules] [--help]"
+  echo "Usage: $0 [--prefix=DIR] [--branch=NAME] [--modules] [--help]"
   echo "  --prefix=DIR      Install conda in non-default prefix."
   echo "  --modules         Create modules.zip and add to Python path."
+  echo "  --branch=NAME     Install specific branch of mirgecom (default=master)."
   echo "  --help            Print this help text."
 }
 
 # Default conda location
 conda_prefix=$HOME/miniforge3
+mirgecom_branch="master"
 
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
@@ -29,6 +31,10 @@ while [[ $# -gt 0 ]]; do
     --prefix=*)
         # Install conda in non-default prefix
         conda_prefix=${arg#*=}
+        ;;
+    --branch=*)
+        # Install specified branch of mirgecom
+        mirgecom_branch=${arg#*=}
         ;;
     --modules)
         # Create modules.zip
@@ -47,7 +53,7 @@ done
 
 # Conda does not like ~
 conda_prefix=$(echo $conda_prefix | sed s,~,$HOME,)
-
+export EMIRGE_MIRGECOM_BRANCH=$mirgecom_branch
 export MY_CONDA_DIR=$conda_prefix
 
 ./install-conda.sh
@@ -66,6 +72,7 @@ source $MY_CONDA_DIR/bin/activate dgfem
 ./install-conda-dependencies.sh
 ./install-pip-dependencies.sh
 
+unset EMIRGE_MIRGECOM_BRANCH
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
