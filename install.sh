@@ -62,6 +62,10 @@ export PATH=$MY_CONDA_DIR/bin:$PATH
 
 echo "==== Create 'dgfem' conda environment"
 
+# Make sure we get the just installed conda.
+# See https://github.com/conda/conda/issues/10133 for details.
+source $MY_CONDA_DIR/bin/activate
+
 conda create --name dgfem --yes
 
 source $MY_CONDA_DIR/bin/activate dgfem

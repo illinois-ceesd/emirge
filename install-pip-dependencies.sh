@@ -26,7 +26,7 @@ for i in "${!module_names[@]}"; do
         echo "=== Installing git module $name $url ${branch/--branch /}"
         [[ ! -d $name ]] && git clone --recursive $branch $url
 
-        [[ $name == "pyopencl" ]] && (cd $name && ./configure.py --cl-inc-dir=$MY_CONDA_PATH/include --cl-lib-dir=$MY_CONDA_PATH/lib --ldflags="" --cl-libname=OpenCL)
+        [[ $name == "pyopencl" || $name == "islpy" ]] && continue
 
         # See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
         (cd $name && python setup.py develop)
