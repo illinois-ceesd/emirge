@@ -19,10 +19,8 @@ usage()
 
 # {{{ Default conda location
 
-EXECUTABLE="$(readlink -f "$0")"
-SCRIPT_DIR="$(dirname "$EXECUTABLE")"
-SCRIPT_DIR="$(readlink -f "$SCRIPT_DIR")"
-
+# https://stackoverflow.com/q/39340169
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 conda_prefix=$SCRIPT_DIR/miniforge3
 
 # }}}
