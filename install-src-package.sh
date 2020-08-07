@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o nounset -o errexit
+
 packagepath=$1
 if [[ -z "$packagepath" ]]
 then

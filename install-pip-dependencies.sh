@@ -14,9 +14,9 @@ set -o nounset -o errexit
 requirements_file=$1
 install_location=$2
 
-if [ -z "$install_location" ]
+if [[ -z "$install_location" ]]
 then
-    install_location=`pwd`
+    install_location=$(pwd)
 fi
 if [ ! -d "$install_location" ]
 then
