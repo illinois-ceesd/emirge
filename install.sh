@@ -78,10 +78,7 @@ conda create --name dgfem --yes
 
 source $MY_CONDA_DIR/bin/activate dgfem
 
-if [ ! -d $mcprefix ]
-then
-    mkdir -p $mcprefix
-fi
+mkdir -p $mcprefix
 mcsrc=$mcprefix/mirgecom
 
 ./fetch-mirgecom.sh $mcbranch $mcprefix
