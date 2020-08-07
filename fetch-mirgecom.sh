@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -o nounset -o errexit
 mcbranch=$1
 mcprefix=$2
 # default it to branch=master, install=PWD
@@ -13,4 +13,3 @@ then   # mirgecom src already populated, checkout the right branch, pull it
 else   # clone specific branch to mirgecom src
     cd $mcprefix && git clone -b ${mcbranch} https://github.com/illinois-ceesd/mirgecom
 fi
-
