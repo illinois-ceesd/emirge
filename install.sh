@@ -22,7 +22,7 @@ usage()
 # Default conda location
 conda_prefix=$HOME/miniforge3
 mcbranch="master"
-mcprefix=`pwd`
+mcprefix=$(pwd)
 
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
