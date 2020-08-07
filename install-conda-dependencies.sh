@@ -6,7 +6,7 @@ echo "==== Installing Conda packages for $(which conda)"
 
 conda info --envs
 
-conda install --yes pocl pyvisfile pyopencl islpy
+conda install --yes pocl-cuda pyvisfile pyopencl islpy
 
 [[ $(uname -m) == "x86_64" ]] && conda install --yes clinfo
 
