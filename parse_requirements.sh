@@ -7,7 +7,7 @@ declare -a module_urls
 declare -a module_branches
 
 parse_requirements() {
-    local MY_MODULES=$(egrep -v '^#' mirgecom/requirements.txt)
+    local MY_MODULES=$(egrep -v '^[[:space:]]*#' mirgecom/requirements.txt)
 
     for module in $MY_MODULES; do
 
