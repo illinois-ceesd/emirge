@@ -17,8 +17,16 @@ usage()
   echo "  --help            Print this help text."
 }
 
-# Default conda location
-conda_prefix=$HOME/miniforge3
+# {{{ Default conda location
+
+EXECUTABLE="$(readlink -f "$0")"
+SCRIPT_DIR="$(dirname "$EXECUTABLE")"
+SCRIPT_DIR="$(readlink -f "$SCRIPT_DIR")"
+
+conda_prefix=$SCRIPT_DIR/miniforge3
+
+# }}}
+
 mirgecom_branch="master"
 
 # Build modules.zip? (via makezip.sh)
