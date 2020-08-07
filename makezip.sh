@@ -59,7 +59,7 @@ echo
 
 sitefile="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')/emirge.pth"
 
-echo "$zipfile" > "$install_loc/$sitefile"
+echo "$zipfile" > "$sitefile"
 
 echo "=== Done. Make sure to uninstall other copies of the emirge modules:"
 echo "=== $MY_PYTHON -m pip uninstall $MY_MODULES"
