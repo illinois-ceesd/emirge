@@ -12,6 +12,9 @@ echo "==== Installing pip packages"
 # Semi-required for pyopencl
 python -m pip install mako
 
+# Semi-required for meshpy source install, avoids warning and wait
+python -m pip install pybind11
+
 # Some nice-to haves for development
 python -m pip install pytest pudb flake8 pep8-naming pytest-pudb sphinx
 
@@ -33,7 +36,11 @@ for i in "${!module_names[@]}"; do
         [[ $name == "pyopencl" || $name == "islpy" ]] && continue
 
         # See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
-        (cd $name && python setup.py develop)
+        if [[ $name == "f2py" ]]; then
+                (cd $name && python setup.py install)
+        else
+                (cd $name && python setup.py develop)
+        fi
     fi
 done
 
