@@ -37,6 +37,7 @@ for i in "${!module_names[@]}"; do
 
         # See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
         if [[ $name == "f2py" ]]; then
+                # f2py/fparser doesn't use setuptools, so 'develop' isn't a thing
                 (cd $name && python setup.py install)
         else
                 (cd $name && python setup.py develop)
