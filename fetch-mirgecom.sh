@@ -9,7 +9,7 @@ mcprefix=$2
 mcsrc=$mcprefix/mirgecom
 if [[ -f "$mcsrc/setup.py" ]]
 then   # mirgecom src already populated, checkout the right branch, pull it
-    cd ${mcsrc}&&git checkout ${mcbranch}&&git pull
+    cd ${mcsrc} && git checkout ${mcbranch} && git pull
 else   # clone specific branch to mirgecom src
     cd $mcprefix && git clone -b ${mcbranch} https://github.com/illinois-ceesd/mirgecom
 fi
