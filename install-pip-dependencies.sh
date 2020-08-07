@@ -9,8 +9,12 @@ parse_requirements
 
 echo "==== Installing pip packages"
 
-# Required for pyopencl
-python -m pip install pybind11 mako
+# Semi-required for pyopencl
+python -m pip install mako
+
+# Some nice-to haves for development
+python -m pip install pytest pudb flake8 pep8-naming pytest-pudb sphinx
+
 MY_CONDA_PATH="$(conda info --envs | grep dgfem | awk '{print $3}')"
 
 
