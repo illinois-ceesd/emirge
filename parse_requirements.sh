@@ -1,13 +1,21 @@
 
-EMIRGE_MIRGECOM_BRANCH="${EMIRGE_MIRGECOM_BRANCH:-master}"
-[[ -f mirgecom/setup.py ]] || git clone -b $EMIRGE_MIRGECOM_BRANCH https://github.com/illinois-ceesd/mirgecom
-
 declare -a module_names
 declare -a module_urls
 declare -a module_branches
 
 parse_requirements() {
-    local MY_MODULES=$(cat mirgecom/requirements.txt)
+    requirements_file=$1
+    if [ -z "$requirements_file" ]
+    then
+        printf "Error: No requirements file specified.\n"
+        exit 1
+    fi
+    if [ ! -f "$requirements_file" ]
+    then
+        printf "Error: Requirements file ($requirements_file) does not exist.\n"
+        exit 1
+    fi
+    local MY_MODULES=$(cat $requirements_file)
 
     for module in $MY_MODULES; do
 

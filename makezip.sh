@@ -2,10 +2,32 @@
 
 set -o errexit -o nounset
 
-source ./parse_requirements.sh
-parse_requirements
+requirements_file=$1
+install_loc=$2
+origin=`pwd`
 
-zipfile=$PWD/modules.zip
+if [ -z "$requirements_file" ]
+then
+    printf "makezip.sh::Error: Requirements file must be specified.\n"
+    exit 1
+fi
+
+if [ ! -f "$requirements_file" ]
+then
+    printf "makezip.sh::Error: Requirements file ($requirements_file) does not exist.\n"
+    exit 1    
+fi
+
+if [ -z "$install_loc" ]
+then
+    install_loc=`pwd`
+    printf "makezip.sh::Warning: No install location given, defaulting to ($install_loc).\n"
+fi
+
+source ./parse_requirements.sh
+parse_requirements $requirements_file
+
+zipfile=$install_loc/modules.zip
 
 rm -f "$zipfile"
 
@@ -19,14 +41,14 @@ for i in "${!module_names[@]}"; do
     [[ -z $url ]] && continue
 
     # Skip non-Python submodules
-    [[ -f "$name/setup.py" ]] || continue
+    [[ -f "$install_loc/$name/setup.py" ]] || continue
 
     MY_MODULES+="$name "
 
-    cd "$name"
+    cd "$install_loc/$name"
     echo "=== Zipping $name"
     zip -r "$zipfile" "$name/"
-    cd ..
+    cd $origin
 done
 
 MY_PYTHON=$(command -v python3)
@@ -37,7 +59,7 @@ echo
 
 sitefile="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')/emirge.pth"
 
-echo "$zipfile" > "$sitefile"
+echo "$zipfile" > "$install_loc/$sitefile"
 
 echo "=== Done. Make sure to uninstall other copies of the emirge modules:"
 echo "=== $MY_PYTHON -m pip uninstall $MY_MODULES"
