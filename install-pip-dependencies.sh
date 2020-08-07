@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#
+# This script reads the dependency package information from
+# the caller-supplied <requirements_file> (presumably <package>/requirements.txt)
+# and installs them by an appropriate method (i.e. as a development package)
+# to the caller-supplied <install_location>, which defaults to the PWD.
+#
+# Usage: install-pip-dependencies <requirements_file> <install_location>
+#
+
 set -o nounset -o errexit
 
 requirements_file=$1
