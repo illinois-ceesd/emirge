@@ -7,7 +7,7 @@ mcprefix=$2
 [[ -z "$mcprefix" ]] && mcprefix=$(pwd)
 # create or populate mirgecom from repo
 mcsrc=$mcprefix/mirgecom
-if [ -f $mcsrc/setup.py ]
+if [[ -f "$mcsrc/setup.py" ]]
 then   # mirgecom src already populated, checkout the right branch, pull it
     cd ${mcsrc}&&git checkout ${mcbranch}&&git pull
 else   # clone specific branch to mirgecom src
