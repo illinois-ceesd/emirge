@@ -3,8 +3,8 @@ set -o nounset -o errexit
 mcbranch=$1
 mcprefix=$2
 # default it to branch=master, install=PWD
-if [ -z "$mcbranch" ]; then mcbranch="master"; fi
-if [ -z "$mcprefix" ]; then mcprefix=`pwd`; fi
+[[ -z "$mcbranch" ]] && mcbranch="master"
+[[ -z "$mcprefix" ]] && mcprefix=$(pwd)
 # create or populate mirgecom from repo
 mcsrc=$mcprefix/mirgecom
 if [ -f $mcsrc/setup.py ]
