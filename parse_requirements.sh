@@ -15,7 +15,7 @@ parse_requirements() {
         printf "Error: Requirements file ($requirements_file) does not exist.\n"
         exit 1
     fi
-    local MY_MODULES=$(cat $requirements_file)
+    local MY_MODULES=$(egrep -v '^[[:space:]]*#' $requirements_file)
 
     for module in $MY_MODULES; do
 
