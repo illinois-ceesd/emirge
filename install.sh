@@ -84,7 +84,7 @@ mcsrc=$mcprefix/mirgecom
 ./fetch-mirgecom.sh $mcbranch $mcprefix
 ./install-conda-dependencies.sh
 ./install-pip-dependencies.sh $mcsrc/requirements.txt $mcprefix
-./install-src-package.sh $mcsrc
+./install-src-package.sh $mcsrc "develop"
 
 unset EMIRGE_MIRGECOM_BRANCH
 
