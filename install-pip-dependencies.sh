@@ -62,7 +62,7 @@ for i in "${!module_names[@]}"; do
         install_mode="develop"
         if [[ $name == "f2py" ]]; then
             # f2py/fparser doesn't use setuptools, so 'develop' isn't a thing
-            install_mode = "install"
+            install_mode="install"
         fi
         ./install-src-package.sh $install_location/$name $install_mode
     fi
