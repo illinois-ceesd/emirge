@@ -13,4 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: ShellCheck
-      run: shellcheck -x *.sh
+      run: |
+        shellcheck --version
+        shellcheck --list-optional
+        shellcheck -x *.sh
