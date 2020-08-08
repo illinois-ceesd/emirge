@@ -31,7 +31,8 @@ for i in "${!module_names[@]}"; do
         python -m pip install --upgrade "$name"
     else
         echo "=== Installing git module $name $url ${branch/--branch /}"
-        [[ ! -d $name ]] && git clone --recursive "$branch" "$url"
+        #shellcheck disable=SC2086
+        [[ ! -d $name ]] && git clone --recursive $branch "$url"
 
         [[ $name == "pyopencl" || $name == "islpy" ]] && continue
 

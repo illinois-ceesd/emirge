@@ -13,4 +13,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: ShellCheck
-      run: shellcheck *.sh
+      run: shellcheck -x *.sh
