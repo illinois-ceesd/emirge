@@ -23,7 +23,7 @@ for i in "${!module_names[@]}"; do
 
     MY_MODULES+="$name "
 
-    cd "$name"
+    cd "$name" || exit 2
     echo "=== Zipping $name"
     zip -r "$zipfile" "$name/"
     cd ..
