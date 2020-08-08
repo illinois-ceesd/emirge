@@ -10,7 +10,7 @@ if [ ! -z "$2" ]
 then
     install_loc=$2
 fi
-origin=$(cwd)
+origin=$(pwd)
 
 if [ -z "$requirements_file" ]
 then
@@ -26,7 +26,7 @@ fi
 
 if [ -z "$install_loc" ]
 then
-    install_loc=$(cwd)
+    install_loc=$(pwd)
     printf "makezip.sh::Warning: No install location given, defaulting to ($install_loc).\n"
 fi
 
