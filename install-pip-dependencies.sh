@@ -18,7 +18,7 @@ python -m pip install pybind11
 # Some nice-to haves for development
 python -m pip install pytest pudb flake8 pep8-naming pytest-pudb sphinx
 
-MY_CONDA_PATH="$(conda info --envs | grep dgfem | awk '{print $3}')"
+# MY_CONDA_PATH="$(conda info --envs | grep dgfem | awk '{print $3}')"
 
 
 for i in "${!module_names[@]}"; do
@@ -27,20 +27,21 @@ for i in "${!module_names[@]}"; do
     url=${module_urls[$i]}
 
     if [[ -z $url ]]; then
-        echo "=== Installing non-git module $name"
-        pip install --upgrade $name
+        echo "=== Installing non-git module $name with pip"
+        python -m pip install --upgrade "$name"
     else
         echo "=== Installing git module $name $url ${branch/--branch /}"
-        [[ ! -d $name ]] && git clone --recursive $branch $url
+        #shellcheck disable=SC2086
+        [[ ! -d $name ]] && git clone --recursive $branch "$url"
 
         [[ $name == "pyopencl" || $name == "islpy" ]] && continue
 
         # See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
         if [[ $name == "f2py" ]]; then
                 # f2py/fparser doesn't use setuptools, so 'develop' isn't a thing
-                (cd $name && python setup.py install)
+                (cd "$name" && python setup.py install)
         else
-                (cd $name && python setup.py develop)
+                (cd "$name" && python setup.py develop)
         fi
     fi
 done

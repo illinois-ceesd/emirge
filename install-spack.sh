@@ -12,6 +12,7 @@ have_spack=$(which spack || echo "notfound")
 if [[ $have_spack == "notfound" ]]; then
     echo "==== Installing Spack."
     git clone https://github.com/spack/spack
+    #shellcheck disable=SC1091
     source spack/share/spack/setup-env.sh
 else
     echo "==== Spack found, skipping installation."
@@ -26,7 +27,8 @@ spack load pocl
 pocl_dir=$(spack find -p pocl| tail -1 | awk '{print $2}')
 
 export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/
-echo 'export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/' >> $HOME/.bashrc
+#shellcheck disable=SC2016
+echo 'export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/' >> "$HOME/.bashrc"
 
 ./install-pip-dependencies.sh
 
