@@ -7,6 +7,17 @@ on:
   - cron:  '5 0 * * *'
 
 jobs:
+  ShellCheck:
+    # See https://github.com/koalaman/shellcheck/wiki
+    # for explanations of ShellCheck error codes
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: ShellCheck
+      run: |
+        shellcheck -x *.sh
+
   build:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
