@@ -2,9 +2,15 @@
 
 set -o errexit -o nounset
 
-requirements_file=$1
-install_loc=$2
-origin=`pwd`
+if [ ! -z "$1" ]
+then
+    requirements_file=$1
+fi
+if [ ! -z "$2" ]
+then
+    install_loc=$2
+fi
+origin=$(cwd)
 
 if [ -z "$requirements_file" ]
 then
@@ -20,7 +26,7 @@ fi
 
 if [ -z "$install_loc" ]
 then
-    install_loc=`pwd`
+    install_loc=$(cwd)
     printf "makezip.sh::Warning: No install location given, defaulting to ($install_loc).\n"
 fi
 
@@ -57,7 +63,10 @@ echo "=== Preparing path file of '$MY_PYTHON'"
 echo "=== for importing modules from '$zipfile'"
 echo
 
-sitefile="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')/emirge.pth"
+sitepath="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')"
+sitefile="$sitepath/emirge.pth"
+printf "Found site path: ${sitepath}\n"
+printf "Attempting to make site file: ${sitefile}\n"
 
 echo "$zipfile" > "$sitefile"
 
