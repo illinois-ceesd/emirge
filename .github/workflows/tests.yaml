@@ -7,7 +7,7 @@ on:
   - cron:  '5 0 * * *'
 
 jobs:
-  ShellCheck:
+  shellcheck:
     # See https://github.com/koalaman/shellcheck/wiki
     # for explanations of ShellCheck error codes
     runs-on: ubuntu-latest
