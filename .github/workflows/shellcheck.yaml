@@ -15,5 +15,4 @@ jobs:
     - name: ShellCheck
       run: |
         shellcheck --version
-        shellcheck --list-optional
         shellcheck -x *.sh
