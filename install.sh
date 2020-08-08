@@ -10,10 +10,11 @@ echo
 
 usage()
 {
-  echo "Usage: $0 [--install-prefix=DIR] [--conda-prefix=DIR] [--branch=NAME]" 
-  echo "                   [--modules] [--help]"
+  echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]" 
+  echo "                   [--env-name=NAME] [--modules] [--help]"
   echo "  --install-prefix=DIR  Install mirgecom in [DIR], (default=PWD)."
   echo "  --conda-prefix=DIR    Install conda in [DIR], (default=~/miniforge3)"
+  echo "  --env-name=NAME       Name of the conda environment to install to. (default=dgfem)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
   echo "  --help                Print this help text."
@@ -28,6 +29,7 @@ mcprefix=$(pwd)
 # https://stackoverflow.com/q/39340169
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 conda_prefix=$SCRIPT_DIR/miniforge3
+env_name="dgfem"
 
 # }}}
 
@@ -45,6 +47,10 @@ while [[ $# -gt 0 ]]; do
     --conda-prefix=*)
         # Install conda in non-default prefix
         conda_prefix=${arg#*=}
+        ;;
+    --env-name=*)
+        # Install conda in non-default prefix
+        env_name=${arg#*=}
         ;;
     --branch=*)
         # Install specified branch of mirgecom
@@ -75,15 +81,15 @@ export MY_CONDA_DIR=$conda_prefix
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
 
-echo "==== Create 'dgfem' conda environment"
+echo "==== Create ${env_name} conda environment"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
 source $MY_CONDA_DIR/bin/activate
 
-conda create --name dgfem --yes
+conda create --name ${env_name} --yes
 
-source $MY_CONDA_DIR/bin/activate dgfem
+source $MY_CONDA_DIR/bin/activate ${env_name}
 
 mkdir -p $mcprefix
 mcsrc=$mcprefix/mirgecom
@@ -102,7 +108,7 @@ echo "==================================================================="
 echo "Mirgecom is now installed in $mcsrc." 
 echo "Before using this installation, one should load the appropriate"
 echo "conda environment (assuming bash shell):"
-echo " $ source $conda_prefix/bin/activate dgfem"
+echo " $ source $conda_prefix/bin/activate ${env_name}"
 echo "Then, to test the installation:"
 echo " $ cd $mcsrc/test && pytest *.py"
 echo "To run the examples:"
