@@ -13,6 +13,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: ShellCheck
-      run: |
-        files=$(find . -name '*.sh' -print)
-        shellcheck $files
+      run: shellcheck *.sh

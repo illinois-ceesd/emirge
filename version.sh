@@ -50,4 +50,4 @@ for i in "${!module_names[@]}"; do
     res+="$name|$branch|$url\n"
 done
 
-echo -e $res | column -t -s '|'
+echo -e "$res" | column -t -s '|'
