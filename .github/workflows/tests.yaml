@@ -22,9 +22,9 @@ jobs:
         ./install.sh
     - name: Version info
       run: |
-        source $HOME/miniforge3/bin/activate dgfem
+        source miniforge3/bin/activate dgfem
         ./version.sh
     - name: Run wave-eager
       run: |
-        source $HOME/miniforge3/bin/activate dgfem
+        source miniforge3/bin/activate dgfem
         python mirgecom/examples/wave-eager.py
