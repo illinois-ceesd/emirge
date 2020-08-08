@@ -20,9 +20,16 @@ usage()
 }
 
 # Default conda location
-conda_prefix=$HOME/miniforge3
+# conda_prefix=$HOME/miniforge3
 mcbranch="master"
 mcprefix=$(pwd)
+# {{{ Default conda location
+
+# https://stackoverflow.com/q/39340169
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+conda_prefix=$SCRIPT_DIR/miniforge3
+
+# }}}
 
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
