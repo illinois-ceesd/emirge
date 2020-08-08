@@ -8,13 +8,11 @@
 #
 
 set -o nounset -o errexit
+
+# default it to branch=master, install=PWD
 origin=$(pwd)
 mcbranch="${1-master}"
 mcprefix="${2-$origin}"
-
-# default it to branch=master, install=PWD
-# [[ -z "$mcbranch" ]] && mcbranch="master"
-# [[ -z "$mcprefix" ]] && mcprefix=$(pwd)
 
 # create or populate mirgecom from repo
 mcsrc=$mcprefix/mirgecom

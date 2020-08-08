@@ -1,35 +1,16 @@
 #!/usr/bin/env bash
 
 set -o errexit -o nounset
-origin=$(pwd)
 
+origin=$(pwd)
 requirements_file="${1-$origin}"
 install_loc="${2-$origin}"
-
-#if [ ! -z "$1" ]
-#then
-#    requirements_file=$1
-#    if [ ! -z "$2" ]
-#    then
-#        install_loc=$2
-#    fi
-#fi
-#if [ -z "$requirements_file" ]
-#then
-#    printf "makezip.sh::Error: Requirements file must be specified.\n"
-#    exit 1
-#fi
 
 if [ ! -f "$requirements_file" ]
 then
     printf "makezip.sh::Error: Requirements file ($requirements_file) does not exist.\n"
     exit 1    
 fi
-#if [ -z "$install_loc" ]
-#then
-#    install_loc=$(pwd)
-#    printf "makezip.sh::Warning: No install location given, defaulting to ($install_loc).\n"
-#fi
 
 source ./parse_requirements.sh
 parse_requirements $requirements_file

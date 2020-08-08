@@ -2,7 +2,8 @@
 
 set -o nounset -o errexit
 
-requirements_file=$1
+requirements_file=${1-mirgecom/requirements.txt}
+
 if [ ! -f "$requirements_file" ]
 then
     printf "version.sh::Error: Requirements file ($requirements_file) does not exist."

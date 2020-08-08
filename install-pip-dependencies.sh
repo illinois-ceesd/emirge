@@ -15,10 +15,6 @@ origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
 install_location="${2-$origin}"
 
-#if [[ -z "$install_location" ]]
-#then
-#    install_location=$(pwd)
-#fi
 if [ ! -d "$install_location" ]
 then
     mkdir -p $install_location
