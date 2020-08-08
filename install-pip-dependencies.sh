@@ -15,10 +15,7 @@ origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
 install_location="${2-$origin}"
 
-if [ ! -d "$install_location" ]
-then
-    mkdir -p $install_location
-fi
+mkdir -p $install_location
 source ./parse_requirements.sh
 
 parse_requirements $requirements_file
@@ -67,4 +64,3 @@ done
 unset module_names
 unset module_urls
 unset module_branches
-
