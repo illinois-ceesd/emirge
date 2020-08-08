@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 
 set -o errexit -o nounset
+origin=$(pwd)
+
+requirements_file=""
+install_loc=""
 
 if [ ! -z "$1" ]
 then
     requirements_file=$1
+    if [ ! -z "$2" ]
+    then
+        install_loc=$2
+    fi
 fi
-if [ ! -z "$2" ]
-then
-    install_loc=$2
-fi
-origin=$(pwd)
-
 if [ -z "$requirements_file" ]
 then
     printf "makezip.sh::Error: Requirements file must be specified.\n"
