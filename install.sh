@@ -94,17 +94,10 @@ source "$MY_CONDA_DIR"/bin/activate "$env_name"
 mkdir -p "$mcprefix"
 mcsrc="$mcprefix/mirgecom"
 
-<<<<<<< HEAD
-=======
-mkdir -p "$mcprefix"
-mcsrc=$mcprefix/mirgecom
-
->>>>>>> master
 ./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 ./install-conda-dependencies.sh
 ./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
 ./install-src-package.sh "$mcsrc" "develop"
-<<<<<<< HEAD
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
@@ -118,8 +111,6 @@ cat << EOF > "$mcprefix"/config/activate_env.sh
 
 EOF
 chmod +x "$mcprefix"/config/activate_env.sh
-=======
->>>>>>> master
 
 unset EMIRGE_MIRGECOM_BRANCH
 
@@ -130,13 +121,8 @@ echo "==================================================================="
 echo "Mirgecom is now installed in $mcsrc."
 echo "Before using this installation, one should load the appropriate"
 echo "conda environment (assuming bash shell):"
-<<<<<<< HEAD
 echo " $ source $mcprefix/activate_env.sh"
 echo "To test the installation:"
-=======
-echo " $ source $conda_prefix/bin/activate dgfem"
-echo "Then, to test the installation:"
->>>>>>> master
 echo " $ cd $mcsrc/test && pytest *.py"
 echo "To run the examples:"
 echo " $ cd $mcsrc/examples && ./run_examples.sh ./"
