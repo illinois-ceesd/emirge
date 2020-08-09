@@ -17,6 +17,8 @@ usage()
   echo "  --env-name=NAME       Name of the conda environment to install to. (default=dgfem)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
+  echo "  --conda-pkgs=FILE     Install these additional packages with conda."
+  echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --help                Print this help text."
 }
 
@@ -28,6 +30,8 @@ mcprefix=$(pwd)
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 conda_prefix=$SCRIPT_DIR/miniforge3
 env_name="dgfem"
+pip_pkg_file=""
+conda_pkg_file=""
 
 # }}}
 
@@ -53,6 +57,14 @@ while [[ $# -gt 0 ]]; do
     --branch=*)
         # Install specified branch of mirgecom
         mcbranch=${arg#*=}
+        ;;
+    --conda-pkgs=*)
+        # Install these additional packages with conda
+        conda_pkg_file=${arg#*=}
+        ;;
+    --pip-pkgs=*)
+        # Install these additional packages with pip
+        pip_pkg_file=${arg#*=}
         ;;
     --modules)
         # Create modules.zip
@@ -96,7 +108,13 @@ mcsrc="$mcprefix/mirgecom"
 
 ./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 ./install-conda-dependencies.sh
+if [[ ! -z "$conda_pkg_file" ]]; then
+    ./install-conda-dependencies.sh "$conda_pkg_file"
+fi
 ./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+if [[ ! -z "$pip_pkg_file" ]]; then
+    ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
+fi
 ./install-src-package.sh "$mcsrc" "develop"
 
 # Install an environment activation script
@@ -121,7 +139,7 @@ echo "==================================================================="
 echo "Mirgecom is now installed in $mcsrc."
 echo "Before using this installation, one should load the appropriate"
 echo "conda environment (assuming bash shell):"
-echo " $ source $mcprefix/activate_env.sh"
+echo " $ source $mcprefix/config/activate_env.sh"
 echo "To test the installation:"
 echo " $ cd $mcsrc/test && pytest *.py"
 echo "To run the examples:"
