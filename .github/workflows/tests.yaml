@@ -35,7 +35,8 @@ jobs:
       run: |
         source miniforge3/bin/activate dgfem
         ./version.sh ./mirgecom/requirements.txt
-    - name: Run wave-eager
+    - name: Run examples
       run: |
         source miniforge3/bin/activate dgfem
-        python mirgecom/examples/wave-eager.py
+        ./examples/run_example.sh ./examples
+
