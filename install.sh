@@ -13,7 +13,7 @@ usage()
   echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]" 
   echo "                   [--env-name=NAME] [--modules] [--help]"
   echo "  --install-prefix=DIR  Install mirgecom in [DIR], (default=PWD)."
-  echo "  --conda-prefix=DIR    Install conda in [DIR], (default=~/miniforge3)"
+  echo "  --conda-prefix=DIR    Install conda in [DIR], (default=./miniforge3)"
   echo "  --env-name=NAME       Name of the conda environment to install to. (default=dgfem)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
