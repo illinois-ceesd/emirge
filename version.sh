@@ -4,13 +4,14 @@ set -o nounset -o errexit
 
 requirements_file=${1-mirgecom/requirements.txt}
 
-if [ ! -f "$requirements_file" ]
+if [[ ! -f "$requirements_file" ]]
 then
-    printf "version.sh::Error: Requirements file ($requirements_file) does not exist."
+    echo "version.sh::Error: Requirements file ($requirements_file) does not exist."
 fi
+
 echo "*** Pip info"
 
-python3 -m pip freeze
+python -m pip freeze
 
 
 echo
@@ -39,7 +40,7 @@ echo "*** Emirge modules"
 
 source ./parse_requirements.sh
 
-parse_requirements $requirements_file
+parse_requirements "$requirements_file"
 
 res="Package|Branch|URL\n"
 res+="=======|======|======\n"

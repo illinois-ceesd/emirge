@@ -15,10 +15,10 @@ origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
 install_location="${2-$origin}"
 
-mkdir -p $install_location
+mkdir -p "$install_location"
 source ./parse_requirements.sh
 
-parse_requirements $requirements_file
+parse_requirements "$requirements_file"
 
 echo "==== Installing pip packages"
 
@@ -34,36 +34,42 @@ python -m pip install pytest pudb flake8 pep8-naming pytest-pudb sphinx
 # Get the *active* env path
 #MY_CONDA_PATH="$(conda info --envs | grep '*' | awk '{print $NF}')"
 
-origin=`pwd`
+origin=$(pwd)
 for i in "${!module_names[@]}"; do
     name=${module_names[$i]}
-    branch=${module_branches[$i]}
+    branch=${module_branches[$i]/--branch /}
     url=${module_urls[$i]}
 
     if [[ -z $url ]]; then
         echo "=== Installing non-git module $name with pip"
         python -m pip install --upgrade "$name"
     else
-        echo "=== Installing git module $name $url ${branch/--branch /}"
+        echo "=== Installing git module $name $url $branch"
 
         if [[ ! -d "$install_location/$name" ]]
         then
-            cd $install_location 
-            git clone --recursive $branch "$url" $name 
+            cd "$install_location"
+            git clone --recursive "$url" "$name"
+            git checkout "$branch"
         else
-            cd $install_location/$name
-            git checkout $branch
+            cd "$install_location/$name"
+            git checkout "$branch"
             git pull
         fi
 
+        # These two packages are installed via conda
         [[ $name == "pyopencl" || $name == "islpy" ]] && continue
-        cd $origin
+
+        cd "$origin"
+
         install_mode="develop"
+
         if [[ $name == "f2py" ]]; then
             # f2py/fparser doesn't use setuptools, so 'develop' isn't a thing
             install_mode="install"
         fi
-        ./install-src-package.sh $install_location/$name $install_mode
+
+        ./install-src-package.sh "$install_location/$name" "$install_mode"
     fi
 done
 unset module_names

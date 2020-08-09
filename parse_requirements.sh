@@ -10,7 +10,7 @@ parse_requirements() {
     [[ -z "$requirements_file" ]] && echo "Error: No requirements file specified."
     [[ ! -f "$requirements_file" ]] && echo "Error: Requirements file ($requirements_file) does not exist."
     local MY_MODULES
-    MY_MODULES=$(grep -E -v '^[[:space:]]*#' $requirements_file)
+    MY_MODULES=$(grep -E -v '^[[:space:]]*#' "$requirements_file")
 
     for module in $MY_MODULES; do
 

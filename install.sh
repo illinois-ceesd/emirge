@@ -10,7 +10,7 @@ echo
 
 usage()
 {
-  echo "Usage: $0 [--install-prefix=DIR] [--conda-prefix=DIR] [--branch=NAME]" 
+  echo "Usage: $0 [--install-prefix=DIR] [--conda-prefix=DIR] [--branch=NAME]"
   echo "                   [--modules] [--help]"
   echo "  --install-prefix=DIR  Install mirgecom in [DIR], (default=PWD)."
   echo "  --conda-prefix=DIR    Install conda in [DIR], (default=~/miniforge3)"
@@ -87,13 +87,13 @@ conda create --name dgfem --yes
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate dgfem
 
-mkdir -p $mcprefix
+mkdir -p "$mcprefix"
 mcsrc=$mcprefix/mirgecom
 
-./fetch-mirgecom.sh $mcbranch $mcprefix
+./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 ./install-conda-dependencies.sh
-./install-pip-dependencies.sh $mcsrc/requirements.txt $mcprefix
-./install-src-package.sh $mcsrc "develop"
+./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+./install-src-package.sh "$mcsrc" "develop"
 
 unset EMIRGE_MIRGECOM_BRANCH
 
@@ -101,7 +101,7 @@ unset EMIRGE_MIRGECOM_BRANCH
 
 echo
 echo "==================================================================="
-echo "Mirgecom is now installed in $mcsrc." 
+echo "Mirgecom is now installed in $mcsrc."
 echo "Before using this installation, one should load the appropriate"
 echo "conda environment (assuming bash shell):"
 echo " $ source $conda_prefix/bin/activate dgfem"

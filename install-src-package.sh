@@ -8,7 +8,7 @@
 #
 set -o nounset -o errexit
 
-if [ $# -eq 0 ]
+if [[ $# -eq 0 ]]
 then
     echo "install-src-package.sh:Error: No package path given."
     exit 1
@@ -17,4 +17,4 @@ packagepath=$1
 installmode="${2-develop}"
 
 # See https://github.com/illinois-ceesd/mirgecom/pull/43 for why this is not 'pip install -e .'
-(cd $packagepath && python setup.py $installmode)
+(cd "$packagepath" && python setup.py "$installmode")
