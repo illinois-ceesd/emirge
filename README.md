@@ -27,7 +27,7 @@ In most cases, running `./install.sh` should be sufficient to install all depend
 Testing can be done by:
 
 ```bash
-$ cd mirgecom/examples; ./run_examples.sh ./
+$ mirgecom/examples/run_examples.sh mirgecom/examples/
 ```
 
 ## Running on systems with lots of nodes (>256)
