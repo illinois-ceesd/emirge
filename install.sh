@@ -79,20 +79,20 @@ export MY_CONDA_DIR=$conda_prefix
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
 
-echo "==== Create ${env_name} conda environment"
+echo "==== Create $env_name conda environment"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate
 
-conda create --name ${env_name} --yes
+conda create --name "$env_name" --yes
 
 #shellcheck disable=SC1090
-source "$MY_CONDA_DIR"/bin/activate ${env_name}
+source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
 mkdir -p "$mcprefix"
-mcsrc=$mcprefix/mirgecom
+mcsrc="$mcprefix/mirgecom"
 
 ./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 ./install-conda-dependencies.sh
