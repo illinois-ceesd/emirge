@@ -47,7 +47,7 @@ while [[ $# -gt 0 ]]; do
         conda_prefix=${arg#*=}
         ;;
     --env-name=*)
-        # Install conda in non-default prefix
+        # Use non-default environment name
         env_name=${arg#*=}
         ;;
     --branch=*)
