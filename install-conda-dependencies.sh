@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#
+# This script will install conda packages (in the current conda env) to satisfy 
+# mirgecom dependency requirements. It optionally accepts an argument that is
+# the path to a file which should have a list of packages to install.
+#
+# Usage: install-conda-dependencies.sh [path/to/optional/packages.txt]
+#
+ 
 set -o errexit
 pkg_file=""
 if [[ ! -z "$1" ]]
