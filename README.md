@@ -14,7 +14,12 @@ These dependencies are:
 In most cases, running `./install.sh` should be sufficient to install all dependencies for emirge and mirgecom.
 
 `./install.sh` takes several arguments:
-- `--prefix=DIR`: Install conda in `DIR` instead of the default directory (`$HOME/miniforge3`).
+- `--conda-prefix=DIR`: Install conda in `DIR` instead of the default directory (`./miniforge3`).
+- `--env-name=NAME`: Create conda environment named `NAME` instead of the default (dgfem).
+- `--install-prefix=DIR`: Install mirgecom and git pip packages to `DIR` instead of the default (./).
+- `--branch=NAME`: Install the `NAME`d branch of mirgecom instead of the default branch (master).
+- `--conda-pkgs=FILE`: Install additional conda packages from list specified in `FILE`.
+- `--pip-pkgs=FILE`: Install additional pip packages from list specified in `FILE`.
 - `--modules`: Install a modules.zip file that contains a copy of all python packages that are installed through git (see below for details).
 
 ## Testing the installation
@@ -22,7 +27,7 @@ In most cases, running `./install.sh` should be sufficient to install all depend
 Testing can be done by:
 
 ```bash
-$ cd mirgecom/examples; python wave-eager.py
+$ mirgecom/examples/run_examples.sh mirgecom/examples/
 ```
 
 ## Running on systems with lots of nodes (>256)
