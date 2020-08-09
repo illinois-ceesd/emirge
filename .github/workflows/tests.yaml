@@ -38,5 +38,5 @@ jobs:
     - name: Run examples
       run: |
         source miniforge3/bin/activate dgfem
-        ./examples/run_examples.sh ./examples
+        ./mirgecom/examples/run_examples.sh ./mirgecom/examples
 
