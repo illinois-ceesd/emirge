@@ -4,19 +4,23 @@ set -o errexit
 # Conda does not like 'set -o nounset'
 
 echo "#####################################################"
-echo "# This script installs the dependencies for emirge. #"
+echo "# This script installs mirgecom, and dependencies.  #"
 echo "#####################################################"
 echo
 
 usage()
 {
-  echo "Usage: $0 [--prefix=DIR] [--branch=NAME] [--modules] [--help]"
-  echo "  --prefix=DIR      Install conda in non-default prefix."
-  echo "  --modules         Create modules.zip and add to Python path."
-  echo "  --branch=NAME     Install specific branch of mirgecom (default=master)."
-  echo "  --help            Print this help text."
+  echo "Usage: $0 [--install-prefix=DIR] [--conda-prefix=DIR] [--branch=NAME]"
+  echo "                   [--modules] [--help]"
+  echo "  --install-prefix=DIR  Install mirgecom in [DIR], (default=PWD)."
+  echo "  --conda-prefix=DIR    Install conda in [DIR], (default=~/miniforge3)"
+  echo "  --modules             Create modules.zip and add to Python path."
+  echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
+  echo "  --help                Print this help text."
 }
 
+mcbranch="master"
+mcprefix=$(pwd)
 # {{{ Default conda location
 
 # https://stackoverflow.com/q/39340169
@@ -25,8 +29,6 @@ conda_prefix=$SCRIPT_DIR/miniforge3
 
 # }}}
 
-mirgecom_branch="master"
-
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
 
@@ -34,13 +36,17 @@ while [[ $# -gt 0 ]]; do
   arg=$1
   shift
   case $arg in
-    --prefix=*)
+    --install-prefix=*)
+        # Install mirgecom in non-default prefix
+        mcprefix=${arg#*=}
+        ;;
+    --conda-prefix=*)
         # Install conda in non-default prefix
         conda_prefix=${arg#*=}
         ;;
     --branch=*)
         # Install specified branch of mirgecom
-        mirgecom_branch=${arg#*=}
+        mcbranch=${arg#*=}
         ;;
     --modules)
         # Create modules.zip
@@ -59,7 +65,8 @@ done
 
 # Conda does not like ~
 conda_prefix=${conda_prefix//\~/$HOME}
-export EMIRGE_MIRGECOM_BRANCH=$mirgecom_branch
+mcprefix=${mcprefix//\~/$HOME}
+export EMIRGE_MIRGECOM_BRANCH=$mcbranch
 export MY_CONDA_DIR=$conda_prefix
 
 ./install-conda.sh
@@ -78,8 +85,13 @@ conda create --name dgfem --yes
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate dgfem
 
+mkdir -p "$mcprefix"
+mcsrc=$mcprefix/mirgecom
+
+./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 ./install-conda-dependencies.sh
-./install-pip-dependencies.sh
+./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+./install-src-package.sh "$mcsrc" "develop"
 
 unset EMIRGE_MIRGECOM_BRANCH
 
@@ -87,8 +99,12 @@ unset EMIRGE_MIRGECOM_BRANCH
 
 echo
 echo "==================================================================="
-echo "Emirge is now installed. Please run the following commands"
-echo "to test the installation (assuming your shell is bash):"
+echo "Mirgecom is now installed in $mcsrc."
+echo "Before using this installation, one should load the appropriate"
+echo "conda environment (assuming bash shell):"
 echo " $ source $conda_prefix/bin/activate dgfem"
-echo " $ python mirgecom/examples/wave-eager.py"
+echo "Then, to test the installation:"
+echo " $ cd $mcsrc/test && pytest *.py"
+echo "To run the examples:"
+echo " $ cd $mcsrc/examples && ./run_examples.sh ./"
 echo "==================================================================="

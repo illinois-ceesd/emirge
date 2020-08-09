@@ -2,10 +2,20 @@
 
 set -o errexit -o nounset
 
-source ./parse_requirements.sh
-parse_requirements
+origin=$(pwd)
+requirements_file="${1-$origin}"
+install_loc="${2-$origin}"
 
-zipfile=$PWD/modules.zip
+if [ ! -f "$requirements_file" ]
+then
+    echo "makezip.sh::Error: Requirements file ($requirements_file) does not exist."
+    exit 1
+fi
+
+source ./parse_requirements.sh
+parse_requirements "$requirements_file"
+
+zipfile=$install_loc/modules.zip
 
 rm -f "$zipfile"
 
@@ -19,14 +29,14 @@ for i in "${!module_names[@]}"; do
     [[ -z $url ]] && continue
 
     # Skip non-Python submodules
-    [[ -f "$name/setup.py" ]] || continue
+    [[ -f "$install_loc/$name/setup.py" ]] || continue
 
     MY_MODULES+="$name "
 
-    cd "$name" || exit 2
+    cd "$install_loc/$name"
     echo "=== Zipping $name"
     zip -r "$zipfile" "$name/"
-    cd ..
+    cd "$origin"
 done
 
 MY_PYTHON=$(command -v python3)
@@ -35,7 +45,10 @@ echo "=== Preparing path file of '$MY_PYTHON'"
 echo "=== for importing modules from '$zipfile'"
 echo
 
-sitefile="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')/emirge.pth"
+sitepath="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')"
+sitefile="$sitepath/emirge.pth"
+echo "Found site path: $sitepath"
+echo "Attempting to make site file: $sitefile"
 
 echo "$zipfile" > "$sitefile"
 
