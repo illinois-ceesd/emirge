@@ -20,9 +20,10 @@ if [[ ! -z "$pkg_file" ]]
 then
 
     echo "  == Installing packages from file ($pkg_file)."
-    for package in $(cat $pkg_file); do
+    # shellcheck disable=SC2013
+    for package in $(cat "$pkg_file"); do
         echo "   -- Installing user-custom package ($package)."
-        conda install --yes $package
+        conda install --yes "$package"
     done
 
 else
