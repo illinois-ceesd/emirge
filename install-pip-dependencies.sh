@@ -32,7 +32,7 @@ python -m pip install pybind11
 python -m pip install pytest pudb flake8 pep8-naming pytest-pudb sphinx
 
 # Get the *active* env path
-MY_CONDA_PATH="$(conda info --envs | grep '*' | awk '{print $NF}')"
+#MY_CONDA_PATH="$(conda info --envs | grep '*' | awk '{print $NF}')"
 
 origin=`pwd`
 for i in "${!module_names[@]}"; do
@@ -41,16 +41,21 @@ for i in "${!module_names[@]}"; do
     url=${module_urls[$i]}
 
     if [[ -z $url ]]; then
-        echo "=== Installing non-git module $name"
-        pip install --upgrade $name
+        echo "=== Installing non-git module $name with pip"
+        python -m pip install --upgrade "$name"
     else
         echo "=== Installing git module $name $url ${branch/--branch /}"
-        if [ ! -d "$install_location/$name" ]
+
+        if [[ ! -d "$install_location/$name" ]]
         then
-            cd $install_location && git clone --recursive $branch $url $name 
+            cd $install_location 
+            git clone --recursive $branch "$url" $name 
         else
-            cd $install_location/$name && git checkout $branch && git pull
+            cd $install_location/$name
+            git checkout $branch
+            git pull
         fi
+
         [[ $name == "pyopencl" || $name == "islpy" ]] && continue
         cd $origin
         install_mode="develop"

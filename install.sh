@@ -66,8 +66,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Conda does not like ~
-conda_prefix=$(echo $conda_prefix | sed s,~,$HOME,)
-mcprefix=$(echo $mcprefix | sed s,~,$HOME,)
+conda_prefix=${conda_prefix//\~/$HOME}
+mcprefix=${mcprefix//\~/$HOME}
 export EMIRGE_MIRGECOM_BRANCH=$mcbranch
 export MY_CONDA_DIR=$conda_prefix
 
@@ -79,11 +79,13 @@ echo "==== Create 'dgfem' conda environment"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
-source $MY_CONDA_DIR/bin/activate
+#shellcheck disable=SC1090
+source "$MY_CONDA_DIR"/bin/activate
 
 conda create --name dgfem --yes
 
-source $MY_CONDA_DIR/bin/activate dgfem
+#shellcheck disable=SC1090
+source "$MY_CONDA_DIR"/bin/activate dgfem
 
 mkdir -p $mcprefix
 mcsrc=$mcprefix/mirgecom
