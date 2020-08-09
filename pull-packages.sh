@@ -17,7 +17,7 @@ for m in */; do
     # Skip non-git directories
     [[ -d $m/.git/ ]] || continue
 
-    cd $m
+    cd "$m" || exit 2
 
     echo "=== Updating $m"
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 
 declare -a module_names
 declare -a module_urls
@@ -5,17 +7,10 @@ declare -a module_branches
 
 parse_requirements() {
     requirements_file=$1
-    if [ -z "$requirements_file" ]
-    then
-        printf "Error: No requirements file specified.\n"
-        exit 1
-    fi
-    if [ ! -f "$requirements_file" ]
-    then
-        printf "Error: Requirements file ($requirements_file) does not exist.\n"
-        exit 1
-    fi
-    local MY_MODULES=$(egrep -v '^[[:space:]]*#' $requirements_file)
+    [[ -z "$requirements_file" ]] && echo "Error: No requirements file specified."
+    [[ ! -f "$requirements_file" ]] && echo "Error: Requirements file ($requirements_file) does not exist."
+    local MY_MODULES
+    MY_MODULES=$(grep -E -v '^[[:space:]]*#' "$requirements_file")
 
     for module in $MY_MODULES; do
 
@@ -30,7 +25,8 @@ parse_requirements() {
             fi
 
             local moduleurl=${module/git+/}
-            local modulename=$(basename $module)
+            local modulename
+            modulename=$(basename "$module")
             local modulename=${modulename/.git/}
 
             module_names+=("$modulename")

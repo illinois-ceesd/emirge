@@ -20,8 +20,6 @@ usage()
   echo "  --help                Print this help text."
 }
 
-# Default conda location
-# conda_prefix=$HOME/miniforge3
 mcbranch="master"
 mcprefix=$(pwd)
 # {{{ Default conda location
@@ -72,8 +70,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Conda does not like ~
-conda_prefix=$(echo $conda_prefix | sed s,~,$HOME,)
-mcprefix=$(echo $mcprefix | sed s,~,$HOME,)
+conda_prefix=${conda_prefix//\~/$HOME}
+mcprefix=${mcprefix//\~/$HOME}
 export EMIRGE_MIRGECOM_BRANCH=$mcbranch
 export MY_CONDA_DIR=$conda_prefix
 
@@ -85,19 +83,21 @@ echo "==== Create ${env_name} conda environment"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
-source $MY_CONDA_DIR/bin/activate
+#shellcheck disable=SC1090
+source "$MY_CONDA_DIR"/bin/activate
 
 conda create --name ${env_name} --yes
 
-source $MY_CONDA_DIR/bin/activate ${env_name}
+#shellcheck disable=SC1090
+source "$MY_CONDA_DIR"/bin/activate ${env_name}
 
-mkdir -p $mcprefix
+mkdir -p "$mcprefix"
 mcsrc=$mcprefix/mirgecom
 
-./fetch-mirgecom.sh $mcbranch $mcprefix
+./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 ./install-conda-dependencies.sh
-./install-pip-dependencies.sh $mcsrc/requirements.txt $mcprefix
-./install-src-package.sh $mcsrc "develop"
+./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+./install-src-package.sh "$mcsrc" "develop"
 
 unset EMIRGE_MIRGECOM_BRANCH
 
@@ -105,7 +105,7 @@ unset EMIRGE_MIRGECOM_BRANCH
 
 echo
 echo "==================================================================="
-echo "Mirgecom is now installed in $mcsrc." 
+echo "Mirgecom is now installed in $mcsrc."
 echo "Before using this installation, one should load the appropriate"
 echo "conda environment (assuming bash shell):"
 echo " $ source $conda_prefix/bin/activate ${env_name}"

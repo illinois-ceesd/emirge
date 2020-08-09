@@ -150,3 +150,7 @@ pymbolic/
 pyopencl/
 pytools/
 myenv/
+
+
+# Default path for conda installation
+miniforge3/
