@@ -53,7 +53,7 @@ for i in "${!module_names[@]}"; do
             git checkout "$branch"
         else
             cd "$install_location/$name"
-            git checkout "$branch"
+            [[ -n $branch ]] && git checkout "$branch"
             git pull
         fi
 
