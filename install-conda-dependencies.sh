@@ -42,9 +42,7 @@ else
         conda install --yes pocl-cuda
     fi
 
-    conda install --yes pyvisfile pyopencl islpy
-    
-    [[ $(uname -m) == "x86_64" ]] && conda install --yes clinfo
+    conda install --yes pyvisfile pyopencl islpy clinfo
     
     # We need an MPI installation to build mpi4py.
     # Install OpenMPI if none is available.
