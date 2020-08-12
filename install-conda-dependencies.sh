@@ -37,9 +37,9 @@ then
 else
 
     if [[ $(uname) == "Darwin" ]]; then
-        conda install --yes pocl
+        conda install --yes pocl libhwloc=1
     else
-        conda install --yes pocl-cuda
+        conda install --yes pocl-cuda libhwloc=1
     fi
 
     conda install --yes pyvisfile pyopencl islpy clinfo
