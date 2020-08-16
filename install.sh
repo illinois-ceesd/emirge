@@ -74,6 +74,7 @@ conda_prefix=${conda_prefix//\~/$HOME}
 mcprefix=$SCRIPT_DIR
 export MY_CONDA_DIR=$conda_prefix
 export MY_CONDA_ENV=$env_name
+export PATH=$MY_CONDA_DIR/bin:$PATH
 
 ./install-conda.sh
 

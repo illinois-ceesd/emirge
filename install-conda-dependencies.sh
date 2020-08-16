@@ -10,9 +10,6 @@
 
 set -o errexit
 
-#shellcheck disable=SC1090
-source "$MY_CONDA_DIR"/bin/activate "$MY_CONDA_ENV"
-
 pkg_file=""
 if [[ -n "$1" ]]
 then
