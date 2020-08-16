@@ -22,3 +22,4 @@
 git+https://github.com/inducer/f2py.git#egg=fparser
 
 --editable git+https://github.com/illinois-ceesd/mirgecom.git#egg=mirgecom
+mpi4py
