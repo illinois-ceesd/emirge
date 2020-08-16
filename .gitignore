@@ -154,3 +154,6 @@ myenv/
 
 # Default path for conda installation
 miniforge3/
+
+# Dir with generated configs
+config/

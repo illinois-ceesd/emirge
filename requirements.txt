@@ -20,3 +20,5 @@
 # and a forked version of this is in this repo.
 
 git+https://github.com/inducer/f2py.git#egg=fparser
+
+--editable git+https://github.com/illinois-ceesd/mirgecom.git#egg=mirgecom
