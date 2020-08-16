@@ -1,9 +1,9 @@
 #!/bin/bash
 
+#shellcheck disable=SC1091
 source miniforge3/bin/activate dgfem
+
 set -o nounset -o errexit
-
-
 
 echo "*** Pip info"
 
@@ -26,8 +26,8 @@ conda list
 echo
 echo "*** OS info"
 
-which lsb_release >/dev/null && lsb_release -ds
-which sw_vers >/dev/null && echo "MacOS $(sw_vers -productVersion)"
+command -v lsb_release >/dev/null && lsb_release -ds
+command -v sw_vers >/dev/null && echo "MacOS $(sw_vers -productVersion)"
 uname -a
 
 
@@ -40,7 +40,7 @@ res+="=======|======|======\n"
 for name in */; do
 	[[ $name == config/ || $name == miniforge?/ ]] && continue
 
-    cd $name
+    cd "$name"
     branch=$(git describe --always)
     url=$(git remote show origin| grep URL | head -1 | awk '{print $3}')
 
@@ -51,4 +51,4 @@ for name in */; do
     cd ..
 done
 
-echo -e $res | column -t -s '|'
+echo -e "$res" | column -t -s '|'
