@@ -40,7 +40,7 @@ res+="=======|======|======\n"
 for name in */; do
 	[[ $name == config/ || $name == miniforge?/ ]] && continue
 
-    cd "$name"
+    cd "$name" || exit
     branch=$(git describe --always)
     url=$(git remote show origin| grep URL | head -1 | awk '{print $3}')
 

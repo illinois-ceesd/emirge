@@ -14,7 +14,7 @@ for name in */; do
 
     MY_MODULES+="$name "
 
-    cd "$name"
+    cd "$name" || exit
 
     [[ $name == "loo-py/" ]] && name=loopy
 
