@@ -1,54 +1,35 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -o errexit -o nounset
 
-origin=$(pwd)
-requirements_file="${1-$origin}"
-install_loc="${2-$origin}"
-
-if [ ! -f "$requirements_file" ]
-then
-    echo "makezip.sh::Error: Requirements file ($requirements_file) does not exist."
-    exit 1
-fi
-
-source ./parse_requirements.sh
-parse_requirements "$requirements_file"
-
-zipfile=$install_loc/modules.zip
+zipfile=$PWD/modules.zip
 
 rm -f "$zipfile"
 
 MY_MODULES=""
 
-for i in "${!module_names[@]}"; do
-    name=${module_names[$i]}
-    url=${module_urls[$i]}
-
-    # Skip packages that are not git clone'd inside emirge
-    [[ -z $url ]] && continue
-
+for name in */; do
     # Skip non-Python submodules
-    [[ -f "$install_loc/$name/setup.py" ]] || continue
+    [[ -f "$name/setup.py" ]] || continue
 
     MY_MODULES+="$name "
 
-    cd "$install_loc/$name"
+    cd "$name"
+
+    [[ $name == "loo-py/" ]] && name=loopy
+
     echo "=== Zipping $name"
-    zip -r "$zipfile" "$name/"
-    cd "$origin"
+    zip -r "$zipfile" "$name"
+    cd ..
 done
 
-MY_PYTHON=$(command -v python3)
+MY_PYTHON=$(command -v python)
 
 echo "=== Preparing path file of '$MY_PYTHON'"
 echo "=== for importing modules from '$zipfile'"
 echo
 
-sitepath="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')"
-sitefile="$sitepath/emirge.pth"
-echo "Found site path: $sitepath"
-echo "Attempting to make site file: $sitefile"
+sitefile="$($MY_PYTHON -c 'import site; print(site.getsitepackages()[0])')/emirge.pth"
 
 echo "$zipfile" > "$sitefile"
 

@@ -1,16 +1,20 @@
 #!/bin/bash
 
 #
-# This script will install conda packages (in the current conda env) to satisfy 
+# This script will install conda packages (in the current conda env) to satisfy
 # mirgecom dependency requirements. It optionally accepts an argument that is
 # the path to a file which should have a list of packages to install.
 #
 # Usage: install-conda-dependencies.sh [path/to/optional/packages.txt]
 #
- 
+
 set -o errexit
+
+#shellcheck disable=SC1090
+source "$MY_CONDA_DIR"/bin/activate "$MY_CONDA_ENV"
+
 pkg_file=""
-if [[ ! -z "$1" ]]
+if [[ -n "$1" ]]
 then
     pkg_file="$1"
     if [[ ! -f "$pkg_file" ]]
@@ -20,11 +24,11 @@ then
     fi
 fi
 
-echo "==== Installing Conda packages with $(which conda)"
+echo "==== Installing conda packages in $MY_CONDA_DIR"
 
 conda info --envs
 
-if [[ ! -z "$pkg_file" ]] 
+if [[ -n "$pkg_file" ]]
 then
 
     echo "  == Installing packages from file ($pkg_file)."
@@ -43,7 +47,7 @@ else
     fi
 
     conda install --yes pyvisfile pyopencl islpy clinfo
-    
+
     # We need an MPI installation to build mpi4py.
     # Install OpenMPI if none is available.
     if ! command -v mpicc &> /dev/null ;then

@@ -12,8 +12,9 @@ MY_CONDA_DIR=${MY_CONDA_DIR:-$HOME/miniforge3}
 
 if [[ ! -d $MY_CONDA_DIR || ! -x $MY_CONDA_DIR/bin/conda ]]; then
     echo "==== Installing Miniforge in $MY_CONDA_DIR."
+    rm -f Miniforge3-$myos-"$myarch.sh"
     wget -c --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-"$myarch.sh"
     bash Miniforge3-$myos-"$myarch.sh" -u -b -p "$MY_CONDA_DIR"
 else
-    echo "==== Conda found in $MY_CONDA_DIR, skipping Miniforge installation."
+    echo "!!!! Conda found in $MY_CONDA_DIR, skipping Miniforge installation."
 fi

@@ -1,13 +1,9 @@
 #!/bin/bash
 
+source miniforge3/bin/activate dgfem
 set -o nounset -o errexit
 
-requirements_file=${1-mirgecom/requirements.txt}
 
-if [[ ! -f "$requirements_file" ]]
-then
-    echo "version.sh::Error: Requirements file ($requirements_file) does not exist."
-fi
 
 echo "*** Pip info"
 
@@ -18,7 +14,7 @@ echo
 echo "*** Conda info"
 
 echo -n "Conda path: "
-which conda || echo "No conda found."
+command -v conda || echo "No conda found."
 
 conda info
 
@@ -36,24 +32,23 @@ uname -a
 
 
 echo
-echo "*** Emirge modules"
-
-source ./parse_requirements.sh
-
-parse_requirements "$requirements_file"
+echo "*** Mirgecom dev packages"
 
 res="Package|Branch|URL\n"
 res+="=======|======|======\n"
 
-for i in "${!module_names[@]}"; do
-    name=${module_names[$i]}
-    branch=${module_branches[$i]/--branch /}
-    url=${module_urls[$i]}
+for name in */; do
+	[[ $name == config/ || $name == miniforge?/ ]] && continue
+
+    cd $name
+    branch=$(git describe --always)
+    url=$(git remote show origin| grep URL | head -1 | awk '{print $3}')
 
     branch=${branch:----}
     url=${url:----}
 
     res+="$name|$branch|$url\n"
+    cd ..
 done
 
-echo -e "$res" | column -t -s '|'
+echo -e $res | column -t -s '|'

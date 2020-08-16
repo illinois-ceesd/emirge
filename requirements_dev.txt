@@ -1,0 +1,13 @@
+# Semi-required for pyopencl
+mako
+
+# Semi-required for meshpy source install, avoids warning and wait
+pybind11
+
+# Some nice-to haves for development
+pytest
+pudb
+flake8
+pep8-naming
+pytest-pudb
+sphinx

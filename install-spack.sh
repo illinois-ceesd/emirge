@@ -7,7 +7,7 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
-have_spack=$(which spack || echo "notfound")
+have_spack=$(command -v spack || echo "notfound")
 
 if [[ $have_spack == "notfound" ]]; then
     echo "==== Installing Spack."
@@ -30,7 +30,16 @@ export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/
 #shellcheck disable=SC2016
 echo 'export OCL_ICD_VENDORS=$pocl_dir/etc/OpenCL/vendors/' >> "$HOME/.bashrc"
 
-./install-pip-dependencies.sh
+echo "==== Installing pip packages for general development (requirements_dev.txt)"
+
+python -m pip install -r requirements_dev.txt
+
+
+echo "==== Installing packages for mirgecom (requirements.txt)"
+
+grep -E -v '(islpy|pyopencl)' requirements.txt >> .req
+python -m pip install -r .req --src .
+rm -f .req
 
 echo
 echo "#############################################################"
