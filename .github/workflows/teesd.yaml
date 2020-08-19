@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
     - name: Install MPI/Gfortran/CMake
       run: sudo apt-get install -y openmpi-bin libopenmpi-dev gfortran cmake gnuplot
     - name: Install emirge
       run: |
-        [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
         ./install.sh
     - name: Build JuKe
       run: |
