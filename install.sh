@@ -85,14 +85,14 @@ source "$MY_CONDA_DIR"/bin/activate
 
 # Check if environment already exists
 set +o errexit
-has_env=$(conda info --envs | awk '{print $1}' | grep "$env_name")
+has_env=$(conda info --envs | cut -f 1 -d ' ' | grep "$env_name")
 set -o errexit
 
 if [[ $has_env != "$env_name" ]]; then
   echo "==== Creating $env_name conda environment"
   conda create --name "$env_name" --yes
 else
-  echo "!!!! Using exisiting $env_name environment"
+  echo "!!!! Using existing $env_name environment"
 fi
 
 #shellcheck disable=SC1090
