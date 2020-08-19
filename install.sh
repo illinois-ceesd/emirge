@@ -10,13 +10,13 @@ echo
 
 usage()
 {
-  echo "Usage: $0 [--conda-prefix=DIR]"
+  echo "Usage: $0 [--conda-prefix=DIR] [--requirements=FILE] [--conda-pkgs=FILE]"
   echo "                   [--env-name=NAME] [--modules] [--help]"
   echo "  --conda-prefix=DIR    Install conda in [DIR], (default=./miniforge3)"
   echo "  --env-name=NAME       Name of the conda environment to install to. (default=dgfem)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
-  echo "  --pip-pkgs=FILE       Install these additional packages with pip."
+  echo "  --requirements=FILE   Install the packages from this file with pip."
   echo "  --help                Print this help text."
 }
 
@@ -34,6 +34,9 @@ conda_pkg_file=""
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
 
+# Install these packages with pip
+opt_requirements_file=requirements.txt
+
 while [[ $# -gt 0 ]]; do
   arg=$1
   shift
@@ -50,14 +53,14 @@ while [[ $# -gt 0 ]]; do
         # Install these additional packages with conda
         conda_pkg_file=${arg#*=}
         ;;
-    --pip-pkgs=*)
-        # Install these additional packages with pip
-        pip_pkg_file=${arg#*=}
-        ;;
     --modules)
         # Create modules.zip
         opt_modules=1
         ;;
+    --requirements=*)
+      # Install these packages with pip
+      opt_requirements_file=${arg#*=}
+      ;;
     --help)
         usage
         exit 0
@@ -107,13 +110,11 @@ echo "==== Installing pip packages for general development (requirements_dev.txt
 
 python -m pip install -r requirements_dev.txt
 
-echo "==== Installing packages for mirgecom (requirements.txt)"
+echo "==== Installing packages for mirgecom ($opt_requirements_file)"
 
-grep -E -v '(islpy|pyopencl)' requirements.txt >> .req
+grep -E -v '(islpy|pyopencl)' $opt_requirements_file >> .req
 python -m pip install -r .req --src .
 rm -f .req
-
-[[ -n "$pip_pkg_file" ]] && python -m pip install -r "$pip_pkg_file"
 
 echo "==== Installing environment activation script"
 
