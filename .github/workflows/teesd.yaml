@@ -17,11 +17,17 @@ jobs:
         ./install.sh
     - name: Build JuKe
       run: |
+        source miniforge3/bin/activate dgfem
+        cd ..
+        git clone https://github.com/illinois-ceesd/teesd
+        cd teesd
         mkdir build
         cd build
         cmake ..
         make -j3
     - name: Test JuKe
       run: |
+        source miniforge3/bin/activate dgfem
+        cd ../teesd
         cd build
         ctest --verbose
