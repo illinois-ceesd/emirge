@@ -15,6 +15,8 @@ jobs:
     - name: Install emirge
       run: |
         ./install.sh
+        source miniforge3/bin/activate dgfem
+        pip install xmltodict
     - name: Build JuKe
       run: |
         source miniforge3/bin/activate dgfem
