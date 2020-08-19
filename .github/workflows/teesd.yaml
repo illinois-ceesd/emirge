@@ -1,0 +1,27 @@
+name: TEESD test
+
+# Trigger the workflow on push
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install MPI/Gfortran/CMake
+      run: sudo apt-get install -y openmpi-bin libopenmpi-dev gfortran cmake gnuplot
+    - name: Install emirge
+      run: |
+        [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
+        ./install.sh
+    - name: Build JuKe
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make -j3
+    - name: Test JuKe
+      run: |
+        cd build
+        ctest --verbose
