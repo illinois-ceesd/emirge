@@ -1,6 +1,5 @@
 # Dev packages
 --editable git+https://github.com/inducer/pymbolic.git#egg=pymbolic
---editable git+https://github.com/inducer/islpy.git#egg=islpy
 --editable git+https://github.com/inducer/pyopencl.git#egg=pyopencl
 --editable git+https://github.com/inducer/loopy.git#egg=loo.py
 --editable git+https://github.com/inducer/dagrt.git#egg=dagrt
@@ -22,5 +21,3 @@
 git+https://github.com/inducer/f2py.git#egg=fparser
 
 --editable git+https://github.com/illinois-ceesd/mirgecom.git#egg=mirgecom
-mpi4py
-pymetis

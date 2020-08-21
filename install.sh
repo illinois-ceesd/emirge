@@ -112,7 +112,7 @@ python -m pip install -r requirements_dev.txt
 
 echo "==== Installing packages for mirgecom ($opt_requirements_file)"
 
-grep -E -v '(islpy|pyopencl)' $opt_requirements_file >> .req
+grep -v 'pyopencl' $opt_requirements_file >> .req
 python -m pip install -r .req --src .
 rm -f .req
 
