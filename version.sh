@@ -51,9 +51,7 @@ for i in "${!module_names[@]}"; do
     branch=${module_branches[$i]/--branch /}
     url=${module_urls[$i]}
 
-    if [[ $name == loopy ]]; then
-        commit=$(cd loo-py && git describe --always)
-    elif [[ -d $name ]]; then
+    if [[ -d $name ]]; then
         commit=$(cd "$name" && git describe --always)
     else
         commit="---"
