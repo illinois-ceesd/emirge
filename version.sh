@@ -42,18 +42,27 @@ source ./parse_requirements.sh
 
 parse_requirements "$requirements_file"
 
-res="Package|Branch|URL\n"
-res+="=======|======|======\n"
+res="Package|Branch|Commit|URL\n"
+res+="=======|======|======|======\n"
 
 for i in "${!module_names[@]}"; do
+
     name=${module_names[$i]}
     branch=${module_branches[$i]/--branch /}
     url=${module_urls[$i]}
 
+    if [[ $name == loopy ]]; then
+        commit=$(cd loo-py && git describe --always)
+    elif [[ -d $name ]]; then
+        commit=$(cd "$name" && git describe --always)
+    else
+        commit="---"
+    fi
+
     branch=${branch:----}
     url=${url:----}
 
-    res+="$name|$branch|$url\n"
+    res+="$name|$branch|$commit|$url\n"
 done
 
 echo -e "$res" | column -t -s '|'
