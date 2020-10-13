@@ -91,14 +91,14 @@ export MY_CONDA_DIR=$conda_prefix
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
 
-echo "==== Create $env_name conda environment"
+echo "==== Create $env_name conda environment with Python 3.8"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate
 
-conda create --name "$env_name" --yes
+conda create --name "$env_name" --yes python=3.8
 
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
