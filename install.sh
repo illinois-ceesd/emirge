@@ -10,11 +10,11 @@ echo
 
 usage()
 {
-  echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]" 
+  echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]"
   echo "                   [--env-name=NAME] [--modules] [--help]"
   echo "  --install-prefix=DIR  Install mirgecom in [DIR], (default=PWD)."
   echo "  --conda-prefix=DIR    Install conda in [DIR], (default=./miniforge3)"
-  echo "  --env-name=NAME       Name of the conda environment to install to. (default=dgfem)"
+  echo "  --env-name=NAME       Name of the conda environment to install to. (default=ceesd)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
@@ -29,7 +29,7 @@ mcprefix=$(pwd)
 # https://stackoverflow.com/q/39340169
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 conda_prefix=$SCRIPT_DIR/miniforge3
-env_name="dgfem"
+env_name="ceesd"
 pip_pkg_file=""
 conda_pkg_file=""
 
