@@ -15,7 +15,7 @@ In most cases, running `./install.sh` should be sufficient to install all depend
 
 `./install.sh` takes several arguments:
 - `--conda-prefix=DIR`: Install conda in `DIR` instead of the default directory (`./miniforge3`).
-- `--env-name=NAME`: Create conda environment named `NAME` instead of the default (dgfem).
+- `--env-name=NAME`: Create conda environment named `NAME` instead of the default (ceesd).
 - `--install-prefix=DIR`: Install mirgecom and git pip packages to `DIR` instead of the default (./).
 - `--branch=NAME`: Install the `NAME`d branch of mirgecom instead of the default branch (master).
 - `--conda-pkgs=FILE`: Install additional conda packages from list specified in `FILE`.
@@ -65,8 +65,8 @@ $ bash ./Miniforge3-Linux-x86_64.sh
 
 # Optional: create conda environment
 $ export MY_CONDA=/path/to/installed/conda # Default installation path: $HOME/miniforge3
-$ $MY_CONDA/bin/conda create -n dgfem
-$ . $MY_CONDA/bin/activate dgfem
+$ $MY_CONDA/bin/conda create -n ceesd
+$ . $MY_CONDA/bin/activate ceesd
 
 # Install required conda packages:
 $ conda install pip pocl numpy pyopencl islpy flake8 mypy pudb
@@ -75,7 +75,7 @@ $ conda install pip pocl numpy pyopencl islpy flake8 mypy pudb
 $ conda install clinfo
 
 # In a new session, you may reactivate this environment using:
-. $MY_CONDA/bin/activate dgfem
+. $MY_CONDA/bin/activate ceesd
 ```
 
 ##### Installation with Spack

@@ -14,11 +14,11 @@ jobs:
       run: |
         [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
         ./install.sh
-        source miniforge3/bin/activate dgfem
+        source miniforge3/bin/activate ceesd
         ./makezip.sh ./mirgecom/requirements.txt
     - name: Test modules.zip
       run: |
-        source miniforge3/bin/activate dgfem
+        source miniforge3/bin/activate ceesd
         # Uninstall dagrt to make sure it gets loaded from modules.zip
         pip uninstall --yes dagrt
         [[ $(python3 -c 'import dagrt; print(dagrt.__path__[0])') == *modules.zip* ]] || exit 1

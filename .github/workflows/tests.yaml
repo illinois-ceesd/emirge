@@ -33,10 +33,10 @@ jobs:
         ./install.sh
     - name: Version info
       run: |
-        source miniforge3/bin/activate dgfem
+        source miniforge3/bin/activate ceesd
         ./version.sh ./mirgecom/requirements.txt
     - name: Run examples
       run: |
-        source miniforge3/bin/activate dgfem
+        source miniforge3/bin/activate ceesd
         ./mirgecom/examples/run_examples.sh ./mirgecom/examples
 
