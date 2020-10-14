@@ -91,7 +91,7 @@ export MY_CONDA_DIR=$conda_prefix
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
 
-echo "==== Create $env_name conda environment with Python 3.8"
+echo "==== Create $env_name conda environment"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
