@@ -56,12 +56,14 @@ for i in "${!module_names[@]}"; do
         commit=$(git describe --always --dirty=*)
         date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
         branchname_git="($(git rev-parse --abbrev-ref HEAD))"
+        #shellcheck disable=SC2103
         cd ..
     elif [[ $name == "loopy" && -d loo-py ]]; then
         cd loo-py
         commit=$(git describe --always --dirty=*)
         date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
         branchname_git="($(git rev-parse --abbrev-ref HEAD))"
+        #shellcheck disable=SC2103
         cd ..
     else
         date="---"
