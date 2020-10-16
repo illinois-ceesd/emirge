@@ -76,3 +76,40 @@ for i in "${!module_names[@]}"; do
 done
 
 echo -e "$res" | column -t -s '|'
+
+echo
+echo "*** Creating requirements file with current emirge module versions"
+
+
+outfile=$(mktemp requirements.txt.XXXXXX)
+
+echo "# requirements.txt created by version.sh" > $outfile
+echo "# Date: $(date)" >> $outfile
+
+for i in "${!module_names[@]}"; do
+    url=${module_full_urls[$i]}
+    name=${module_names[$i]}
+    branch=${module_branches[$i]/--branch /}
+    giturl=${url/\#egg=[a-z]*/}
+    [[ ${url} =~ (#egg=[a-z]*) ]] && egg=${BASH_REMATCH[1]} || egg=""
+    [[ -z $url ]] && continue # Ignore non-Git modules
+
+    if [[ -d $name ]]; then
+        commit=$(cd $name && git describe --always)
+    elif [[ $name == "loopy" && -d loo-py ]]; then
+        commit=$(cd loo-py && git describe --always)
+    else
+        echo "Warning: missing module '$name'. Skipping."
+        continue
+    fi
+
+    if [[ -n $branch ]]; then
+        url_new_branch=${giturl/$branch/$commit}
+    else
+        url_new_branch="${giturl}@${commit}"
+    fi
+
+    echo "$url_new_branch$egg" | tee -a $outfile
+done
+
+echo "**Created file '$outfile'. Install it with 'pip install -r $outfile'."
