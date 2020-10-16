@@ -52,13 +52,13 @@ for i in "${!module_names[@]}"; do
     url=${module_urls[$i]}
 
     if [[ -d $name ]]; then
-        cd "$name"
+        cd "$name" || exit 1
         commit=$(git describe --always --dirty=*)
         date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
         branchname_git="($(git rev-parse --abbrev-ref HEAD))"
         cd ..
     elif [[ $name == "loopy" && -d loo-py ]]; then
-        cd loo-py
+        cd loo-py || exit 1
         commit=$(git describe --always --dirty=*)
         date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
         branchname_git="($(git rev-parse --abbrev-ref HEAD))"
