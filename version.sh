@@ -83,8 +83,8 @@ echo "*** Creating requirements file with current emirge module versions"
 
 outfile=$(mktemp requirements.txt.XXXXXX)
 
-echo "# requirements.txt created by version.sh" > $outfile
-echo "# Date: $(date)" >> $outfile
+echo "# requirements.txt created by version.sh" > "$outfile"
+echo "# Date: $(date)" >> "$outfile"
 
 for i in "${!module_names[@]}"; do
     url=${module_full_urls[$i]}
@@ -95,7 +95,7 @@ for i in "${!module_names[@]}"; do
     [[ -z $url ]] && continue # Ignore non-Git modules
 
     if [[ -d $name ]]; then
-        commit=$(cd $name && git describe --always)
+        commit=$(cd "$name" && git describe --always)
     elif [[ $name == "loopy" && -d loo-py ]]; then
         commit=$(cd loo-py && git describe --always)
     else
@@ -109,7 +109,7 @@ for i in "${!module_names[@]}"; do
         url_new_branch="${giturl}@${commit}"
     fi
 
-    echo "$url_new_branch$egg" | tee -a $outfile
+    echo "$url_new_branch$egg" | tee -a "$outfile"
 done
 
 echo "**Created file '$outfile'. Install it with 'pip install -r $outfile'."
