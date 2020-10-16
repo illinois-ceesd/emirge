@@ -42,8 +42,8 @@ source ./parse_requirements.sh
 
 parse_requirements "$requirements_file"
 
-res="Package|Branch|Commit|URL\n"
-res+="=======|======|======|======\n"
+res="Package|Branch|Commit|Date|URL\n"
+res+="=======|======|======|======|======\n"
 
 for i in "${!module_names[@]}"; do
 
@@ -52,15 +52,27 @@ for i in "${!module_names[@]}"; do
     url=${module_urls[$i]}
 
     if [[ -d $name ]]; then
-        commit=$(cd "$name" && git describe --always)
+        cd "$name" || exit 1
+        commit=$(git describe --always --dirty=*)
+        date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
+        branchname_git="($(git rev-parse --abbrev-ref HEAD))"
+        cd ..
+    elif [[ $name == "loopy" && -d loo-py ]]; then
+        cd loo-py || exit 1
+        commit=$(git describe --always --dirty=*)
+        date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
+        branchname_git="($(git rev-parse --abbrev-ref HEAD))"
+        cd ..
     else
+        date="---"
         commit="---"
+        branchname_git="---"
     fi
 
-    branch=${branch:----}
+    branch=${branch:-$branchname_git}
     url=${url:----}
 
-    res+="$name|$branch|$commit|$url\n"
+    res+="$name|$branch|$commit|$date|$url\n"
 done
 
 echo -e "$res" | column -t -s '|'
