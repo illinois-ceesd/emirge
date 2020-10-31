@@ -59,7 +59,8 @@ for i in "${!module_names[@]}"; do
         cd ..
     elif [[ $name == "loopy" && -d loo-py ]]; then
         # FIXME: this is a hack that was needed before loo-py was renamed to loopy;
-        # remove this by 12/2020.
+        # remove this by 12/2021.
+        # https://github.com/illinois-ceesd/emirge/pull/85
         cd loo-py || exit 1
         commit=$(git describe --always --dirty=*)
         date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
