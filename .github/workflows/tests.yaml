@@ -35,6 +35,7 @@ jobs:
       run: |
         source miniforge3/bin/activate ceesd
         ./version.sh ./mirgecom/requirements.txt
+        pip install -r requirements.txt.*
     - name: Run examples
       run: |
         source miniforge3/bin/activate ceesd
