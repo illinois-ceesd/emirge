@@ -46,7 +46,7 @@ jobs:
     - name: Reinstall emirge env with new requirements.txt
       run: |
         conda create -n reinstall_env
-        conda activate reinstall_env
+        source miniforge3/bin/activate reinstall_env
         ./install-conda-dependencies.sh
         ./install-pip-dependencies.sh req.txt reinstall_dir/
 
