@@ -89,6 +89,8 @@ outfile=$(mktemp requirements.txt.XXXXXX)
 echo "# requirements.txt created by version.sh" > "$outfile"
 echo "# Date: $(date)" >> "$outfile"
 
+seen_mirgecom=0
+
 for i in "${!module_names[@]}"; do
     url=${module_full_urls[$i]}
     name=${module_names[$i]}
@@ -97,7 +99,10 @@ for i in "${!module_names[@]}"; do
     [[ ${url} =~ (#egg=[a-z]*) ]] && egg=${BASH_REMATCH[1]} || egg=""
     [[ -z $url ]] && continue # Ignore non-Git modules
 
-    if [[ -d $name ]]; then
+    if [[ $name == "f2py" ]]; then
+        # Can't install f2py this way
+        continue
+    elif [[ -d $name ]]; then
         commit=$(cd "$name" && git describe --always)
     elif [[ $name == "loopy" && -d loo-py ]]; then
         commit=$(cd loo-py && git describe --always)
@@ -106,13 +111,21 @@ for i in "${!module_names[@]}"; do
         continue
     fi
 
+    [[ $name == "mirgecom" ]] && seen_mirgecom=1
+
     if [[ -n $branch ]]; then
         url_new_branch=${giturl/$branch/$commit}
     else
         url_new_branch="${giturl}@${commit}"
     fi
 
-    echo "$url_new_branch$egg" | tee -a "$outfile"
+    echo "--editable $url_new_branch$egg" | tee -a "$outfile"
 done
 
-echo "**Created file '$outfile'. Install it with 'pip install -r $outfile'."
+# Record mirgecom version as well, if it is not part of the requirements.txt
+if [[ $seen_mirgecom -eq 0 ]]; then
+    commit=$(cd mirgecom && git describe --always)
+    echo "--editable git+https://github.com/illinois-ceesd/mirgecom@$commit#egg=mirgecom" | tee -a "$outfile"
+fi
+
+echo "*** Created file '$outfile'. Install it with 'pip install --src . -r $outfile'."
