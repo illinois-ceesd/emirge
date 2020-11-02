@@ -45,6 +45,7 @@ jobs:
         ./mirgecom/examples/run_examples.sh ./mirgecom/examples
     - name: Reinstall emirge env with new requirements.txt
       run: |
+        source miniforge3/bin/activate
         conda create -n reinstall_env
         source miniforge3/bin/activate reinstall_env
         ./install-conda-dependencies.sh
