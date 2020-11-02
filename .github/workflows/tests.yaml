@@ -35,6 +35,9 @@ jobs:
       run: |
         source miniforge3/bin/activate ceesd
         ./version.sh ./mirgecom/requirements.txt
+        
+        export CPATH=miniforge3/envs/ceesd/include/
+        export LIBRARY_PATH=miniforge3/envs/ceesd/lib
         pip install -r requirements.txt.*
     - name: Run examples
       run: |
