@@ -117,6 +117,7 @@ echo "*** Creating requirements file with current emirge module versions"
 
 
 echo "# requirements.txt created by version.sh" > "$output_requirements"
+#shellcheck disable=SC2129
 echo "# Date: $(date)" >> "$output_requirements"
 echo "# Host: $(hostname -f) [$(uname -a)]" >> "$output_requirements"
 echo "# Python: $(which python) [$(python --version)]" >> "$output_requirements"
