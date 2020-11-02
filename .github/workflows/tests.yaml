@@ -34,7 +34,7 @@ jobs:
     - name: Version info
       run: |
         source miniforge3/bin/activate ceesd
-        ./version.sh ./mirgecom/requirements.txt --output-requirements=myreq.txt
+        ./version.sh --requirements-file=./mirgecom/requirements.txt --output-requirements=myreq.txt
 
         # Don't build pyopencl as that is difficult
         cat myreq.txt | sed /pyopencl/d > req.txt
