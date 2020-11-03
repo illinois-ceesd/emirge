@@ -49,5 +49,5 @@ jobs:
         conda create -n reinstall_env
         source miniforge3/bin/activate reinstall_env
         ./install-conda-dependencies.sh
-        ./install-pip-dependencies.sh req.txt reinstall_dir/
+        pip install -r req.txt
 
