@@ -2,7 +2,39 @@
 
 set -o nounset -o errexit
 
-requirements_file=${1-mirgecom/requirements.txt}
+usage()
+{
+  echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--help]"
+  echo "  --requirements-file=FILE    Use specific requirements.txt file (default=mirgecom/requirements.txt)."
+  echo "  --output-requirements=FILE  File name for the generated requirements file."
+  echo "  --help                      Print this help text."
+}
+
+requirements_file="mirgecom/requirements.txt"
+output_requirements="/dev/stdout"
+
+while [[ $# -gt 0 ]]; do
+  arg=$1
+  shift
+  case $arg in
+    --requirements-file=*)
+        # Use non-default requirements.txt file
+        requirements_file=${arg#*=}
+        ;;
+    --output-requirements=*)
+        # Output requirements.txt file with this file name
+        output_requirements=${arg#*=}
+        ;;
+    --help)
+        usage
+        exit 0
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+  esac
+done
 
 if [[ ! -f "$requirements_file" ]]
 then
@@ -79,3 +111,58 @@ for i in "${!module_names[@]}"; do
 done
 
 echo -e "$res" | column -t -s '|'
+
+echo
+echo "*** Creating requirements file with current emirge module versions"
+
+
+echo "# requirements.txt created by version.sh" > "$output_requirements"
+#shellcheck disable=SC2129
+echo "# Date: $(date)" >> "$output_requirements"
+echo "# Host: $(hostname -f) [$(uname -a)]" >> "$output_requirements"
+echo "# Python: $(which python) [$(python --version)]" >> "$output_requirements"
+
+seen_mirgecom=0
+
+for i in "${!module_names[@]}"; do
+    url=${module_full_urls[$i]}
+    name=${module_names[$i]}
+    branch=${module_branches[$i]/--branch /}
+    giturl=${url/\#egg=[a-z]*/}
+    [[ ${url} =~ (#egg=[a-z]*) ]] && egg=${BASH_REMATCH[1]} || egg=""
+    [[ -z $url ]] && continue # Ignore non-Git modules
+
+    if [[ $name == "f2py" ]]; then
+        # Can't install f2py this way
+        continue
+    elif [[ -d $name ]]; then
+        commit=$(cd "$name" && git describe --always)
+    elif [[ $name == "loopy" && -d loo-py ]]; then
+        commit=$(cd loo-py && git describe --always)
+    else
+        echo "Warning: missing module '$name'. Skipping."
+        continue
+    fi
+
+    [[ $name == "mirgecom" ]] && seen_mirgecom=1
+
+    if [[ -n $branch ]]; then
+        url_new_branch=${giturl/$branch/$commit}
+    else
+        url_new_branch="${giturl}@${commit}"
+    fi
+
+    echo "--editable $url_new_branch$egg" >> "$output_requirements"
+done
+
+# Record mirgecom version as well, if it is not part of the requirements.txt
+if [[ $seen_mirgecom -eq 0 ]]; then
+    commit=$(cd mirgecom && git describe --always)
+    echo "--editable git+https://github.com/illinois-ceesd/mirgecom@$commit#egg=mirgecom" >> "$output_requirements"
+fi
+
+# If output is a file (ie, not stdout), print the file and tell user how to install it
+if [[ -f "$output_requirements" ]]; then
+    cat "$output_requirements"
+    echo "*** Created file '$output_requirements'. Install it with 'pip install --src . -r $output_requirements'."
+fi
