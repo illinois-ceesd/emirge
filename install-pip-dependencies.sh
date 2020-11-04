@@ -20,7 +20,7 @@ source ./parse_requirements.sh
 
 parse_requirements "$requirements_file"
 
-echo "==== Installing pip packages"
+echo "==== Installing pip packages from $requirements_file"
 
 # Semi-required for pyopencl
 python -m pip install mako
@@ -54,7 +54,6 @@ for i in "${!module_names[@]}"; do
         else
             cd "$install_location/$name"
             [[ -n $branch ]] && git checkout "$branch"
-            git pull
         fi
 
         # These two packages are installed via conda
