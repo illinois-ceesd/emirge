@@ -18,7 +18,7 @@ In most cases, running `./install.sh` should be sufficient to install all depend
 - `--env-name=NAME`: Create conda environment named `NAME` instead of the default (ceesd).
 - `--install-prefix=DIR`: Install mirgecom and git pip packages to `DIR` instead of the default (./).
 - `--branch=NAME`: Install the `NAME`d branch of mirgecom instead of the default branch (master).
-- `--conda-pkgs=FILE`: Install additional conda packages from the conda environment file specified in `FILE`.
+- `--conda-pkgs=FILE`: Install additional conda packages from the list of package names specified in `FILE`.
 - `--pip-pkgs=FILE`: Install additional pip packages from the pip requirements file specified in `FILE`.
 - `--modules`: Install a modules.zip file that contains a copy of all python packages that are installed through git (see below for details).
 
