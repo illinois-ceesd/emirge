@@ -15,7 +15,10 @@ parse_requirements() {
 
     for module in $MY_MODULES; do
 
-        if [[ $module == git+* ]]; then
+        if [[ $module == "--editable" ]]; then
+            # Ignore the 'editable' keyword
+            continue
+        elif [[ $module == git+* ]]; then
             local fullurl=$module
             local module=${module/\#egg=[a-z]*/}
 
