@@ -7,13 +7,13 @@ usage()
   echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--help]"
   echo "  --requirements-file=FILE    Use specific requirements.txt file (default=mirgecom/requirements.txt)."
   echo "  --output-requirements=FILE  File name for the generated pip requirements file."
-  echo "  --output-env=FILE           File name for the generated conda env file."
+  echo "  --output-conda-env=FILE     File name for the generated conda env file."
   echo "  --help                      Print this help text."
 }
 
 requirements_file="mirgecom/requirements.txt"
 output_requirements="/dev/stdout"
-output_env="/dev/stdout"
+output_conda_env="/dev/stdout"
 
 while [[ $# -gt 0 ]]; do
   arg=$1
@@ -27,9 +27,9 @@ while [[ $# -gt 0 ]]; do
         # Output requirements.txt file with this file name
         output_requirements=${arg#*=}
         ;;
-    --output-env=*)
+    --output-conda-env=*)
         # Output conda env file with this file name
-        output_env=${arg#*=}
+        output_conda_env=${arg#*=}
         ;;
     --help)
         usage
@@ -177,13 +177,13 @@ fi
 echo
 echo "*** Conda env file with current conda package versions"
 
-conda env export > "$output_env"
+conda env export > "$output_conda_env"
 
 # If output is a file (ie, not stdout), print the file and tell user how to install it
-if [[ -f "$output_env" ]]; then
-    cat "$output_env"
-    echo "*** Created file '$output_env'. To install it, run the following:"
-    echo "*** - rename '$output_env' to 'environment.yml'"
+if [[ -f "$output_conda_env" ]]; then
+    cat "$output_conda_env"
+    echo "*** Created file '$output_conda_env'. To install it, run the following:"
+    echo "*** - rename '$output_conda_env' to 'environment.yml'"
     echo "*** - change the 'name:' field in 'environment.yml' to an environment that does not exist"
     echo "*** - Run: 'conda env create -f environment.yml' "
 fi
