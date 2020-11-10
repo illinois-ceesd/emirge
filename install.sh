@@ -18,6 +18,7 @@ usage()
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
+  echo "  --conda-env=FILE      Install a conda environment from a file."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --help                Print this help text."
 }
@@ -32,6 +33,7 @@ conda_prefix=$SCRIPT_DIR/miniforge3
 env_name="ceesd"
 pip_pkg_file=""
 conda_pkg_file=""
+conda_env_file=""
 
 # }}}
 
@@ -61,6 +63,10 @@ while [[ $# -gt 0 ]]; do
     --conda-pkgs=*)
         # Install these additional packages with conda
         conda_pkg_file=${arg#*=}
+        ;;
+    --conda-env=*)
+        # Install these additional packages with conda
+        conda_env_file=${arg#*=}
         ;;
     --pip-pkgs=*)
         # Install these additional packages with pip
@@ -107,9 +113,14 @@ mkdir -p "$mcprefix"
 mcsrc="$mcprefix/mirgecom"
 
 ./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
-./install-conda-dependencies.sh
-if [[ ! -z "$conda_pkg_file" ]]; then
-    ./install-conda-dependencies.sh "$conda_pkg_file"
+
+if [[ -z $conda_env_file ]]; then
+  ./install-conda-dependencies.sh
+  if [[ ! -z "$conda_pkg_file" ]]; then
+      ./install-conda-dependencies.sh "$conda_pkg_file"
+  fi
+else
+  conda env create --force --name "$env_name" -f="$conda_env_file"
 fi
 ./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
 if [[ ! -z "$pip_pkg_file" ]]; then
