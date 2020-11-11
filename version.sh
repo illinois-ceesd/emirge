@@ -177,7 +177,7 @@ fi
 echo
 echo "*** Conda env file with current conda package versions"
 
-conda env export > "$output_conda_env"
+conda env export | grep -v f2py > "$output_conda_env"
 
 # If output is a file (ie, not stdout), print the file and tell user how to install it
 if [[ -f "$output_conda_env" ]]; then
