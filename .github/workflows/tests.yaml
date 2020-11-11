@@ -43,10 +43,12 @@ jobs:
         pip install -r req.txt
     - name: Reinstall emirge env with new requirements.txt
       run: |
-        bash -x ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt
+        ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt
     - name: Reinstall conda env with new env file
       run: |
-        bash -x ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt
+        cat myenv.yml
+        cat req.txt
+        ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt
     - name: Run examples
       run: |
         source miniforge3/bin/activate ceesd
