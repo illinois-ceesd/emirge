@@ -4,10 +4,10 @@ set -o nounset -o errexit
 
 usage()
 {
-  echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--help]"
+  echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--output-conda-env=FILE] [--help]"
   echo "  --requirements-file=FILE    Use specific requirements.txt file (default=mirgecom/requirements.txt)."
-  echo "  --output-requirements=FILE  File name for the generated pip requirements file."
-  echo "  --output-conda-env=FILE     File name for the generated conda env file."
+  echo "  --output-requirements=FILE  Filename for the generated pip requirements file."
+  echo "  --output-conda-env=FILE     Filename for the generated conda env file."
   echo "  --help                      Print this help text."
 }
 
