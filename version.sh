@@ -177,13 +177,11 @@ fi
 echo
 echo "*** Conda env file with current conda package versions"
 
+# remove f2py since it can' t be pip install'ed
 conda env export | grep -v f2py > "$output_conda_env"
 
 # If output is a file (ie, not stdout), print the file and tell user how to install it
 if [[ -f "$output_conda_env" ]]; then
     cat "$output_conda_env"
-    echo "*** Created file '$output_conda_env'. To install it, run the following:"
-    echo "*** - rename '$output_conda_env' to 'environment.yml'"
-    echo "*** - change the 'name:' field in 'environment.yml' to an environment that does not exist"
-    echo "*** - Run: 'conda env create -f environment.yml' "
+    echo "*** Created file '$output_conda_env'. Install it with 'conda env create -f $output_conda_env'"
 fi

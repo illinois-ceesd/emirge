@@ -65,7 +65,7 @@ while [[ $# -gt 0 ]]; do
         conda_pkg_file=${arg#*=}
         ;;
     --conda-env=*)
-        # Install these additional packages with conda
+        # Install this conda environment instead of the one created by the emirge scripts
         conda_env_file=${arg#*=}
         ;;
     --pip-pkgs=*)
