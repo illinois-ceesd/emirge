@@ -183,5 +183,5 @@ conda env export | grep -v f2py > "$output_conda_env"
 # If output is a file (ie, not stdout), print the file and tell user how to install it
 if [[ -f "$output_conda_env" ]]; then
     cat "$output_conda_env"
-    echo "*** Created file '$output_conda_env'. Install it with 'conda env create -f $output_conda_env'"
+    echo "*** Created file '$output_conda_env'. Install it with 'conda env create -f=$output_conda_env'"
 fi
