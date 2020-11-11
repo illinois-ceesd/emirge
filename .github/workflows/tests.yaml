@@ -22,8 +22,10 @@ jobs:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+
     steps:
     - uses: actions/checkout@v2
     - name: Install prerequisites
@@ -39,13 +41,14 @@ jobs:
         # Don't build pyopencl as that is difficult
         cat myreq.txt | sed /pyopencl/d > req.txt
         pip install -r req.txt
+    - name: Reinstall emirge env with new requirements.txt
+      run: |
+        bash -x ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt
+    - name: Reinstall conda env with new env file
+      run: |
+        bash -x ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt
     - name: Run examples
       run: |
         source miniforge3/bin/activate ceesd
         ./mirgecom/examples/run_examples.sh ./mirgecom/examples
-    - name: Reinstall emirge env with new requirements.txt
-      run: |
-        ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt
-    - name: Reinstall conda env with new env file
-      run: |
-        ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt
+
