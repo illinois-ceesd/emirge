@@ -18,7 +18,7 @@ usage()
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
-  echo "  --conda-env=FILE      Install a conda environment from a file."
+  echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --help                Print this help text."
 }
