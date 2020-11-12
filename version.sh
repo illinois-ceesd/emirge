@@ -4,14 +4,16 @@ set -o nounset -o errexit
 
 usage()
 {
-  echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--help]"
+  echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--output-conda-env=FILE] [--help]"
   echo "  --requirements-file=FILE    Use specific requirements.txt file (default=mirgecom/requirements.txt)."
-  echo "  --output-requirements=FILE  File name for the generated requirements file."
+  echo "  --output-requirements=FILE  Write pip requirements file to FILE (instead of stdout)."
+  echo "  --output-conda-env=FILE     Write conda environment file to FILE (instead of stdout)."
   echo "  --help                      Print this help text."
 }
 
 requirements_file="mirgecom/requirements.txt"
 output_requirements="/dev/stdout"
+output_conda_env="/dev/stdout"
 
 while [[ $# -gt 0 ]]; do
   arg=$1
@@ -24,6 +26,10 @@ while [[ $# -gt 0 ]]; do
     --output-requirements=*)
         # Output requirements.txt file with this file name
         output_requirements=${arg#*=}
+        ;;
+    --output-conda-env=*)
+        # Output conda env file with this file name
+        output_conda_env=${arg#*=}
         ;;
     --help)
         usage
@@ -113,7 +119,7 @@ done
 echo -e "$res" | column -t -s '|'
 
 echo
-echo "*** Creating requirements file with current emirge module versions"
+echo "*** Requirements file with current emirge module versions"
 
 
 echo "# requirements.txt created by version.sh" > "$output_requirements"
@@ -165,4 +171,17 @@ fi
 if [[ -f "$output_requirements" ]]; then
     cat "$output_requirements"
     echo "*** Created file '$output_requirements'. Install it with 'pip install --src . -r $output_requirements'."
+fi
+
+
+echo
+echo "*** Conda env file with current conda package versions"
+
+# remove f2py since it can' t be pip install'ed
+conda env export | grep -v f2py > "$output_conda_env"
+
+# If output is a file (ie, not stdout), print the file and tell user how to install it
+if [[ -f "$output_conda_env" ]]; then
+    cat "$output_conda_env"
+    echo "*** Created file '$output_conda_env'. Install it with 'conda env create -f=$output_conda_env'"
 fi
