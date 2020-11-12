@@ -6,8 +6,8 @@ usage()
 {
   echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--output-conda-env=FILE] [--help]"
   echo "  --requirements-file=FILE    Use specific requirements.txt file (default=mirgecom/requirements.txt)."
-  echo "  --output-requirements=FILE  Filename for the generated pip requirements file."
-  echo "  --output-conda-env=FILE     Filename for the generated conda env file."
+  echo "  --output-requirements=FILE  Write pip requirements file to FILE (instead of stdout)."
+  echo "  --output-conda-env=FILE     Write conda environment file to FILE (instead of stdout)."
   echo "  --help                      Print this help text."
 }
 
