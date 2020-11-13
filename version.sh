@@ -2,6 +2,10 @@
 
 set -o nounset -o errexit
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+cd "$SCRIPT_DIR"
+
 usage()
 {
   echo "Usage: $0 [--requirements-file=FILE] [--output-requirements=FILE] [--output-conda-env=FILE] [--help]"
