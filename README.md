@@ -14,13 +14,15 @@ These dependencies are:
 In most cases, running `./install.sh` should be sufficient to install all dependencies for emirge and mirgecom.
 
 `./install.sh` takes several arguments:
+- `--install-prefix=DIR`: Install mirgecom and git pip packages to `DIR` instead of the default (./).
 - `--conda-prefix=DIR`: Install conda in `DIR` instead of the default directory (`./miniforge3`).
 - `--env-name=NAME`: Create conda environment named `NAME` instead of the default (ceesd).
-- `--install-prefix=DIR`: Install mirgecom and git pip packages to `DIR` instead of the default (./).
+- `--modules`: Install a modules.zip file that contains a copy of all python packages that are installed through git (see below for details).
 - `--branch=NAME`: Install the `NAME`d branch of mirgecom instead of the default branch (master).
 - `--conda-pkgs=FILE`: Install additional conda packages from the list of package names specified in `FILE`.
+- `--conda-env=FILE`: Obtain conda package versions from conda environment file FILE.
 - `--pip-pkgs=FILE`: Install additional pip packages from the pip requirements file specified in `FILE`.
-- `--modules`: Install a modules.zip file that contains a copy of all python packages that are installed through git (see below for details).
+- `--help`: Print this help text.
 
 ## Testing the installation
 
