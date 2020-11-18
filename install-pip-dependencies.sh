@@ -11,6 +11,9 @@
 
 set -o nounset -o errexit
 
+# Remove the pip cache so we are not installing stale packages:
+rm -rf $(pip cache dir)
+
 origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
 install_location="${2-$origin}"
