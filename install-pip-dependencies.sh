@@ -44,11 +44,11 @@ for i in "${!module_names[@]}"; do
         echo "=== Installing non-git module $name with pip"
         # Remove the cached version of the package so we are not installing stale packages.
         # See https://github.com/illinois-ceesd/emirge/pull/94 for an explanation
-
         if [[ $(pip cache list "$name") != "Nothing cached." ]]; then
             echo "==== Removing '$name' from pip cache"
-            pip cache remove "$name"
+            python -m pip cache remove "$name"
         fi
+
         python -m pip install --upgrade "$name"
     else
         echo "=== Installing git module $name $url $branch"
