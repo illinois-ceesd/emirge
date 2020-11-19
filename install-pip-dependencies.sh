@@ -11,9 +11,6 @@
 
 set -o nounset -o errexit
 
-# Remove the pip cache so we are not installing stale packages:
-pip cache purge || true
-
 origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
 install_location="${2-$origin}"
@@ -44,7 +41,10 @@ for i in "${!module_names[@]}"; do
     url=${module_urls[$i]}
 
     if [[ -z $url ]]; then
-        echo "=== Installing non-git module $name with pip"
+        echo "=== Installing non-git module $name with pip (after removing it from the pip cache)"
+        # Remove the pip cache of the package so we are not installing stale packages.
+        # See https://github.com/illinois-ceesd/emirge/pull/94 for an explanation
+        pip cache remove $name 2>/dev/null || true
         python -m pip install --upgrade "$name"
     else
         echo "=== Installing git module $name $url $branch"
