@@ -24,6 +24,14 @@ for m in */; do
     # Skip directories that have local modifications
     git diff-index --quiet HEAD || { echo "  Skipping update of '$m' due to local modifications."; cd ..; continue; }
 
+    # Skip directories that are not on branches (can't use 'git pull' in that case)
+    if [[ $(git rev-parse --abbrev-ref --symbolic-full-name HEAD) == "HEAD" ]]; then
+        echo "  Skipping update of '$m' since it is not on a branch."
+        cd ..
+        continue
+    fi
+
+
     git pull
 
     cd ..
