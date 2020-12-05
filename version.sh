@@ -72,8 +72,8 @@ conda list
 echo
 echo "*** OS info"
 
-which lsb_release >/dev/null && lsb_release -ds
-which sw_vers >/dev/null && echo "MacOS $(sw_vers -productVersion)"
+which lsb_release >/dev/null 2>/dev/null && lsb_release -ds
+which sw_vers >/dev/null 2>/dev/null && echo "MacOS $(sw_vers -productVersion)"
 uname -a
 
 
