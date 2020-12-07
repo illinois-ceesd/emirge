@@ -40,6 +40,11 @@ for i in "${!module_names[@]}"; do
     branch=${module_branches[$i]/--branch /}
     url=${module_urls[$i]}
 
+    if [[ $name == "pyopencl" || $name == "islpy" || $name == "pymetis" ]]; then
+        echo "==== Skipping '$name' as it is installed via conda"
+        continue
+    fi
+
     if [[ -z $url ]]; then
         echo "=== Installing non-git module $name with pip"
         # Remove the cached version of the package so we are not installing stale packages.
@@ -62,9 +67,6 @@ for i in "${!module_names[@]}"; do
             cd "$install_location/$name"
             [[ -n $branch ]] && git checkout "$branch"
         fi
-
-        # These two packages are installed via conda
-        [[ $name == "pyopencl" || $name == "islpy" ]] && continue
 
         cd "$origin"
 
