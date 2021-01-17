@@ -125,12 +125,13 @@ echo -e "$res" | column -t -s '|'
 echo
 echo "*** Requirements file with current emirge module versions"
 
-
-echo "# requirements.txt created by version.sh" | tee $output_requirements
-#shellcheck disable=SC2129
-echo "# Date: $(date)" | tee -a $output_requirements
-echo "# Host: $(hostname -f) [$(uname -a)]" | tee -a $output_requirements
-echo "# Python: $(which python) [$(python --version)]" | tee -a $output_requirements
+#shellcheck disable=SC2086
+{
+echo "# requirements.txt created by version.sh"
+echo "# Date: $(date)"
+echo "# Host: $(hostname -f) [$(uname -a)]"
+echo "# Python: $(which python) [$(python --version)]"
+} | tee $output_requirements
 
 seen_mirgecom=0
 
@@ -162,12 +163,14 @@ for i in "${!module_names[@]}"; do
         url_new_branch="${giturl}@${commit}"
     fi
 
+    #shellcheck disable=SC2086
     echo "--editable $url_new_branch$egg" | tee -a $output_requirements
 done
 
 # Record mirgecom version as well, if it is not part of the requirements.txt
 if [[ $seen_mirgecom -eq 0 ]]; then
     commit=$(cd mirgecom && git describe --always)
+    #shellcheck disable=SC2086
     echo "--editable git+https://github.com/illinois-ceesd/mirgecom@$commit#egg=mirgecom" | tee -a $output_requirements
 fi
 
@@ -181,6 +184,7 @@ echo
 echo "*** Conda env file with current conda package versions"
 
 # remove f2py since it can' t be pip install'ed
+#shellcheck disable=SC2086
 conda env export | grep -v f2py | tee $output_conda_env
 
 # If output is a file (ie, not stdout), print the file and tell user how to install it
