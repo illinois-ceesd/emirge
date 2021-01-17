@@ -149,6 +149,7 @@ for i in "${!module_names[@]}"; do
     elif [[ -d $name ]]; then
         commit=$(cd "$name" && git describe --always)
     elif [[ $name == "loopy" && -d loo-py ]]; then
+        # FIXME: see above regarding this hack
         commit=$(cd loo-py && git describe --always)
     else
         echo "Warning: missing module '$name'. Skipping."
@@ -174,7 +175,7 @@ if [[ $seen_mirgecom -eq 0 ]]; then
     echo "--editable git+https://github.com/illinois-ceesd/mirgecom@$commit#egg=mirgecom" | tee -a $output_requirements
 fi
 
-# If output is a file (ie, not stdout), print the file and tell user how to install it
+# If output is a requirements file, tell user how to install it
 if [[ -f "$output_requirements" ]]; then
     echo "*** Created file '$output_requirements'. Install it with 'pip install --src . -r $output_requirements'."
 fi
@@ -187,7 +188,7 @@ echo "*** Conda env file with current conda package versions"
 #shellcheck disable=SC2086
 conda env export | grep -v f2py | tee $output_conda_env
 
-# If output is a file (ie, not stdout), print the file and tell user how to install it
+# If output is a conda environment file, tell user how to install it
 if [[ -f "$output_conda_env" ]]; then
     echo "*** Created file '$output_conda_env'. Install it with 'conda env create -f=$output_conda_env'"
 fi
