@@ -16,8 +16,8 @@ usage()
 }
 
 requirements_file="mirgecom/requirements.txt"
-output_requirements="/dev/stdout"
-output_conda_env="/dev/stdout"
+output_requirements=""
+output_conda_env=""
 
 while [[ $# -gt 0 ]]; do
   arg=$1
@@ -125,12 +125,13 @@ echo -e "$res" | column -t -s '|'
 echo
 echo "*** Requirements file with current emirge module versions"
 
-
-echo "# requirements.txt created by version.sh" > "$output_requirements"
-#shellcheck disable=SC2129
-echo "# Date: $(date)" >> "$output_requirements"
-echo "# Host: $(hostname -f) [$(uname -a)]" >> "$output_requirements"
-echo "# Python: $(which python) [$(python --version)]" >> "$output_requirements"
+#shellcheck disable=SC2086
+{
+echo "# requirements.txt created by version.sh"
+echo "# Date: $(date)"
+echo "# Host: $(hostname -f) [$(uname -a)]"
+echo "# Python: $(which python) [$(python --version)]"
+} | tee $output_requirements
 
 seen_mirgecom=0
 
@@ -148,6 +149,7 @@ for i in "${!module_names[@]}"; do
     elif [[ -d $name ]]; then
         commit=$(cd "$name" && git describe --always)
     elif [[ $name == "loopy" && -d loo-py ]]; then
+        # FIXME: see above regarding this hack
         commit=$(cd loo-py && git describe --always)
     else
         echo "Warning: missing module '$name'. Skipping."
@@ -162,18 +164,19 @@ for i in "${!module_names[@]}"; do
         url_new_branch="${giturl}@${commit}"
     fi
 
-    echo "--editable $url_new_branch$egg" >> "$output_requirements"
+    #shellcheck disable=SC2086
+    echo "--editable $url_new_branch$egg" | tee -a $output_requirements
 done
 
 # Record mirgecom version as well, if it is not part of the requirements.txt
 if [[ $seen_mirgecom -eq 0 ]]; then
     commit=$(cd mirgecom && git describe --always)
-    echo "--editable git+https://github.com/illinois-ceesd/mirgecom@$commit#egg=mirgecom" >> "$output_requirements"
+    #shellcheck disable=SC2086
+    echo "--editable git+https://github.com/illinois-ceesd/mirgecom@$commit#egg=mirgecom" | tee -a $output_requirements
 fi
 
-# If output is a file (ie, not stdout), print the file and tell user how to install it
+# If output is a requirements file, tell user how to install it
 if [[ -f "$output_requirements" ]]; then
-    cat "$output_requirements"
     echo "*** Created file '$output_requirements'. Install it with 'pip install --src . -r $output_requirements'."
 fi
 
@@ -182,10 +185,10 @@ echo
 echo "*** Conda env file with current conda package versions"
 
 # remove f2py since it can' t be pip install'ed
-conda env export | grep -v f2py > "$output_conda_env"
+#shellcheck disable=SC2086
+conda env export | grep -v f2py | tee $output_conda_env
 
-# If output is a file (ie, not stdout), print the file and tell user how to install it
+# If output is a conda environment file, tell user how to install it
 if [[ -f "$output_conda_env" ]]; then
-    cat "$output_conda_env"
     echo "*** Created file '$output_conda_env'. Install it with 'conda env create -f=$output_conda_env'"
 fi
