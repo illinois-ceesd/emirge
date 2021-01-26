@@ -39,8 +39,8 @@ done
 
 echo "==== Updating conda packages."
 
-conda update --all -n base
-conda update --all
+conda update --all -n base --yes
+conda update --all --yes
 
 
 echo "==== Done."
