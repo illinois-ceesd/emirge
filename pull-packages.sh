@@ -5,7 +5,7 @@ set -o nounset -o errexit
 
 if [[ $# -ne 1 || $1 !=  "-x" ]]; then
     echo "WARNING: This script is for advanced users only. It updates the emirge"
-    echo "pip and conda packages."
+    echo "pip packages."
     echo "Execute this script with the '-x' option if you want to run it: '$0 -x'"
     echo "Exiting."
     exit 1
@@ -37,10 +37,12 @@ for m in */; do
     cd ..
 done
 
-echo "==== Updating conda packages."
 
-conda update --all -n base --yes
-conda update --all --yes
+# Disabled due to https://github.com/illinois-ceesd/emirge/issues/101
+# echo "==== Updating conda packages."
+
+# conda update --all -n base --yes
+# conda update --all --yes
 
 
 echo "==== Done."
