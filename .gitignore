@@ -149,6 +149,7 @@ meshpy/
 modepy/
 pymbolic/
 pyopencl/
+pytato/
 pytools/
 myenv/
 
