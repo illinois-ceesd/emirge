@@ -33,6 +33,12 @@ python -m pip install pytest pudb flake8 pep8-naming flake8-quotes pytest-pudb s
                       sphinx_math_dollar sphinx_copybutton furo
 
 
+if [[ $(mpicc --version) == "IBM XL"* ]]; then
+    echo "==== Emirge error: trying to build mpi4py with the XL compiler."
+    echo "==== Load a gcc module (e.g. 'ml load gcc' on Lassen)."
+    exit 1
+fi
+
 # Get the *active* env path
 #MY_CONDA_PATH="$(conda info --envs | grep '*' | awk '{print $NF}')"
 
