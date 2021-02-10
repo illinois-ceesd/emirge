@@ -70,6 +70,7 @@ for i in "${!module_names[@]}"; do
         then
             cd "$install_location"
             git clone --recursive "$url" "$name"
+            cd "$name"
             [[ -n $branch ]] && git checkout "$branch"
         else
             cd "$install_location/$name"
