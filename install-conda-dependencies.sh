@@ -42,7 +42,7 @@ else
         conda install --yes pocl-cuda libhwloc=1
     fi
 
-    conda install --yes pyvisfile pyopencl islpy clinfo pymetis
+    conda install --yes pyvisfile pyopencl islpy clinfo pymetis cantera
 
     # We need an MPI installation to build mpi4py.
     # Install OpenMPI if none is available.
