@@ -17,7 +17,6 @@ usage()
   echo "  --env-name=NAME       Name of the conda environment to install to. (default=ceesd)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
-  echo "  --conda-pkgs=FILE     Install these additional packages with conda."
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --help                Print this help text."
@@ -32,7 +31,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 conda_prefix=$SCRIPT_DIR/miniforge3
 env_name="ceesd"
 pip_pkg_file=""
-conda_pkg_file=""
 conda_env_file=""
 
 # }}}
@@ -47,10 +45,12 @@ while [[ $# -gt 0 ]]; do
     --install-prefix=*)
         # Install mirgecom in non-default prefix
         mcprefix=${arg#*=}
+        mcprefix=${mcprefix//\~/$HOME} # Conda does not like ~
         ;;
     --conda-prefix=*)
         # Install conda in non-default prefix
         conda_prefix=${arg#*=}
+        conda_prefix=${conda_prefix//\~/$HOME} # Conda does not like ~
         ;;
     --env-name=*)
         # Use non-default environment name
@@ -59,10 +59,6 @@ while [[ $# -gt 0 ]]; do
     --branch=*)
         # Install specified branch of mirgecom
         mcbranch=${arg#*=}
-        ;;
-    --conda-pkgs=*)
-        # Install these additional packages with conda
-        conda_pkg_file=${arg#*=}
         ;;
     --conda-env=*)
         # Install this conda environment instead of the one created by the emirge scripts
@@ -81,52 +77,43 @@ while [[ $# -gt 0 ]]; do
         exit 0
         ;;
     *)
+        echo "=== Error: unknown argument '$arg' ."
         usage
         exit 1
         ;;
   esac
 done
 
-# Conda does not like ~
-conda_prefix=${conda_prefix//\~/$HOME}
-mcprefix=${mcprefix//\~/$HOME}
+
 export EMIRGE_MIRGECOM_BRANCH=$mcbranch
 export MY_CONDA_DIR=$conda_prefix
 
+echo "==== Conda installation"
+
 ./install-conda.sh
-
-export PATH=$MY_CONDA_DIR/bin:$PATH
-
-echo "==== Create $env_name conda environment"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate
 
-conda create --name "$env_name" --yes python=3.8
+export PATH=$MY_CONDA_DIR/bin:$PATH
 
-#shellcheck disable=SC1090
-source "$MY_CONDA_DIR"/bin/activate "$env_name"
+echo "==== Fetching mirgecom"
 
 mkdir -p "$mcprefix"
 mcsrc="$mcprefix/mirgecom"
 
 ./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 
-if [[ -z $conda_env_file ]]; then
-  ./install-conda-dependencies.sh
-  if [[ ! -z "$conda_pkg_file" ]]; then
-      ./install-conda-dependencies.sh "$conda_pkg_file"
-  fi
-else
-  conda env create --force --name "$env_name" -f="$conda_env_file"
-fi
-./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
-if [[ ! -z "$pip_pkg_file" ]]; then
-    ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
-fi
-./install-src-package.sh "$mcsrc" "develop"
+echo "==== Create $env_name conda environment"
+
+[[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
+
+conda env create --name "$env_name" --yes --file="$conda_env_file"
+
+#shellcheck disable=SC1090
+source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
@@ -140,6 +127,14 @@ cat << EOF > "$mcprefix"/config/activate_env.sh
 
 EOF
 chmod +x "$mcprefix"/config/activate_env.sh
+
+echo "==== Installing pip packages"
+
+./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+if [[ ! -z "$pip_pkg_file" ]]; then
+    ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
+fi
+./install-src-package.sh "$mcsrc" "develop"
 
 unset EMIRGE_MIRGECOM_BRANCH
 
