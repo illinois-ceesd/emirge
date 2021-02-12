@@ -3,17 +3,7 @@
 set -o errexit -o nounset
 
 origin=$(pwd)
-requirements_file="${1-$origin}"
-install_loc="${2-$origin}"
-
-if [ ! -f "$requirements_file" ]
-then
-    echo "makezip.sh::Error: Requirements file ($requirements_file) does not exist."
-    exit 1
-fi
-
-source ./parse_requirements.sh
-parse_requirements "$requirements_file"
+install_loc="${1-$origin}"
 
 zipfile=$install_loc/modules.zip
 
@@ -21,17 +11,11 @@ rm -f "$zipfile"
 
 MY_MODULES=""
 
-for i in "${!module_names[@]}"; do
-    name=${module_names[$i]}
-    url=${module_urls[$i]}
-
-    # Skip packages that are not git clone'd inside emirge
-    [[ -z $url ]] && continue
-
+for name in */; do
     # Skip non-Python submodules
     [[ -f "$install_loc/$name/setup.py" ]] || continue
 
-    MY_MODULES+="$name "
+    MY_MODULES+="${name/\//} "
 
     cd "$install_loc/$name"
     echo "=== Zipping $name"
@@ -39,7 +23,7 @@ for i in "${!module_names[@]}"; do
     cd "$origin"
 done
 
-MY_PYTHON=$(command -v python3)
+MY_PYTHON=$(command -v python)
 
 echo "=== Preparing path file of '$MY_PYTHON'"
 echo "=== for importing modules from '$zipfile'"

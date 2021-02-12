@@ -80,30 +80,22 @@ uname -a
 echo
 echo "*** Emirge modules"
 
-source ./parse_requirements.sh
-
-parse_requirements "$requirements_file"
-
 res="Package|Branch|Commit|Date|URL\n"
 res+="=======|======|======|======|======\n"
 
-for i in "${!module_names[@]}"; do
-
-    name=${module_names[$i]}
-    branch=${module_branches[$i]/--branch /}
-    url=${module_urls[$i]}
-
+for name in */; do
     if [[ -d $name ]]; then
-        cd "$name" || exit 1
-        commit=$(git describe --always --dirty=*)
-        date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
-        branchname_git="($(git rev-parse --abbrev-ref HEAD))"
-        cd ..
-    elif [[ $name == "loopy" && -d loo-py ]]; then
-        # FIXME: this is a hack that was needed before loo-py was renamed to loopy;
-        # remove this by 12/2021.
-        # https://github.com/illinois-ceesd/emirge/pull/85
-        cd loo-py || exit 1
+        if [[ $name == "loopy" && -d loo-py ]]; then
+            # FIXME: this is a hack that was needed before loo-py was renamed to loopy;
+            # remove this by 12/2021.
+            # https://github.com/illinois-ceesd/emirge/pull/85
+            cd "loo-py" || exit 1
+        else
+            cd "$name" || exit 1
+        fi
+
+        url=$(git config --get remote.origin.url)
+        branch=$(git branch --show-current)
         commit=$(git describe --always --dirty=*)
         date="$(git show -s --format=%cd --date=short HEAD) ($(git show -s --format=%cd --date=relative HEAD))"
         branchname_git="($(git rev-parse --abbrev-ref HEAD))"
@@ -135,26 +127,39 @@ echo "# Python: $(which python) [$(python --version)]"
 
 seen_mirgecom=0
 
-for i in "${!module_names[@]}"; do
-    url=${module_full_urls[$i]}
-    name=${module_names[$i]}
-    branch=${module_branches[$i]/--branch /}
-    giturl=${url/\#egg=[a-z]*/}
-    [[ ${url} =~ (#egg=[a-z]*) ]] && egg=${BASH_REMATCH[1]} || egg=""
-    [[ -z $url ]] && continue # Ignore non-Git modules
+for name in */; do
+    name=${name/\//}
 
-    if [[ $name == "f2py" ]]; then
-        # Can't install f2py this way
-        continue
-    elif [[ -d $name ]]; then
-        commit=$(cd "$name" && git describe --always)
-    elif [[ $name == "loopy" && -d loo-py ]]; then
-        # FIXME: see above regarding this hack
-        commit=$(cd loo-py && git describe --always)
-    else
+    # Ignore the following dirs
+    [[ $name == "f2py" || $name == "miniforge3" || $name == "config" ]] && continue
+
+    if [[ ! -d "$name" ]]; then
+        ls
         echo "Warning: missing module '$name'. Skipping."
         continue
+    elif [[ ! -d "$name/.git/" ]]; then
+        echo "Warning: not a git module '$name'. Skipping."
+        continue
     fi
+
+    if [[ $name == "loopy" && -d loo-py ]]; then
+        # FIXME: this is a hack that was needed before loo-py was renamed to loopy;
+        # remove this by 12/2021.
+        # https://github.com/illinois-ceesd/emirge/pull/85
+        cd "loo-py" || exit 1
+    else
+        cd "$name" || exit 1
+    fi
+
+    giturl=$(git config --get remote.origin.url)
+    if [[ $giturl == https://* ]]; then
+        giturl="git+$giturl"
+    else
+        giturl="git+ssh://$giturl"
+    fi
+    branch=$(git branch --show-current)
+    commit=$(git describe --always)
+    egg="#egg=$name"
 
     [[ $name == "mirgecom" ]] && seen_mirgecom=1
 
@@ -166,6 +171,8 @@ for i in "${!module_names[@]}"; do
 
     #shellcheck disable=SC2086
     echo "--editable $url_new_branch$egg" | tee -a $output_requirements
+
+    cd ..
 done
 
 # Record mirgecom version as well, if it is not part of the requirements.txt
