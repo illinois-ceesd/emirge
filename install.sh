@@ -122,9 +122,9 @@ conda env create --name "$env_name" --force --file="$conda_env_file"
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
 if [[ ! -z "$conda_pkg_file" ]]; then
-  echo "==== Installing custom packages from file ($pkg_file)."
+  echo "==== Installing custom packages from file ($conda_pkg_file)."
   # shellcheck disable=SC2013
-  for package in $(cat "$pkg_file"); do
+  for package in $(cat "$conda_pkg_file"); do
     echo "=== Installing user-custom package ($package)."
     conda install --yes "$package"
   done
