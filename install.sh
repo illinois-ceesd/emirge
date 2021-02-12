@@ -17,6 +17,7 @@ usage()
   echo "  --env-name=NAME       Name of the conda environment to install to. (default=ceesd)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
+  echo "  --conda-pkgs=FILE     Install these additional packages with conda."
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --help                Print this help text."
@@ -31,6 +32,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 conda_prefix=$SCRIPT_DIR/miniforge3
 env_name="ceesd"
 pip_pkg_file=""
+conda_pkg_file=""
 conda_env_file=""
 
 # }}}
@@ -59,6 +61,10 @@ while [[ $# -gt 0 ]]; do
     --branch=*)
         # Install specified branch of mirgecom
         mcbranch=${arg#*=}
+        ;;
+    --conda-pkgs=*)
+        # Install these additional packages with conda
+        conda_pkg_file=${arg#*=}
         ;;
     --conda-env=*)
         # Install this conda environment instead of the one created by the emirge scripts
@@ -114,6 +120,15 @@ conda env create --name "$env_name" --force --file="$conda_env_file"
 
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
+
+if [[ ! -z "$conda_pkg_file" ]]; then
+  echo "==== Installing custom packages from file ($pkg_file)."
+  # shellcheck disable=SC2013
+  for package in $(cat "$pkg_file"); do
+    echo "=== Installing user-custom package ($package)."
+    conda install --yes "$package"
+  done
+fi
 
 # Due to https://github.com/conda/conda/issues/8089, we have to install pocl-cuda
 # manually on Linux.
