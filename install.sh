@@ -110,10 +110,14 @@ echo "==== Create $env_name conda environment"
 
 [[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
 
-conda env create --name "$env_name" --yes --file="$conda_env_file"
+conda env create --name "$env_name" --force --file="$conda_env_file"
 
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
+
+# Due to https://github.com/conda/conda/issues/8089, we have to install pocl-cuda
+# manually on Linux.
+[[ $(uname) == "Linux" ]] && conda install pocl-cuda
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
