@@ -8,6 +8,14 @@ echo "# This script installs mirgecom, and dependencies.  #"
 echo "#####################################################"
 echo
 
+# We need an MPI installation to build mpi4py.
+# Check that one is available.
+if ! command -v mpicc &> /dev/null ;then
+    echo "=== Error: You need an MPI installation for mirgecom."
+    exit 2
+fi
+
+
 usage()
 {
   echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]"
@@ -47,10 +55,12 @@ while [[ $# -gt 0 ]]; do
     --install-prefix=*)
         # Install mirgecom in non-default prefix
         mcprefix=${arg#*=}
+        mcprefix=${mcprefix//\~/$HOME} # Conda does not like ~
         ;;
     --conda-prefix=*)
         # Install conda in non-default prefix
         conda_prefix=${arg#*=}
+        conda_prefix=${conda_prefix//\~/$HOME} # Conda does not like ~
         ;;
     --env-name=*)
         # Use non-default environment name
@@ -81,52 +91,56 @@ while [[ $# -gt 0 ]]; do
         exit 0
         ;;
     *)
+        echo "=== Error: unknown argument '$arg' ."
         usage
         exit 1
         ;;
   esac
 done
 
-# Conda does not like ~
-conda_prefix=${conda_prefix//\~/$HOME}
-mcprefix=${mcprefix//\~/$HOME}
+
 export EMIRGE_MIRGECOM_BRANCH=$mcbranch
 export MY_CONDA_DIR=$conda_prefix
 
+echo "==== Conda installation"
+
 ./install-conda.sh
-
-export PATH=$MY_CONDA_DIR/bin:$PATH
-
-echo "==== Create $env_name conda environment"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate
 
-conda create --name "$env_name" --yes python=3.8
+export PATH=$MY_CONDA_DIR/bin:$PATH
 
-#shellcheck disable=SC1090
-source "$MY_CONDA_DIR"/bin/activate "$env_name"
+echo "==== Fetching mirgecom"
 
 mkdir -p "$mcprefix"
 mcsrc="$mcprefix/mirgecom"
 
 ./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
 
-if [[ -z $conda_env_file ]]; then
-  ./install-conda-dependencies.sh
-  if [[ ! -z "$conda_pkg_file" ]]; then
-      ./install-conda-dependencies.sh "$conda_pkg_file"
-  fi
-else
-  conda env create --force --name "$env_name" -f="$conda_env_file"
+echo "==== Create $env_name conda environment"
+
+[[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
+
+conda env create --name "$env_name" --force --file="$conda_env_file"
+
+#shellcheck disable=SC1090
+source "$MY_CONDA_DIR"/bin/activate "$env_name"
+
+if [[ ! -z "$conda_pkg_file" ]]; then
+  echo "==== Installing custom packages from file ($conda_pkg_file)."
+  # shellcheck disable=SC2013
+  for package in $(cat "$conda_pkg_file"); do
+    echo "=== Installing user-custom package ($package)."
+    conda install --yes "$package"
+  done
 fi
-./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
-if [[ ! -z "$pip_pkg_file" ]]; then
-    ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
-fi
-./install-src-package.sh "$mcsrc" "develop"
+
+# Due to https://github.com/conda/conda/issues/8089, we have to install pocl-cuda
+# manually on Linux.
+[[ $(uname) == "Linux" ]] && conda install pocl-cuda
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
@@ -140,6 +154,14 @@ cat << EOF > "$mcprefix"/config/activate_env.sh
 
 EOF
 chmod +x "$mcprefix"/config/activate_env.sh
+
+echo "==== Installing pip packages"
+
+./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+if [[ ! -z "$pip_pkg_file" ]]; then
+    ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
+fi
+./install-src-package.sh "$mcsrc" "develop"
 
 unset EMIRGE_MIRGECOM_BRANCH
 
