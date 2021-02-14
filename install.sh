@@ -8,6 +8,14 @@ echo "# This script installs mirgecom, and dependencies.  #"
 echo "#####################################################"
 echo
 
+# We need an MPI installation to build mpi4py.
+# Check that one is available.
+if ! command -v mpicc &> /dev/null ;then
+    echo "=== Error: You need an MPI installation for mirgecom."
+    exit 2
+fi
+
+
 usage()
 {
   echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]"
@@ -114,6 +122,15 @@ conda env create --name "$env_name" --force --file="$conda_env_file"
 
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
+
+if [[ ! -z "$conda_pkg_file" ]]; then
+  echo "==== Installing custom packages from file ($conda_pkg_file)."
+  # shellcheck disable=SC2013
+  for package in $(cat "$conda_pkg_file"); do
+    echo "=== Installing user-custom package ($package)."
+    conda install --yes "$package"
+  done
+fi
 
 # Due to https://github.com/conda/conda/issues/8089, we have to install pocl-cuda
 # manually on Linux.
