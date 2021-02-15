@@ -19,7 +19,7 @@ for name in */; do
 
     cd "$install_loc/$name"
     echo "=== Zipping $name"
-    zip -r "$zipfile" "$name/"
+    zip -r "$zipfile" "$name"
     cd "$origin"
 done
 
