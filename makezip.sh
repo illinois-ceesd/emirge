@@ -14,7 +14,6 @@ MY_MODULES=""
 for name in */; do
     # Skip non-Python submodules
     if [[ ! -f "$install_loc/$name/setup.py" ]]; then
-        ls -l $install_loc
         echo "Skipping $name since $install_loc/$name/setup.py does not exist."
         continue
     fi
