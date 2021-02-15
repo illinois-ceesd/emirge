@@ -170,7 +170,7 @@ for name in */; do
     fi
 
     #shellcheck disable=SC2086
-    echo "--editable $url_new_branch$egg" | tee -a $output_requirements
+    echo "--editable $url_new_branch$egg" | tee -a ../$output_requirements
 
     cd ..
 done
