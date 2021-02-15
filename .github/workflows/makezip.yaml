@@ -15,7 +15,7 @@ jobs:
         [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
         ./install.sh
         source miniforge3/bin/activate ceesd
-        ./makezip.sh ./mirgecom/requirements.txt
+        ./makezip.sh
     - name: Test modules.zip
       run: |
         source miniforge3/bin/activate ceesd
