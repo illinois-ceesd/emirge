@@ -129,7 +129,7 @@ conda env create --name "$env_name" --force --file="$conda_env_file"
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
-if [[ ! -z "$conda_pkg_file" ]]; then
+if [[ -n "$conda_pkg_file" ]]; then
   echo "==== Installing custom packages from file ($conda_pkg_file)."
   # shellcheck disable=SC2013
   for package in $(cat "$conda_pkg_file"); do
@@ -158,7 +158,7 @@ chmod +x "$mcprefix"/config/activate_env.sh
 echo "==== Installing pip packages"
 
 ./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
-if [[ ! -z "$pip_pkg_file" ]]; then
+if [[ -n "$pip_pkg_file" ]]; then
     ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
 fi
 ./install-src-package.sh "$mcsrc" "develop"
