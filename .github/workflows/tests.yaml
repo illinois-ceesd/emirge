@@ -32,7 +32,7 @@ jobs:
       run: |
         [[ $(uname) == Linux ]] && sudo apt-get install -y openmpi-bin libopenmpi-dev
         [[ $(uname) == Darwin ]] && brew install openmpi
-        ./install.sh
+        ./install.sh --branch=pip-editable
     - name: Version info
       run: |
         source miniforge3/bin/activate ceesd
@@ -43,10 +43,10 @@ jobs:
         pip install -r req.txt
     - name: Reinstall emirge env with new requirements.txt
       run: |
-        ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt
+        ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt  --branch=pip-editable
     - name: Reinstall conda env with new env file
       run: |
-        ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt
+        ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt  --branch=pip-editable
     - name: Run examples
       run: |
         source miniforge3/bin/activate ceesd
