@@ -155,7 +155,8 @@ for name in */; do
     if [[ $giturl == https://* ]]; then
         giturl="git+$giturl"
     else
-        giturl="git+ssh://$giturl"
+        # Replace first ':' with '/' to get a correct URL
+        giturl="git+ssh://${giturl/:/\/}"
     fi
     branch=$(git branch --show-current)
     commit=$(git describe --always)
