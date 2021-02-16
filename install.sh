@@ -138,9 +138,16 @@ if [[ -n "$conda_pkg_file" ]]; then
   done
 fi
 
-# Due to https://github.com/conda/conda/issues/8089, we have to install pocl-cuda
-# manually on Linux.
-[[ $(uname) == "Linux" ]] && conda install pocl-cuda
+# Due to https://github.com/conda/conda/issues/8089, we have to install these
+# packages manually on specific operating systems:
+
+# Required for Nvidia GPU support on Linux (package does not exist on macOS)
+[[ $(uname) == "Linux" ]] && conda install --yes pocl-cuda
+
+# Required to use pocl on macOS Big Sur
+# (https://github.com/illinois-ceesd/emirge/issues/114)
+[[ $(uname) == "Darwin" && $(uname -m) == "x86_64" ]] && conda install --yes clang_osx-64
+
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
