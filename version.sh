@@ -170,10 +170,10 @@ for name in */; do
         url_new_branch="${giturl}@${commit}"
     fi
 
-    #shellcheck disable=SC2086
-    echo "--editable $url_new_branch$egg" | tee -a ../$output_requirements
-
     cd ..
+
+    #shellcheck disable=SC2086
+    echo "--editable $url_new_branch$egg" | tee -a $output_requirements
 done
 
 # Record mirgecom version as well, if it is not part of the requirements.txt
