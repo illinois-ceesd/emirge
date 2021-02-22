@@ -156,24 +156,18 @@ for name in */; do
         giturl="git+$giturl"
     else
         # Replace first ':' with '/' to get a correct URL
-        giturl="git+ssh://${giturl/:/\/}"
+        giturl="git+ssh://${giturl/://}"
     fi
-    branch=$(git branch --show-current)
+
     commit=$(git describe --always)
     egg="#egg=$name"
 
     [[ $name == "mirgecom" ]] && seen_mirgecom=1
 
-    if [[ -n $branch ]]; then
-        url_new_branch=${giturl/$branch/$commit}
-    else
-        url_new_branch="${giturl}@${commit}"
-    fi
-
     cd ..
 
     #shellcheck disable=SC2086
-    echo "--editable $url_new_branch$egg" | tee -a $output_requirements
+    echo "--editable $giturl@$commit$egg" | tee -a $output_requirements
 done
 
 # Record mirgecom version as well, if it is not part of the requirements.txt
