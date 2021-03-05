@@ -24,14 +24,14 @@ usage()
   echo "  --conda-prefix=DIR    Install conda in [DIR], (default=./miniforge3)"
   echo "  --env-name=NAME       Name of the conda environment to install to. (default=ceesd)"
   echo "  --modules             Create modules.zip and add to Python path."
-  echo "  --branch=NAME         Install specific branch of mirgecom (default=master)."
+  echo "  --branch=NAME         Install specific branch of mirgecom (default=main)."
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --help                Print this help text."
 }
 
-mcbranch="master"
+mcbranch="main"
 mcprefix=$(pwd)
 # {{{ Default conda location
 
