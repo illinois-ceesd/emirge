@@ -144,6 +144,7 @@ f2py/
 grudge/
 islpy/
 leap/
+logpyle/
 meshmode/
 meshpy/
 modepy/
