@@ -7,7 +7,7 @@ echo "# This script installs the dependencies for emirge. #"
 echo "#####################################################"
 echo
 
-have_spack=$(which spack || echo "notfound")
+have_spack=$(command -v spack || echo "notfound")
 
 if [[ $have_spack == "notfound" ]]; then
     echo "==== Installing Spack."

@@ -60,7 +60,7 @@ echo
 echo "*** Conda info"
 
 echo -n "Conda path: "
-which conda || echo "No conda found."
+command -v conda || echo "No conda found."
 
 conda info
 
@@ -72,8 +72,8 @@ conda list
 echo
 echo "*** OS info"
 
-which lsb_release >/dev/null 2>/dev/null && lsb_release -ds
-which sw_vers >/dev/null 2>/dev/null && echo "MacOS $(sw_vers -productVersion)"
+command -v lsb_release && lsb_release -ds
+command -v sw_vers && echo "MacOS $(sw_vers -productVersion)"
 uname -a
 
 
@@ -122,7 +122,7 @@ echo "*** Requirements file with current emirge module versions"
 echo "# requirements.txt created by version.sh"
 echo "# Date: $(date)"
 echo "# Host: $(hostname -f) [$(uname -a)]"
-echo "# Python: $(which python) [$(python --version)]"
+echo "# Python: $(command -v python) [$(python --version)]"
 } | tee $output_requirements
 
 seen_mirgecom=0
