@@ -140,7 +140,7 @@ else
   fi
 fi
 
-cd $SCRIPT_DIR
+cd "$SCRIPT_DIR"
 
 echo "==== Create $env_name conda environment"
 
