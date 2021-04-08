@@ -28,6 +28,7 @@ usage()
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
+  echo "  --git-ssh             Use SSH-based URL to clone mirgecom."
   echo "  --help                Print this help text."
 }
 
@@ -47,6 +48,9 @@ conda_env_file=""
 
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
+
+# Switch mirgecom to ssh URL after cloning
+opt_git_ssh=0
 
 while [[ $# -gt 0 ]]; do
   arg=$1
@@ -86,6 +90,9 @@ while [[ $# -gt 0 ]]; do
         # Create modules.zip
         opt_modules=1
         ;;
+    --git-ssh)
+        opt_git_ssh=1
+        ;;
     --help)
         usage
         exit 0
@@ -118,7 +125,20 @@ echo "==== Fetching mirgecom"
 mkdir -p "$mcprefix"
 mcsrc="$mcprefix/mirgecom"
 
-./fetch-mirgecom.sh "$mcbranch" "$mcprefix"
+if [[ -f "$mcsrc/setup.py" ]]
+then
+    # mirgecom src already populated, checkout the right branch, pull it
+    cd "$mcsrc"
+    git checkout "$mcbranch"
+    git pull
+else
+    # clone specific branch to mirgecom src
+    cd "$mcprefix"
+    if [[ $opt_git_ssh -eq 0 ]]; then
+      git clone --branch "$mcbranch" https://github.com/illinois-ceesd/mirgecom
+    else
+      git clone --branch "$mcbranch" git@github.com:illinois-ceesd/mirgecom
+fi
 
 echo "==== Create $env_name conda environment"
 
