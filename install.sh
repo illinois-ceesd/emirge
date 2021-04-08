@@ -125,21 +125,22 @@ echo "==== Fetching mirgecom"
 mkdir -p "$mcprefix"
 mcsrc="$mcprefix/mirgecom"
 
-if [[ -f "$mcsrc/setup.py" ]]
-then
-    # mirgecom src already populated, checkout the right branch, pull it
-    cd "$mcsrc"
-    git checkout "$mcbranch"
-    git pull
+if [[ -f "$mcsrc/setup.py" ]]; then
+  # mirgecom src already populated, checkout the right branch, pull it
+  cd "$mcsrc"
+  git checkout "$mcbranch"
+  git pull
 else
-    # clone specific branch to mirgecom src
-    cd "$mcprefix"
-    if [[ $opt_git_ssh -eq 0 ]]; then
-      git clone --branch "$mcbranch" https://github.com/illinois-ceesd/mirgecom
-    else
-      git clone --branch "$mcbranch" git@github.com:illinois-ceesd/mirgecom
-    fi
+  # clone specific branch to mirgecom src
+  cd "$mcprefix"
+  if [[ $opt_git_ssh -eq 0 ]]; then
+    git clone --branch "$mcbranch" https://github.com/illinois-ceesd/mirgecom
+  else
+    git clone --branch "$mcbranch" git@github.com:illinois-ceesd/mirgecom
+  fi
 fi
+
+cd $SCRIPT_DIR
 
 echo "==== Create $env_name conda environment"
 
