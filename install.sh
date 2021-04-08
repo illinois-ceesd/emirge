@@ -49,7 +49,7 @@ conda_env_file=""
 # Build modules.zip? (via makezip.sh)
 opt_modules=0
 
-# Switch mirgecom to ssh URL after cloning
+# Switch mirgecom to use ssh URL
 opt_git_ssh=0
 
 while [[ $# -gt 0 ]]; do
