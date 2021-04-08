@@ -138,6 +138,7 @@ else
       git clone --branch "$mcbranch" https://github.com/illinois-ceesd/mirgecom
     else
       git clone --branch "$mcbranch" git@github.com:illinois-ceesd/mirgecom
+    fi
 fi
 
 echo "==== Create $env_name conda environment"
