@@ -29,6 +29,7 @@ usage()
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --git-ssh             Use SSH-based URL to clone mirgecom."
+  echo "  --debug               Show debugging output of this script (set -x)."
   echo "  --help                Print this help text."
 }
 
@@ -92,6 +93,9 @@ while [[ $# -gt 0 ]]; do
         ;;
     --git-ssh)
         opt_git_ssh=1
+        ;;
+    --debug)
+        set -x
         ;;
     --help)
         usage
