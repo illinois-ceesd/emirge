@@ -110,7 +110,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-export EMIRGE_MIRGECOM_BRANCH=$mcbranch
 export MY_CONDA_DIR=$conda_prefix
 
 echo "==== Conda installation"
@@ -192,8 +191,6 @@ if [[ -n "$pip_pkg_file" ]]; then
     ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
 fi
 ./install-src-package.sh "$mcsrc" "develop"
-
-unset EMIRGE_MIRGECOM_BRANCH
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
