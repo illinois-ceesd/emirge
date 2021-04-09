@@ -29,6 +29,7 @@ usage()
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --git-ssh             Use SSH-based URL to clone mirgecom."
+  echo "  --debug               Show debugging output of this script (set -x)."
   echo "  --help                Print this help text."
 }
 
@@ -93,6 +94,9 @@ while [[ $# -gt 0 ]]; do
     --git-ssh)
         opt_git_ssh=1
         ;;
+    --debug)
+        set -x
+        ;;
     --help)
         usage
         exit 0
@@ -106,7 +110,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-export EMIRGE_MIRGECOM_BRANCH=$mcbranch
 export MY_CONDA_DIR=$conda_prefix
 
 echo "==== Conda installation"
@@ -188,8 +191,6 @@ if [[ -n "$pip_pkg_file" ]]; then
     ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
 fi
 ./install-src-package.sh "$mcsrc" "develop"
-
-unset EMIRGE_MIRGECOM_BRANCH
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 

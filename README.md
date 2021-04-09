@@ -22,6 +22,8 @@ In most cases, running `./install.sh` should be sufficient to install all depend
 - `--conda-pkgs=FILE`: Install additional conda packages from the list of package names specified in `FILE`.
 - `--conda-env=FILE`: Obtain conda package versions from conda environment file FILE.
 - `--pip-pkgs=FILE`: Install additional pip packages from the pip requirements file specified in `FILE`.
+- `--git-ssh`: Use SSH-based URL to clone mirgecom.
+- `--debug`: Show debugging output of this script (set -x).
 - `--help`: Print this help text.
 
 ## Testing the installation
