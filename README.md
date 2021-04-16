@@ -24,7 +24,7 @@ In most cases, running `./install.sh` should be sufficient to install all depend
 - `--pip-pkgs=FILE`: Install additional pip packages from the pip requirements file specified in `FILE`.
 - `--git-ssh`: Use SSH-based URL to clone mirgecom.
 - `--debug`: Show debugging output of this script (set -x).
-- `--skip-clone`: Skip cloning mirgecom, assume it will be manually copied to `--install-prefix`.
+- `--skip-clone`: Skip cloning mirgecom, assume it will be manually copied to the selected installation prefix.
 - `--help`: Print this help text.
 
 ## Testing the installation
