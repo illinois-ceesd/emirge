@@ -30,6 +30,7 @@ usage()
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
   echo "  --git-ssh             Use SSH-based URL to clone mirgecom."
   echo "  --debug               Show debugging output of this script (set -x)."
+  echo "  --skip-clone          Skip cloning mirgecom, assume it will be manually copied."
   echo "  --help                Print this help text."
 }
 
@@ -52,6 +53,9 @@ opt_modules=0
 
 # Switch mirgecom to use ssh URL
 opt_git_ssh=0
+
+# Skip cloning mirgecom
+opt_skip_clone=0
 
 while [[ $# -gt 0 ]]; do
   arg=$1
@@ -97,6 +101,9 @@ while [[ $# -gt 0 ]]; do
     --debug)
         set -x
         ;;
+    --skip-clone)
+        opt_skip_clone=1
+        ;;
     --help)
         usage
         exit 0
@@ -128,15 +135,17 @@ echo "==== Fetching mirgecom"
 mkdir -p "$mcprefix"
 mcsrc="$mcprefix/mirgecom"
 
-if [[ -f "$mcsrc/setup.py" ]]; then
-  # mirgecom src already populated, checkout the right branch, pull it
-  (cd "$mcsrc" && git checkout "$mcbranch" && git pull)
-else
-  # clone specific branch to mirgecom src
-  if [[ $opt_git_ssh -eq 0 ]]; then
-    (cd "$mcprefix" && git clone --branch "$mcbranch" https://github.com/illinois-ceesd/mirgecom)
+if [[ $opt_skip_clone -eq 0 ]]; then
+  if [[ -f "$mcsrc/setup.py" ]]; then
+    # mirgecom src already populated, checkout the right branch, pull it
+    (cd "$mcsrc" && git checkout "$mcbranch" && git pull)
   else
-    (cd "$mcprefix" && git clone --branch "$mcbranch" git@github.com:illinois-ceesd/mirgecom)
+    # clone specific branch to mirgecom src
+    if [[ $opt_git_ssh -eq 0 ]]; then
+      (cd "$mcprefix" && git clone --branch "$mcbranch" https://github.com/illinois-ceesd/mirgecom)
+    else
+      (cd "$mcprefix" && git clone --branch "$mcbranch" git@github.com:illinois-ceesd/mirgecom)
+    fi
   fi
 fi
 
