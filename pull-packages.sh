@@ -46,7 +46,7 @@ if [[ $(command -v conda) ]] && [[ -f $SCRIPT_DIR/config/activate_env.sh ]]; the
     set +o nounset
 
     # Workaround for https://github.com/illinois-ceesd/emirge/issues/101
-    source $SCRIPT_DIR/config/activate_env.sh
+    source "$SCRIPT_DIR/config/activate_env.sh"
 
     conda update --all -n base --yes
     conda update --all --yes
