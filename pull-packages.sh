@@ -2,6 +2,8 @@
 
 set -o nounset -o errexit
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 
 if [[ $# -ne 1 || $1 !=  "-x" ]]; then
     echo "WARNING: This script is for advanced users only. It updates the emirge"
@@ -38,11 +40,21 @@ for m in */; do
 done
 
 
-# Disabled due to https://github.com/illinois-ceesd/emirge/issues/101
-# echo "==== Updating conda packages."
+echo "==== Updating conda packages."
 
-# conda update --all -n base --yes
-# conda update --all --yes
+if [[ $(command -v conda) ]] && [[ -f $SCRIPT_DIR/config/activate_env.sh ]]; then
+    set +o nounset
 
+    # Workaround for https://github.com/illinois-ceesd/emirge/issues/101
+    # shellcheck source=/dev/null
+    source "$SCRIPT_DIR/config/activate_env.sh"
+
+    conda update --all -n base --yes
+    conda update --all --yes
+
+    set -o nounset
+else
+    echo "==== Conda not found, not updating conda packages."
+fi
 
 echo "==== Done."
