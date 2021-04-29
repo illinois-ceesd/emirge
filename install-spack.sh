@@ -14,6 +14,11 @@ if [[ $have_spack == "notfound" ]]; then
     git clone https://github.com/spack/spack
     #shellcheck disable=SC1091
     source spack/share/spack/setup-env.sh
+
+    echo "==== Configuring Spack to use E4S packages"
+    spack mirror add E4S https://cache.e4s.io
+    wget https://oaciss.uoregon.edu/e4s/e4s.pub
+    spack gpg trust e4s.pub
 else
     echo "==== Spack found, skipping installation."
 fi
@@ -21,7 +26,7 @@ fi
 
 echo "==== Installing spack packages"
 
-spack install pocl
+spack install --cache-only pocl
 spack load pocl
 
 pocl_dir=$(spack find -p pocl| tail -1 | awk '{print $2}')

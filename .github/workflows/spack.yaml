@@ -1,0 +1,16 @@
+name: Spack test
+
+# Trigger the workflow on push and daily cron job
+on:
+  push:
+  schedule:
+  - cron:  '5 0 * * *'
+
+jobs:
+  emirge-spack:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install emirge/spack
+      run: |
+        ./install-spack.sh
