@@ -29,7 +29,7 @@ fi
 
 echo "==== Installing spack packages"
 
-spack install --cache-only pocl
+spack install pocl
 spack load pocl
 
 pocl_dir=$(spack find -p pocl| tail -1 | awk '{print $2}')
