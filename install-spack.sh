@@ -19,6 +19,9 @@ if [[ $have_spack == "notfound" ]]; then
     spack mirror add E4S https://cache.e4s.io
     wget https://oaciss.uoregon.edu/e4s/e4s.pub
     spack gpg trust e4s.pub
+
+    cd spack
+    git checkout releases/latest
 else
     echo "==== Spack found, skipping installation."
 fi
