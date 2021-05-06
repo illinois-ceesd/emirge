@@ -26,7 +26,8 @@ python -m pip install mako
 python -m pip install pybind11
 
 # Some nice-to haves for development
-python -m pip install pytest pudb flake8 pep8-naming flake8-quotes pytest-pudb sphinx \
+python -m pip install pytest pudb flake8 pep8-naming flake8-quotes flake8-bugbear \
+                      pytest-pudb sphinx \
                       sphinx_math_dollar sphinx_copybutton furo
 
 
