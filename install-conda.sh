@@ -3,8 +3,6 @@
 set -o nounset -o errexit
 
 myos=$(uname)
-[[ $myos == "Darwin" ]] && myos="MacOSX"
-
 myarch=$(uname -m)
 
 # Use $HOME/miniforge3 by default
