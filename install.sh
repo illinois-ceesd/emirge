@@ -155,8 +155,9 @@ echo "==== Create $env_name conda environment"
 
 conda env create --name "$env_name" --force --file="$conda_env_file"
 
+# Avoid a 'frankenconda' env that uses Python from the base env.
+# See https://github.com/illinois-ceesd/emirge/pull/132 for details.
 conda deactivate
-# conda deactivate
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
@@ -197,11 +198,11 @@ chmod +x "$mcprefix"/config/activate_env.sh
 
 echo "==== Installing pip packages"
 
-source ./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
 if [[ -n "$pip_pkg_file" ]]; then
-    source ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
+    ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
 fi
-source ./install-src-package.sh "$mcsrc" "develop"
+./install-src-package.sh "$mcsrc" "develop"
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
