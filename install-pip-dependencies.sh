@@ -14,13 +14,15 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Get us a 'conda' command, activate our desired (but non-functional) env.
 # The env is a frankenconda: an env is loaded, but using python from base.
-source $SCRIPT_DIR/config/activate_env.sh
+# shellcheck source=/dev/null
+source "$SCRIPT_DIR/config/activate_env.sh"
 # Going once - deactivate the non-functional env:
 conda deactivate
 # Going twice - deactivate conda base env:
 conda deactivate
 # Going thrice - activate the desired env, now actually working:
-source $SCRIPT_DIR/config/activate_env.sh
+# shellcheck source=/dev/null
+source "$SCRIPT_DIR/config/activate_env.sh"
 
 set -o nounset -o errexit
 
