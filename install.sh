@@ -158,6 +158,7 @@ conda env create --name "$env_name" --force --file="$conda_env_file"
 # Avoid a 'frankenconda' env that uses Python from the base env.
 # See https://github.com/illinois-ceesd/emirge/pull/132 for details.
 conda deactivate
+conda deactivate
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
