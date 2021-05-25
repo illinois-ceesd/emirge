@@ -195,11 +195,11 @@ chmod +x "$mcprefix"/config/activate_env.sh
 
 echo "==== Installing pip packages"
 
-./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
+source ./install-pip-dependencies.sh "$mcsrc/requirements.txt" "$mcprefix"
 if [[ -n "$pip_pkg_file" ]]; then
-    ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
+    source ./install-pip-dependencies.sh "$pip_pkg_file" "$mcprefix"
 fi
-./install-src-package.sh "$mcsrc" "develop"
+source ./install-src-package.sh "$mcsrc" "develop"
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
 
