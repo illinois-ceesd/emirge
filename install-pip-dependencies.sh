@@ -9,23 +9,9 @@
 # Usage: install-pip-dependencies <requirements_file> <install_location>
 #
 
-# Activate the env again, 'cause conda is fun.
-# https://github.com/conda/conda/issues/10133
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# Get us a 'conda' command, activate our desired (but non-functional) env.
-# The env is a frankenconda: an env is loaded, but using python from base.
-# shellcheck source=/dev/null
-source "$SCRIPT_DIR/config/activate_env.sh"
-# Going once - deactivate the non-functional env:
-conda deactivate
-# Going twice - deactivate conda base env:
-conda deactivate
-# Going thrice - activate the desired env, now actually working:
-# shellcheck source=/dev/null
-source "$SCRIPT_DIR/config/activate_env.sh"
-
 set -o nounset -o errexit
 
+origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
 install_location="${2-$origin}"
 
@@ -51,4 +37,4 @@ if [[ $(mpicc --version) == "IBM XL"* ]]; then
     exit 1
 fi
 
-python -m pip install --src . -r "$requirements_file"
+pip install --src . -r "$requirements_file"

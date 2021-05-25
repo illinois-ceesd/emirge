@@ -155,6 +155,8 @@ echo "==== Create $env_name conda environment"
 
 conda env create --name "$env_name" --force --file="$conda_env_file"
 
+conda deactivate
+# conda deactivate
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
