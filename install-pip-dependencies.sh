@@ -15,11 +15,6 @@ origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
 install_location="${2-$origin}"
 
-conda info
-conda list
-which python
-which pip
-
 mkdir -p "$install_location"
 
 echo "==== Installing pip packages from $requirements_file"
