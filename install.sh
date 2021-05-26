@@ -155,6 +155,13 @@ echo "==== Create $env_name conda environment"
 
 conda env create --name "$env_name" --force --file="$conda_env_file"
 
+# Avoid a 'frankenconda' env that uses Python from the base env.
+# See https://github.com/illinois-ceesd/emirge/pull/132 for details.
+# Srtike 1: deactivate the non-functional env:
+conda deactivate
+# Strike 2: deactivate conda base env:
+conda deactivate
+# Strike 3: activate the desired env, which now actually works:
 #shellcheck disable=SC1090
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
