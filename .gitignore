@@ -137,6 +137,7 @@ Miniforge*.sh
 modules.zip
 
 # Sub-packages of emirge that are their own git repo
+arraycontext/
 dagrt/
 loopy/
 mirgecom/
@@ -150,6 +151,7 @@ meshpy/
 modepy/
 pymbolic/
 pyopencl/
+pyrometheus/
 pytato/
 pytools/
 myenv/
