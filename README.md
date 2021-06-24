@@ -2,16 +2,16 @@
 
 [![CI test](https://github.com/illinois-ceesd/emirge/workflows/CI%20test/badge.svg)](https://github.com/illinois-ceesd/emirge/actions?query=workflow%3A%22CI+test%22+event%3Apush)
 
-Emirge is a repository with some tools that captures a set of dependencies for [mirgecom](https://github.com/illinois-ceesd/mirgecom).
+Emirge is a repository with some tools that captures a set of dependencies for [mirgecom](https://github.com/illinois-ceesd/mirgecom), as well as mirgecom itself.
 
-These dependencies are:
+The mirgecom dependencies that emirge installs are:
 
 1. Miniforge/Conda and conda packages (e.g., pocl)
 2. Pip packages (e.g., pyopencl)
 
 # Installation
 
-In most cases, running `./install.sh` should be sufficient to install all dependencies for emirge and mirgecom.
+In most cases, running `./install.sh` should be sufficient to install all packages and their dependencies.
 
 `./install.sh` takes several arguments:
 - `--install-prefix=DIR`: Install mirgecom and git pip packages to `DIR` instead of the default (./).
