@@ -172,9 +172,11 @@ done
 
 # Record mirgecom version as well, if it is not part of the requirements.txt
 if [[ $seen_mirgecom -eq 0 ]]; then
+    mcremote=$(cd mirgecom && git checkout | cut -d "'" -f 2 | cut -d "/" -f 1)
+    mcurl=$(cd mirgecom && git config --get remote."$mcremote".url)
     commit=$(cd mirgecom && git describe --always)
     #shellcheck disable=SC2086
-    echo "--editable git+https://github.com/illinois-ceesd/mirgecom@$commit#egg=mirgecom" | tee -a $output_requirements
+    echo "--editable git+$mcurl@$commit#egg=mirgecom" | tee -a $output_requirements
 fi
 
 # If output is a requirements file, tell user how to install it
