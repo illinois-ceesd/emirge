@@ -148,9 +148,9 @@ if [[ $opt_skip_clone -eq 0 ]]; then
   else
     # clone specific branch to mirgecom src
     if [[ $opt_git_ssh -eq 0 ]]; then
-      (cd "$mcprefix" && git clone --branch "$mcbranch" https://github.com/$mcfork/mirgecom)
+      (cd "$mcprefix" && git clone --branch "$mcbranch" https://github.com/"$mcfork"/mirgecom)
     else
-      (cd "$mcprefix" && git clone --branch "$mcbranch" git@github.com:$mcfork/mirgecom)
+      (cd "$mcprefix" && git clone --branch "$mcbranch" git@github.com:"$mcfork"/mirgecom)
     fi
   fi
 fi
