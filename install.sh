@@ -25,6 +25,7 @@ usage()
   echo "  --env-name=NAME       Name of the conda environment to install to. (default=ceesd)"
   echo "  --modules             Create modules.zip and add to Python path."
   echo "  --branch=NAME         Install specific branch of mirgecom (default=main)."
+  echo "  --fork=NAME           Install mirgecom from a fork (default=illinois-ceesd)"
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
@@ -35,6 +36,7 @@ usage()
 }
 
 mcbranch="main"
+mcfork="illinois-ceesd"
 mcprefix=$(pwd)
 # {{{ Default conda location
 
@@ -78,6 +80,10 @@ while [[ $# -gt 0 ]]; do
     --branch=*)
         # Install specified branch of mirgecom
         mcbranch=${arg#*=}
+        ;;
+    --fork=*)
+        # Install mirgecom from specified fork
+        mcfork=${arg#*=}
         ;;
     --conda-pkgs=*)
         # Install these additional packages with conda
@@ -142,9 +148,9 @@ if [[ $opt_skip_clone -eq 0 ]]; then
   else
     # clone specific branch to mirgecom src
     if [[ $opt_git_ssh -eq 0 ]]; then
-      (cd "$mcprefix" && git clone --branch "$mcbranch" https://github.com/illinois-ceesd/mirgecom)
+      (cd "$mcprefix" && git clone --branch "$mcbranch" https://github.com/$mcfork/mirgecom)
     else
-      (cd "$mcprefix" && git clone --branch "$mcbranch" git@github.com:illinois-ceesd/mirgecom)
+      (cd "$mcprefix" && git clone --branch "$mcbranch" git@github.com:$mcfork/mirgecom)
     fi
   fi
 fi
