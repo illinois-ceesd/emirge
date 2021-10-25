@@ -209,7 +209,7 @@ if [[ ":\$PATH:" != *":$MY_CONDA_DIR/bin:"* ]]; then
     export PATH=$MY_CONDA_DIR/bin:\$PATH
 fi
 
-echo "Activating '$env_name' for '\$(which conda)'."
+echo "Activating '$env_name' environment for '\$(which conda)'."
 
 source $MY_CONDA_DIR/bin/activate $env_name
 
