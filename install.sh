@@ -186,6 +186,9 @@ fi
 # Required for Nvidia GPU support on Linux (package does not exist on macOS)
 [[ $(uname) == "Linux" ]] && conda install --yes pocl-cuda
 
+# Necessary to build mpi4py
+[[ $(uname) == "Linux" ]] && conda install --yes gcc_linux-64
+
 # Required to use pocl on macOS Big Sur
 # (https://github.com/illinois-ceesd/emirge/issues/114)
 if [[ $(uname) == "Darwin" ]]; then
