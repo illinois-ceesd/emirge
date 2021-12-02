@@ -186,8 +186,23 @@ fi
 # Required for Nvidia GPU support on Linux (package does not exist on macOS)
 [[ $(uname) == "Linux" ]] && conda install --yes pocl-cuda
 
-# Necessary to build mpi4py
-[[ $(uname) == "Linux" ]] && conda install --yes gcc_linux-64
+# Remove spurious (and almost empty) sysroot caused by a bug in the 'qt' package
+# (at least version 5.12.9). See https://github.com/conda-forge/qt-feedstock/issues/208
+# for details.
+(
+BROKEN_SYSROOT="$MY_CONDA_DIR/envs/$env_name/x86_64-conda-linux-gnu/sysroot/"
+if [[ -d $BROKEN_SYSROOT ]]; then
+  cd "$BROKEN_SYSROOT"
+  nFiles=$(find .//. ! -name . -print | grep -c //)
+  if [[ $nFiles != "4" ]]; then
+    echo "**** WARNING: SYSROOT not empty, refusing to remove it."
+    echo "**** Installation of mpi4py might fail."
+    echo "**** See https://github.com/conda-forge/qt-feedstock/issues/208 for details."
+  else
+    rm -rf "$BROKEN_SYSROOT"
+  fi
+fi
+)
 
 # Required to use pocl on macOS Big Sur
 # (https://github.com/illinois-ceesd/emirge/issues/114)
