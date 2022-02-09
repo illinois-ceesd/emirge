@@ -37,8 +37,4 @@ if [[ $(mpicc --version) == "IBM XL"* ]]; then
     exit 1
 fi
 
-# Workaround for https://github.com/mpi4py/mpi4py/issues/157
-# Revisit this by Feb 2022
-export SETUPTOOLS_USE_DISTUTILS=stdlib
-
 pip install --src . -r "$requirements_file"
