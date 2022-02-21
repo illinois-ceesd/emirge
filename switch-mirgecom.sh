@@ -47,14 +47,14 @@ for pkg in "${!PACKAGE_TO_REMOTE_AND_BRANCH[@]}"; do
     echo "Updating $pkg to $branch..."
     echo "-------------------------------------------------------------------"
 
-		(
+    (
     cd "$pkg"
     git fetch "$remote"
 
     git checkout "$branch"
     git branch --set-upstream-to="$remote/$branch"
     git pull --rebase "$remote" "$branch"
-		)
+    )
 done
 
 # vim: sw=4
