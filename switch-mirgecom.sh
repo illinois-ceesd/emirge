@@ -16,40 +16,44 @@ fi
 envname="$1"
 
 if [[ "$envname" = "parlazy" ]]; then
-    LOOPY=kaushikcfd/pytato-array-context-transforms
-    MESHMODE=kaushikcfd/pytato-array-context-transforms
-    GRUDGE=origin/boundary_lazy_comm_v2
-    MIRGECOM=origin/distributed-parallel-lazy
+    loopy=kaushikcfd/pytato-array-context-transforms
+    meshmode=kaushikcfd/pytato-array-context-transforms
+    grudge=origin/boundary_lazy_comm_v2
+    mirgecom=origin/distributed-parallel-lazy
 elif [[ "$envname" = "prod" ]]; then
-    LOOPY=kaushikcfd/pytato-array-context-transforms
-    MESHMODE=kaushikcfd/pytato-array-context-transforms
-    GRUDGE=origin/boundary_lazy_comm_v2
-    MIRGECOM=origin/production
+    loopy=kaushikcfd/pytato-array-context-transforms
+    meshmode=kaushikcfd/pytato-array-context-transforms
+    grudge=origin/boundary_lazy_comm_v2
+    mirgecom=origin/production
 elif [[ "$envname" = "main" ]]; then
-    LOOPY=origin/main
-    MESHMODE=origin/main
-    GRUDGE=origin/main
-    MIRGECOM=origin/main
+    # Ignore shellcheck warnings regarding unused variables
+    # shellcheck disable=SC2034
+    loopy=origin/main
+    # shellcheck disable=SC2034
+    meshmode=origin/main
+    # shellcheck disable=SC2034
+    grudge=origin/main
+    # shellcheck disable=SC2034
+    mirgecom=origin/main
 else
     usage
     exit 2
 fi
 
-for pkg in LOOPY MESHMODE GRUDGE MIRGECOM; do
-    pkg_lower=$(echo "$pkg" | tr '[:upper:]' '[:lower:]')
+for pkg in loopy meshmode grudge mirgecom; do
     remote_and_branch=${!pkg}
     remote="$(dirname "$remote_and_branch")"
     branch="$(basename "$remote_and_branch")"
 
     echo "-------------------------------------------------------------------"
-    echo "Updating $pkg_lower to $branch..."
+    echo "Updating $pkg to $branch..."
     echo "-------------------------------------------------------------------"
 
     (
-    cd "$pkg_lower"
+    cd "$pkg"
 
     if [[ $(git remote | grep "$remote") != "$remote" ]]; then
-        git remote add "$remote" "git@github.com:$remote/$pkg_lower"
+        git remote add "$remote" "git@github.com:$remote/$pkg"
     fi
 
     git fetch "$remote"
