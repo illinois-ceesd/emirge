@@ -2,53 +2,56 @@
 
 set -eo pipefail
 
-
-if [[ $# -ne 1 ]]; then
+function usage {
     echo "Usage: $0 <env_name>"
     echo 'Where <env_name> is one of "parlazy", "prod", "main".'
+}
+
+
+if [[ $# -ne 1 ]]; then
+    usage
     exit 1
 fi
 
 envname="$1"
+
 if [[ "$envname" = "parlazy" ]]; then
-    declare -A PACKAGE_TO_REMOTE_AND_BRANCH=( \
-        [loopy]=kaushikcfd/pytato-array-context-transforms
-        [meshmode]=kaushikcfd/pytato-array-context-transforms
-        [arraycontext]=kaushikcfd/pytato-array-context-transforms
-        [grudge]=github/boundary_lazy_comm_v2
-        [mirgecom]=github/distributed-parallel-lazy
-    )
+    LOOPY=kaushikcfd/pytato-array-context-transforms
+    MESHMODE=kaushikcfd/pytato-array-context-transforms
+    GRUDGE=origin/boundary_lazy_comm_v2
+    MIRGECOM=origin/distributed-parallel-lazy
 elif [[ "$envname" = "prod" ]]; then
-    declare -A PACKAGE_TO_REMOTE_AND_BRANCH=( \
-        [loopy]=kaushikcfd/pytato-array-context-transforms
-        [meshmode]=kaushikcfd/pytato-array-context-transforms
-        [arraycontext]=kaushikcfd/pytato-array-context-transforms
-        [grudge]=github/boundary_lazy_comm_v2
-        [mirgecom]=github/production
-    )
+    LOOPY=kaushikcfd/pytato-array-context-transforms
+    MESHMODE=kaushikcfd/pytato-array-context-transforms
+    GRUDGE=origin/boundary_lazy_comm_v2
+    MIRGECOM=origin/production
 elif [[ "$envname" = "main" ]]; then
-    declare -A PACKAGE_TO_REMOTE_AND_BRANCH=( \
-        [loopy]=github/main
-        [arraycontext]=github/main
-        [meshmode]=github/main
-        [grudge]=github/main
-        [mirgecom]=github/main
-    )
+    LOOPY=origin/main
+    MESHMODE=origin/main
+    GRUDGE=origin/main
+    MIRGECOM=origin/main
 else
-    echo "usage: $0 envname (must be one of a few known ones)"
+    usage
+    exit 2
 fi
 
-for pkg in "${!PACKAGE_TO_REMOTE_AND_BRANCH[@]}"; do
-    remote_and_branch="${PACKAGE_TO_REMOTE_AND_BRANCH[$pkg]}"
+for pkg in LOOPY MESHMODE GRUDGE MIRGECOM; do
+    pkg_lower=$(echo "$pkg" | tr '[:upper:]' '[:lower:]')
+    remote_and_branch=${!pkg}
     remote="$(dirname "$remote_and_branch")"
     branch="$(basename "$remote_and_branch")"
 
     echo "-------------------------------------------------------------------"
-    echo "Updating $pkg to $branch..."
+    echo "Updating $pkg_lower to $branch..."
     echo "-------------------------------------------------------------------"
 
     (
-    cd "$pkg"
+    cd "$pkg_lower"
+
+    if [[ $(git remote | grep "$remote") != "$remote" ]]; then
+        git remote add "$remote" "git@github.com:$remote/$pkg_lower"
+    fi
+
     git fetch "$remote"
 
     git checkout "$branch"
