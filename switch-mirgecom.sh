@@ -18,12 +18,12 @@ envname="$1"
 if [[ "$envname" = "parlazy" ]]; then
     loopy=kaushikcfd/pytato-array-context-transforms
     meshmode=kaushikcfd/pytato-array-context-transforms
-    grudge=origin/boundary_lazy_comm_v2
+    grudge=origin/main
     mirgecom=origin/distributed-parallel-lazy
 elif [[ "$envname" = "prod" ]]; then
     loopy=kaushikcfd/pytato-array-context-transforms
     meshmode=kaushikcfd/pytato-array-context-transforms
-    grudge=origin/boundary_lazy_comm_v2
+    grudge=origin/main
     mirgecom=origin/production
 elif [[ "$envname" = "main" ]]; then
     # Ignore shellcheck warnings regarding unused variables
