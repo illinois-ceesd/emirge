@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+import os
+
+try:
+    import git
+except ImportError:
+    raise ImportError("pkginfo needs GitPython. Can be installed"
+                      " via `pip install GitPython`.")
+
+try:
+    from tabulate import tabulate
+except ImportError:
+    raise ImportError("pkginfo needs tabulate. Can be installed"
+                      " via `pip install tabulate`.")
+
+__doc__ = """
+Helper script to see the status of various branches required by
+:mod:`mirgecom`.
+"""
+
+
+def main():
+    EMIRGE_DIR = os.path.dirname(__file__)
+    MIRGECOM_PATH = os.path.join(os.path.dirname(__file__),
+                                 "mirgecom/")
+    if not os.path.isdir(MIRGECOM_PATH):
+        raise RuntimeError("Could not find `mirgecom` in default path."
+                           " Could be an indication of an uninstalled"
+                           " MIRGE environment or a corrupted installation.")
+
+    from pip._internal.req.req_file import parse_requirements
+    from pip._internal.network.session import PipSession
+    from pip._internal.req.constructors import install_req_from_editable
+
+    pip_session = PipSession()
+    install_requires = list(parse_requirements(os.path.join(MIRGECOM_PATH,
+                                                            "requirements.txt"),
+                                               pip_session))
+    table = []
+    for req in install_requires:
+        if req.is_editable:
+            install_req = install_req_from_editable(req.requirement)
+            git_dir = os.path.join(EMIRGE_DIR, f"{install_req.name}/")
+            with git.Repo(git_dir) as repo:
+                extra_info = []
+                if repo.is_dirty():
+                    extra_info.append("dirty")
+                if (repo.active_branch.commit
+                        != repo.active_branch.tracking_branch().commit):
+                    extra_info.append("unpushed commits")
+                table.append([install_req.name,
+                              (repo.head.commit.hexsha[:7]
+                               + (f" ({','.join(extra_info)})"
+                                  if extra_info
+                                  else ""))
+                              ])
+
+    print(tabulate(table, headers=["Package", "Commit SHA"], tablefmt="fancy_grid"))
+
+
+if __name__ == "__main__":
+    main()
