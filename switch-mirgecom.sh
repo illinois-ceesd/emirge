@@ -4,7 +4,7 @@ set -eo pipefail
 
 function usage {
     echo "Usage: $0 <env_name>"
-    echo 'Where <env_name> is one of "parlazy", "prod", "main".'
+    echo 'Where <env_name> is one of "parlazy", "prod", "prodfusion", "main".'
 }
 
 
@@ -16,17 +16,31 @@ fi
 envname="$1"
 
 if [[ "$envname" = "parlazy" ]]; then
+    arraycontext=origin/main
     loopy=kaushikcfd/pytato-array-context-transforms
     meshmode=kaushikcfd/pytato-array-context-transforms
     grudge=origin/main
     mirgecom=origin/distributed-parallel-lazy
 elif [[ "$envname" = "prod" ]]; then
+    arraycontext=origin/main
     loopy=kaushikcfd/pytato-array-context-transforms
     meshmode=kaushikcfd/pytato-array-context-transforms
     grudge=origin/main
     mirgecom=origin/production
+elif [[ "$envname" = "prodfusion" ]]; then
+    arraycontext=kaushikcfd/main
+    loopy=kaushikcfd/main
+    meshmode=kaushikcfd/main
+    grudge=kaushikcfd/main
+    mirgecom=origin/production
+
+    echo "Installing additional dependencies for prodfusion"
+    pip install -U git+https://github.com/pythological/kanren.git#egg=miniKanren
+    pip install -U git+https://github.com/kaushikcfd/feinsum.git#egg=feinsum
 elif [[ "$envname" = "main" ]]; then
     # Ignore shellcheck warnings regarding unused variables
+    # shellcheck disable=SC2034
+    arraycontext=origin/main
     # shellcheck disable=SC2034
     loopy=origin/main
     # shellcheck disable=SC2034
@@ -40,7 +54,7 @@ else
     exit 2
 fi
 
-for pkg in loopy meshmode grudge mirgecom; do
+for pkg in arraycontext loopy meshmode grudge mirgecom; do
     remote_and_branch=${!pkg}
     remote="$(dirname "$remote_and_branch")"
     branch="$(basename "$remote_and_branch")"
