@@ -32,7 +32,7 @@ elif [[ "$envname" = "prodfusion" ]]; then
     loopy=kaushikcfd/main
     meshmode=kaushikcfd/main
     grudge=kaushikcfd/main
-    mirgecom=origin/production
+    mirgecom=origin/fusion_actx
 
     echo "Installing additional dependencies for prodfusion"
     pip install -U git+https://github.com/pythological/kanren.git#egg=miniKanren
