@@ -17,18 +17,21 @@ envname="$1"
 
 if [[ "$envname" = "parlazy" ]]; then
     arraycontext=origin/main
+    pytato=origin/main
     loopy=kaushikcfd/pytato-array-context-transforms
     meshmode=kaushikcfd/pytato-array-context-transforms
     grudge=origin/main
     mirgecom=origin/distributed-parallel-lazy
 elif [[ "$envname" = "prod" ]]; then
     arraycontext=origin/main
+    pytato=origin/main
     loopy=kaushikcfd/pytato-array-context-transforms
     meshmode=kaushikcfd/pytato-array-context-transforms
     grudge=origin/main
     mirgecom=origin/production
 elif [[ "$envname" = "prodfusion" ]]; then
     arraycontext=kaushikcfd/main
+    pytato=kaushikcfd/main
     loopy=kaushikcfd/main
     meshmode=kaushikcfd/main
     grudge=kaushikcfd/main
@@ -42,6 +45,8 @@ elif [[ "$envname" = "main" ]]; then
     # shellcheck disable=SC2034
     arraycontext=origin/main
     # shellcheck disable=SC2034
+    pytato=origin/main
+    # shellcheck disable=SC2034
     loopy=origin/main
     # shellcheck disable=SC2034
     meshmode=origin/main
@@ -54,13 +59,13 @@ else
     exit 2
 fi
 
-for pkg in arraycontext loopy meshmode grudge mirgecom; do
+for pkg in arraycontext pytato loopy meshmode grudge mirgecom; do
     remote_and_branch=${!pkg}
     remote="$(dirname "$remote_and_branch")"
     branch="$(basename "$remote_and_branch")"
 
     echo "-------------------------------------------------------------------"
-    echo "Updating $pkg to $branch..."
+    echo "Updating $pkg to $remote_and_branch..."
     echo "-------------------------------------------------------------------"
 
     (
