@@ -8,13 +8,6 @@ echo "# This script installs mirgecom, and dependencies.  #"
 echo "#####################################################"
 echo
 
-# We need an MPI installation to build mpi4py.
-# Check that one is available.
-if ! command -v mpicc &> /dev/null ;then
-    echo "=== Error: You need an MPI installation for mirgecom."
-    exit 2
-fi
-
 
 usage()
 {
@@ -234,6 +227,12 @@ source $MY_CONDA_DIR/bin/activate $env_name
 
 EOF
 chmod +x "$mcprefix"/config/activate_env.sh
+
+# Install MPI if not available on host system
+if ! command -v mpicc &> /dev/null ;then
+    echo "Installing MPICH"
+    conda install mpich
+fi
 
 echo "==== Installing pip packages"
 
