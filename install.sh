@@ -184,7 +184,10 @@ fi
 # packages manually on specific operating systems:
 
 # Required for Nvidia GPU support on Linux (package does not exist on macOS)
-[[ $(uname) == "Linux" ]] && conda install --yes -c conda-forge/label/pocl_dev -c conda-forge pocl pocl-cuda
+if [[ $(uname) == "Linux" ]]; then
+  conda update --yes -c conda-forge/label/pocl_dev -c conda-forge pocl
+  conda install --yes -c conda-forge/label/pocl_dev -c conda-forge pocl-cuda
+fi
 
 # Required to use pocl on macOS Big Sur
 # (https://github.com/illinois-ceesd/emirge/issues/114)
