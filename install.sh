@@ -8,7 +8,6 @@ echo "# This script installs mirgecom, and dependencies.  #"
 echo "#####################################################"
 echo
 
-
 # We need an MPI installation to build mpi4py.
 # Check that one is available.
 if ! command -v mpicc &> /dev/null ;then
@@ -185,7 +184,7 @@ fi
 # packages manually on specific operating systems:
 
 # Required for Nvidia GPU support on Linux (package does not exist on macOS)
-[[ $(uname) == "Linux" ]] && conda install --yes -c conda-forge/label/pocl_dev -c conda-forge pocl-cuda
+[[ $(uname) == "Linux" ]] && conda install --yes -c conda-forge/label/pocl_dev -c conda-forge pocl pocl-cuda
 
 # Required to use pocl on macOS Big Sur
 # (https://github.com/illinois-ceesd/emirge/issues/114)
