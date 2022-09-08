@@ -8,6 +8,7 @@ echo "# This script installs mirgecom, and dependencies.  #"
 echo "#####################################################"
 echo
 
+
 # We need an MPI installation to build mpi4py.
 # Check that one is available.
 if ! command -v mpicc &> /dev/null ;then
