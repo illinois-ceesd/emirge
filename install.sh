@@ -173,6 +173,8 @@ if [[ -n $opt_before_date ]]; then
     exit 4
   fi
   git checkout "$(git rev-list -n1 --before=$opt_before_date $mcbranch)"
+  # Maybe use https://github.com/astrofrog/pypi-timemachine for pip.
+  # What to do with conda?
 fi
 
 echo "==== Create $env_name conda environment"
