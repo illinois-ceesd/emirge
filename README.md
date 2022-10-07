@@ -19,6 +19,7 @@ In most cases, running `./install.sh` should be sufficient to install all packag
 - `--env-name=NAME`: Create conda environment named `NAME` instead of the default (ceesd).
 - `--modules`: Install a modules.zip file that contains a copy of all python packages that are installed through git (see below for details).
 - `--branch=NAME`: Install the `NAME`d branch of mirgecom instead of the default branch (main).
+- `--fork=NAME` : Install mirgecom from a fork (default=illinois-ceesd).
 - `--conda-pkgs=FILE`: Install additional conda packages from the list of package names specified in `FILE`.
 - `--conda-env=FILE`: Obtain conda package versions from conda environment file FILE.
 - `--pip-pkgs=FILE`: Install additional pip packages from the pip requirements file specified in `FILE`.
