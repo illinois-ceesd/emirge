@@ -57,4 +57,24 @@ else
     echo "==== Conda not found, not updating conda packages."
 fi
 
+
+echo "==== Updating pip packages."
+
+# Packages conda thinks were installed via pip/pypi
+conda_pypi=$(conda list | awk '/pypi/ {print $1}')
+
+# Names of outdated packages according to pip
+pip_outdated=$(pip list --local --outdated | tail +3 | awk '{print $1}')
+
+# For each outdated package, make sure it was actually installed by pip
+# before updating it.
+for p in $pip_outdated; do
+    for pp in $conda_pypi; do
+        if [[ $p == "$pp" ]]; then
+            echo "=== Updating $p"
+            pip install --upgrade "$p"
+        fi
+    done
+done
+
 echo "==== Done."
