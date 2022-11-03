@@ -60,6 +60,11 @@ fi
 
 echo "==== Updating pip packages."
 
+# Note that 'conda list' and 'pip list' generally contain both
+# conda-installed and pip-installed packages, so we need to do some
+# filtering to make sure we don't override conda packages with newer
+# pip packages.
+
 # Packages conda thinks were installed via pip/pypi
 conda_pypi=$(conda list | awk '/pypi/ {print $1}')
 
