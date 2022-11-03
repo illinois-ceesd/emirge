@@ -7,7 +7,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ $# -ne 1 || $1 !=  "-x" ]]; then
     echo "WARNING: This script is for advanced users only. It updates the emirge"
-    echo "pip packages."
+    echo "pip, conda, and development (git) packages."
     echo "Execute this script with the '-x' option if you want to run it: '$0 -x'"
     echo "Exiting."
     exit 1
@@ -56,5 +56,30 @@ if [[ $(command -v conda) ]] && [[ -f $SCRIPT_DIR/config/activate_env.sh ]]; the
 else
     echo "==== Conda not found, not updating conda packages."
 fi
+
+
+echo "==== Updating pip packages."
+
+# Note that 'conda list' and 'pip list' generally contain both
+# conda-installed and pip-installed packages, so we need to do some
+# filtering to make sure we don't override conda packages with newer
+# pip packages.
+
+# Packages conda thinks were installed via pip/pypi
+conda_pypi=$(conda list | awk '/pypi/ {print $1}')
+
+# Names of outdated packages according to pip
+pip_outdated=$(pip list --local --outdated | tail +3 | awk '{print $1}')
+
+# For each outdated package, make sure it was actually installed by pip
+# before updating it.
+for p in $pip_outdated; do
+    for pp in $conda_pypi; do
+        if [[ $p == "$pp" ]]; then
+            echo "=== Updating $p"
+            pip install --upgrade "$p"
+        fi
+    done
+done
 
 echo "==== Done."
