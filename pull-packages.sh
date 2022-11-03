@@ -7,7 +7,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ $# -ne 1 || $1 !=  "-x" ]]; then
     echo "WARNING: This script is for advanced users only. It updates the emirge"
-    echo "pip packages."
+    echo "pip, conda, and development (git) packages."
     echo "Execute this script with the '-x' option if you want to run it: '$0 -x'"
     echo "Exiting."
     exit 1
