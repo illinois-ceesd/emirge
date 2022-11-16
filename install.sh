@@ -159,7 +159,7 @@ echo "==== Create $env_name conda environment"
 
 [[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
 
-conda env create --name "$env_name" --force --file="$conda_env_file"
+mamba env create --name "$env_name" --force --file="$conda_env_file"
 
 # Avoid a 'frankenconda' env that uses Python from the base env.
 # See https://github.com/illinois-ceesd/emirge/pull/132 for details.
@@ -176,7 +176,7 @@ if [[ -n "$conda_pkg_file" ]]; then
   # shellcheck disable=SC2013
   for package in $(cat "$conda_pkg_file"); do
     echo "=== Installing user-custom package ($package)."
-    conda install --yes "$package"
+    mamba install --yes "$package"
   done
 fi
 
@@ -184,13 +184,13 @@ fi
 # packages manually on specific operating systems:
 
 # Required for Nvidia GPU support on Linux (package does not exist on macOS)
-[[ $(uname) == "Linux" ]] && conda install --yes pocl-cuda
+[[ $(uname) == "Linux" ]] && mamba install --yes pocl-cuda
 
 # Required to use pocl on macOS Big Sur
 # (https://github.com/illinois-ceesd/emirge/issues/114)
 if [[ $(uname) == "Darwin" ]]; then
-  [[ $(uname -m) == "x86_64" ]] && conda install --yes clang_osx-64
-  [[ $(uname -m) == "arm64" ]] && conda install --yes clang_osx-arm64
+  [[ $(uname -m) == "x86_64" ]] && mamba install --yes clang_osx-64
+  [[ $(uname -m) == "arm64" ]] && mamba install --yes clang_osx-arm64
 fi
 
 # Remove spurious (and almost empty) sysroot caused by a bug in the 'qt' package
