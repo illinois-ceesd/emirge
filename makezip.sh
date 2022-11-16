@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -o errexit -o nounset
 
@@ -21,6 +21,10 @@ for name in */; do
     MY_MODULES+="${name/\//} "
 
     cd "$install_loc/$name"
+
+    # Feinsum has a different directory scheme
+    [[ $name == "feinsum/" ]] && cd src
+
     echo "=== Zipping $name"
     zip -r "$zipfile" "$name"
     cd "$origin"
