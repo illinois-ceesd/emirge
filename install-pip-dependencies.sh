@@ -26,7 +26,9 @@ python -m pip install mako
 python -m pip install pybind11
 
 # Some nice-to haves for development
-python -m pip install pytest pudb flake8 pep8-naming flake8-quotes flake8-bugbear \
+## flake8-quotes is currently incompatible with flake 6
+## (https://github.com/zheller/flake8-quotes/issues/110).
+python -m pip install pytest pudb "flake8<6" pep8-naming flake8-quotes flake8-bugbear \
                       pytest-pudb sphinx \
                       sphinx_math_dollar sphinx_copybutton furo
 
