@@ -131,7 +131,7 @@ echo "==== Conda installation"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
-#shellcheck disable=SC1090
+#shellcheck disable=SC1091
 source "$MY_CONDA_DIR"/bin/activate
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
@@ -168,7 +168,7 @@ conda deactivate
 # Strike 2: deactivate conda base env:
 conda deactivate
 # Strike 3: activate the desired env, which now actually works:
-#shellcheck disable=SC1090
+#shellcheck disable=SC1091
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
 if [[ -n "$conda_pkg_file" ]]; then
