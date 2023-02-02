@@ -131,7 +131,7 @@ echo "==== Conda installation"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
-#shellcheck disable=SC1090
+#shellcheck disable=SC1091
 source "$MY_CONDA_DIR"/bin/activate
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
@@ -168,7 +168,7 @@ conda deactivate
 # Strike 2: deactivate conda base env:
 conda deactivate
 # Strike 3: activate the desired env, which now actually works:
-#shellcheck disable=SC1090
+#shellcheck disable=SC1091
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
 if [[ -n "$conda_pkg_file" ]]; then
@@ -184,7 +184,7 @@ fi
 # packages manually on specific operating systems:
 
 # Required for Nvidia GPU support on Linux (package does not exist on macOS)
-[[ $(uname) == "Linux" ]] && mamba install --yes pocl-cuda
+[[ $(uname) == "Linux" ]] && mamba install --yes pocl-cuda nvtop
 
 # Required to use pocl on macOS Big Sur
 # (https://github.com/illinois-ceesd/emirge/issues/114)
@@ -193,24 +193,6 @@ if [[ $(uname) == "Darwin" ]]; then
   [[ $(uname -m) == "arm64" ]] && mamba install --yes clang_osx-arm64
 fi
 
-# Remove spurious (and almost empty) sysroot caused by a bug in the 'qt' package
-# (at least version 5.12.9). See https://github.com/conda-forge/qt-feedstock/issues/208
-# for details.
-(
-BROKEN_SYSROOT="$MY_CONDA_DIR/envs/$env_name/x86_64-conda-linux-gnu/sysroot/"
-if [[ -d $BROKEN_SYSROOT ]]; then
-  cd "$BROKEN_SYSROOT"
-  nFiles=$(find .//. ! -name . -print | grep -c //)
-  if [[ $nFiles != "4" ]]; then
-    echo "**** WARNING: SYSROOT at $BROKEN_SYSROOT not empty, refusing to remove it."
-    echo "**** Installation of mpi4py might fail."
-    echo "**** See https://github.com/conda-forge/qt-feedstock/issues/208 for details."
-  else
-    echo "**** Removing SYSROOT at $BROKEN_SYSROOT"
-    rm -rf "$BROKEN_SYSROOT"
-  fi
-fi
-)
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
