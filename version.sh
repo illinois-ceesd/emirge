@@ -176,7 +176,7 @@ echo "*** Conda env file with current conda package versions"
 
 # remove f2py/feinsum since they can't be pip install'ed
 #shellcheck disable=SC2086
-conda env export | grep -v f2py | grep -v feinsum | tee $output_conda_env
+conda env export | grep -v f2py | grep -v feinsum | grep -v minikanren | tee $output_conda_env
 
 # If output is a conda environment file, tell user how to install it
 if [[ -f "$output_conda_env" ]]; then
