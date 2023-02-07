@@ -174,7 +174,7 @@ fi
 echo
 echo "*** Conda env file with current conda package versions"
 
-# remove f2py/feinsum since they can't be pip install'ed
+# remove f2py/feinsum/minikanren since they can't be pip install'ed
 #shellcheck disable=SC2086
 conda env export | grep -v f2py | grep -v feinsum | grep -v minikanren | tee $output_conda_env
 
