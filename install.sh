@@ -189,8 +189,8 @@ fi
 # Required to use pocl on macOS Big Sur
 # (https://github.com/illinois-ceesd/emirge/issues/114)
 if [[ $(uname) == "Darwin" ]]; then
-  [[ $(uname -m) == "x86_64" ]] && mamba install --yes clang_osx-64
-  [[ $(uname -m) == "arm64" ]] && mamba install --yes clang_osx-arm64
+  [[ $(uname -m) == "x86_64" ]] && conda install --yes clang_osx-64
+  [[ $(uname -m) == "arm64" ]] && conda install --yes clang_osx-arm64
 fi
 
 
