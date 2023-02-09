@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o nounset -o errexit
+set -o nounset -o errexit -o pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -69,7 +69,7 @@ echo "==== Updating pip packages."
 conda_pypi=$(conda list | awk '/pypi/ {print $1}')
 
 # Names of outdated packages according to pip
-pip_outdated=$(pip list --local --outdated | tail +3 | awk '{print $1}')
+pip_outdated=$(pip list --local --outdated | tail -n +3 | awk '{print $1}')
 
 # For each outdated package, make sure it was actually installed by pip
 # before updating it.
