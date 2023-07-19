@@ -44,7 +44,7 @@ switch_requirements_to_ssh() {
   # Read the input file
   while IFS= read -r line; do
     # Check if the line starts with "git+https://github"
-    if [[ $line == git+https://github* ]]; then
+    if [[ $line == *editable\ git+https://github* ]]; then
       # Replace "git+https://github" with "git+ssh://git@github"
       modified_line=${line//git+https:\/\/github/git+ssh:\/\/git@github}
       echo "$modified_line"
