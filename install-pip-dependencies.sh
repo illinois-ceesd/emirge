@@ -37,4 +37,23 @@ if [[ $(mpicc --version) == "IBM XL"* ]]; then
     exit 1
 fi
 
-pip install --src . -r "$requirements_file"
+switch_requirements_to_ssh() {
+  input_file="$1"
+  output_file="$2"
+
+  # Read the input file
+  while IFS= read -r line; do
+    # Check if the line starts with "git+https://github"
+    if [[ $line == git+https://github* ]]; then
+      # Replace "git+https://github" with "git+ssh://git@github"
+      modified_line=${line//git+https:\/\/github/git+ssh:\/\/git@github}
+      echo "$modified_line"
+    else
+      echo "$line"
+    fi
+  done < "$input_file" > "$output_file"
+}
+
+switch_requirements_to_ssh $requirements_file ssh_requirements.txt
+pip install --src . -r ssh_requirements.txt
+

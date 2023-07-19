@@ -54,7 +54,7 @@ conda_env_file=""
 opt_modules=0
 
 # Switch mirgecom to use ssh URL
-opt_git_ssh=0
+opt_git_ssh=1
 
 # Skip cloning mirgecom
 opt_skip_clone=0
