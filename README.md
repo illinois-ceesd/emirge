@@ -26,6 +26,7 @@ In most cases, running `./install.sh` should be sufficient to install all packag
 - `--git-ssh`: Use SSH-based URL to clone mirgecom.
 - `--debug`: Show debugging output of this script (set -x).
 - `--skip-clone`: Skip cloning mirgecom, assume it will be manually copied to the selected installation prefix.
+- `--py-ver=VERSION`: Replace the Python version specified in the conda environment file with `VERSION` (e.g., `--py-ver=3.10`).
 - `--help`: Print this help text.
 
 ## Testing the installation
