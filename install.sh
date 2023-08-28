@@ -59,6 +59,8 @@ opt_git_ssh=1
 # Skip cloning mirgecom
 opt_skip_clone=0
 
+opt_py_ver=
+
 while [[ $# -gt 0 ]]; do
   arg=$1
   shift
@@ -110,6 +112,10 @@ while [[ $# -gt 0 ]]; do
     --skip-clone)
         opt_skip_clone=1
         ;;
+    --py-ver=*)
+        # Install this python version instead of the version specified in the conda env file.
+        opt_py_ver=${arg#*=}
+        ;;
     --help)
         usage
         exit 0
@@ -158,6 +164,13 @@ fi
 echo "==== Create $env_name conda environment"
 
 [[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
+
+if [[ -n $opt_py_ver ]]; then
+  echo "=== Overriding Python version with $opt_py_ver"
+  sed -i.bak "s,- python=3[0-9\.]*,- python=$opt_py_ver," "$conda_env_file"
+fi
+
+cat "$conda_env_file"
 
 mamba env create --name "$env_name" --force --file="$conda_env_file"
 

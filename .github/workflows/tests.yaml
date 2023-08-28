@@ -30,7 +30,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install prerequisites
       run: |
-        [[ $(uname) == Linux ]] && sudo apt-get update && sudo apt-get install -y openmpi-bin libopenmpi-dev
+        [[ $(uname) == Linux ]] && sudo apt-get update && sudo apt-get install -y openmpi-bin libopenmpi-dev libgl1-mesa-glx libegl1
         [[ $(uname) == Darwin ]] && brew install openmpi
         ./install.sh
     - name: Version info
@@ -46,6 +46,9 @@ jobs:
         ./pull-packages.sh -x
     - name: Reinstall emirge env with new requirements.txt
       run: |
+        source miniforge3/bin/activate ceesd
+        conda clean -a
+        conda deactivate
         ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt
     - name: Reinstall conda env with new env file
       run: |
