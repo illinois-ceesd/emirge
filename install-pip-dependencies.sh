@@ -37,4 +37,7 @@ if [[ $(mpicc --version) == "IBM XL"* ]]; then
     exit 1
 fi
 
+
+# Install the packages from the requirements file
+export MPI4PY_BUILD_CONFIGURE=1
 pip install --src . -r "$requirements_file"
