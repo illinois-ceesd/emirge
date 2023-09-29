@@ -54,6 +54,9 @@ switch_requirements_to_ssh() {
   done < "$input_file" > "$output_file"
 }
 
-switch_requirements_to_ssh $requirements_file ssh_requirements.txt
-pip install --src . -r ssh_requirements.txt
 
+
+switch_requirements_to_ssh $requirements_file ssh_requirements.txt
+export MPI4PY_BUILD_CONFIGURE=1
+# Install the packages from the new requirements file
+pip install --src . -r ssh_requirements.txt
