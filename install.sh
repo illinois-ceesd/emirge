@@ -29,6 +29,7 @@ usage()
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
+  echo "  --py-ver=VERSION      Replace the Python version specified in the conda environment file with VERSION (e.g., --py-ver=3.10)."
   echo "  --git-ssh             Use SSH-based URL to clone mirgecom."
   echo "  --debug               Show debugging output of this script (set -x)."
   echo "  --skip-clone          Skip cloning mirgecom, assume it will be manually copied."
