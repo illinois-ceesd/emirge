@@ -211,7 +211,7 @@ fi
 # https://github.com/conda-forge/pocl-feedstock/pull/96
 if [[ $(uname) == "Darwin" ]]; then
   if conda list | grep -q ld64; then
-    with_echo conda install --yes ld64=609
+    conda install --yes ld64=609
   fi
 fi
 
