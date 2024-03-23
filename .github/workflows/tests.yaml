@@ -41,9 +41,10 @@ jobs:
         # Don't build pyopencl as that is difficult
         cat myreq.txt | sed /pyopencl/d > req.txt
         pip install -r req.txt
-    - name: Run update
-      run: |
-        ./pull-packages.sh -x
+    # FIXME: disabled until https://github.com/conda-forge/pocl-feedstock/pull/96 is resolved
+    # - name: Run update
+    #   run: |
+    #     ./pull-packages.sh -x
     - name: Reinstall emirge env with new requirements.txt
       run: |
         source miniforge3/bin/activate ceesd
