@@ -207,6 +207,13 @@ if [[ $(uname) == "Darwin" ]]; then
   [[ $(uname -m) == "arm64" ]] && conda install --yes clang_osx-arm64
 fi
 
+# FIXME: workaround until we address
+# https://github.com/conda-forge/pocl-feedstock/pull/96
+if [[ $(uname) == "Darwin" ]]; then
+  if conda list | grep -q ld64; then
+    conda install --yes ld64=609
+  fi
+fi
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
