@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: ShellCheck
       run: |
         shellcheck -x $(find -name '*.sh')
@@ -27,7 +27,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install prerequisites
       run: |
         [[ $(uname) == Linux ]] && sudo apt-get update && sudo apt-get install -y openmpi-bin libopenmpi-dev libgl1-mesa-glx libegl1
@@ -41,18 +41,20 @@ jobs:
         # Don't build pyopencl as that is difficult
         cat myreq.txt | sed /pyopencl/d > req.txt
         pip install -r req.txt
-    - name: Run update
-      run: |
-        ./pull-packages.sh -x
+    # FIXME: disabled until https://github.com/conda-forge/pocl-feedstock/pull/96 is resolved
+    # - name: Run update
+    #   run: |
+    #     ./pull-packages.sh -x
     - name: Reinstall emirge env with new requirements.txt
       run: |
         source miniforge3/bin/activate ceesd
         conda clean -a
         conda deactivate
         ./install.sh --env-name=reinstall_env --pip-pkgs=req.txt
-    - name: Reinstall conda env with new env file
-      run: |
-        ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt
+    # FIXME: Disabled until the next mpi4py release (v4)
+    # - name: Reinstall conda env with new env file
+    #   run: |
+    #     ./install.sh --conda-env=myenv.yml --pip-pkgs=req.txt
     - name: Run examples
       run: |
         source miniforge3/bin/activate ceesd
