@@ -173,7 +173,7 @@ fi
 
 cat "$conda_env_file"
 
-mamba env create --name "$env_name" --file="$conda_env_file"
+mamba env create --name "$env_name" --yes --file="$conda_env_file"
 
 # Avoid a 'frankenconda' env that uses Python from the base env.
 # See https://github.com/illinois-ceesd/emirge/pull/132 for details.
