@@ -78,7 +78,27 @@ uname -a
 
 
 echo
-echo "*** Emirge modules"
+echo "*** OS packages"
+
+set +e
+set -x
+
+command -v brew && brew list --versions 2>/dev/null
+command -v apt && apt list --installed 2>/dev/null
+command -v rpm && rpm -qa 2>/dev/null
+
+set +x
+set -e
+
+
+echo
+echo "*** OS modules"
+
+command -v module && module list
+
+
+echo
+echo "*** Emirge git modules"
 
 res="Package|Branch|Commit|Date|URL\n"
 res+="=======|======|======|======|======\n"
