@@ -81,20 +81,18 @@ echo
 echo "*** OS packages"
 
 set +e
-set -x
 
-command -v brew && brew list --versions 2>/dev/null
-command -v apt && apt list --installed 2>/dev/null
-command -v rpm && rpm -qa 2>/dev/null
+command -v brew && echo "brew list --versions" && brew list --versions 2>/dev/null
+command -v apt && echo "apt list --installed" && apt list --installed 2>/dev/null
+command -v rpm && echo "rpm -qa" && rpm -qa 2>/dev/null
 
-set +x
 set -e
 
 
 echo
 echo "*** OS modules"
 
-command -v module && module list
+command -v module && module --redirect list
 
 
 echo
