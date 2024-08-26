@@ -215,6 +215,17 @@ if [[ $(uname) == "Darwin" ]]; then
   fi
 fi
 
+if [[ $(hostname) == tioga* ]]; then
+  if [[ ! -f $CONDA_PREFIX/etc/OpenCL/vendors/amd_ceesd.icd ]]; then
+      echo "**** Installing AMD OpenCL ICD (rocm) for Tioga"
+    if [[ -n $ROCM_PATH ]]; then
+      echo "**** Warning: No rocm module loaded, assuming v6.1.2"
+      ROCM_PATH="/opt/rocm-6.1.2"
+    fi
+    echo "$ROCM_PATH/lib/libamdocl64.so" > $CONDA_PREFIX/etc/OpenCL/vendors/amd_ceesd.icd
+  fi
+fi
+
 # Install an environment activation script
 rm -rf "$mcprefix"/config
 mkdir -p "$mcprefix"/config
