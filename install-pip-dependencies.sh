@@ -9,7 +9,7 @@
 # Usage: install-pip-dependencies <requirements_file> <install_location>
 #
 
-set -o nounset -o errexit
+set -o errexit
 
 origin=$(pwd)
 requirements_file="${1-mirgecom/requirements.txt}"
@@ -28,7 +28,7 @@ python -m pip install pybind11
 # Some nice-to haves for development
 python -m pip install pytest pudb flake8 pep8-naming flake8-quotes flake8-bugbear \
                       flake8-comprehensions pytest-pudb sphinx \
-                      sphinx_math_dollar sphinx_copybutton furo
+                      sphinx_math_dollar sphinx_copybutton furo ruff
 
 
 if [[ $(mpicc --version) == "IBM XL"* ]]; then
@@ -42,7 +42,9 @@ fi
 export MPI4PY_BUILD_CONFIGURE=1
 
 if [[ $(hostname) == tioga* ]]; then
-    export LDFLAGS="$LDFLAGS -Wl,-rpath /opt/cray/pe/cce/18.0.0/cce/x86_64/lib"
+    # Need extra flags for the mpi4py build
+    LDFLAGS="$LDFLAGS -Wl,-rpath $CRAYLIBS_X86_64" \
+        pip install 'mpi4py>=4'
 fi
 
 pip install --src . -r "$requirements_file"
