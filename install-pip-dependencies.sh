@@ -40,4 +40,9 @@ fi
 
 # Install the packages from the requirements file
 export MPI4PY_BUILD_CONFIGURE=1
+
+if [[ $(hostname) == tioga* ]]; then
+    export LDFLAGS="$LDFLAGS -Wl,-rpath /opt/cray/pe/cce/18.0.0/cce/x86_64/lib"
+fi
+
 pip install --src . -r "$requirements_file"
