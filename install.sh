@@ -16,6 +16,15 @@ if ! command -v mpicc &> /dev/null ;then
 fi
 
 
+if [[ $(hostname) == tioga* ]]; then
+  if [[ -z $ROCM_PATH ]]; then
+    # ROCM_PATH is needed below to install the AMD OpenCL ICD link
+    echo "**** Error: No ROCM_PATH environment variable set."
+    echo "**** Please load the appropriate 'rocm' module."
+    exit 3
+  fi
+fi
+
 usage()
 {
   echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]"
@@ -213,6 +222,12 @@ if [[ $(uname) == "Darwin" ]]; then
   if conda list | grep -q ld64; then
     conda install --yes ld64=609
   fi
+fi
+
+if [[ $(hostname) == tioga* ]]; then
+  echo "**** Installing AMD OpenCL ICD (rocm) for Tioga"
+  #shellcheck disable=SC2153
+  echo "$ROCM_PATH/lib/libamdocl64.so" > "$CONDA_PREFIX/etc/OpenCL/vendors/amd_ceesd.icd"
 fi
 
 # Install an environment activation script
