@@ -9,9 +9,9 @@ myarch=$(uname -m)
 MY_CONDA_DIR=${MY_CONDA_DIR:-$HOME/miniforge3}
 
 if [[ ! -d $MY_CONDA_DIR || ! -x $MY_CONDA_DIR/bin/conda ]]; then
-    echo "==== Installing Mambaforge in $MY_CONDA_DIR."
-    curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$myos-$myarch.sh"
-    bash "Mambaforge-$myos-$myarch.sh" -u -b -p "$MY_CONDA_DIR"
+    echo "==== Installing Miniforge in $MY_CONDA_DIR."
+    curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$myos-$myarch.sh"
+    bash "Miniforge3-$myos-$myarch.sh" -u -b -p "$MY_CONDA_DIR"
 else
-    echo "==== Conda found in $MY_CONDA_DIR, skipping Mambaforge installation."
+    echo "==== Conda found in $MY_CONDA_DIR, skipping Miniforge installation."
 fi
