@@ -203,26 +203,21 @@ if [[ -n "$conda_pkg_file" ]]; then
   done
 fi
 
+echo "==== Creating pin file for conda packages"
+echo 'pocl=5.0=*_6' > "$CONDA_PREFIX"/conda-meta/pinned
+
 # Due to https://github.com/conda/conda/issues/8089, we have to install these
 # packages manually on specific operating systems:
 
-# Required for Nvidia GPU support on Linux (package does not exist on macOS)
-[[ $(uname) == "Linux" ]] && mamba install --yes pocl-cuda nvtop
-
-# Required to use pocl on macOS Big Sur
-# (https://github.com/illinois-ceesd/emirge/issues/114)
-if [[ $(uname) == "Darwin" ]]; then
-  [[ $(uname -m) == "x86_64" ]] && conda install --yes clang_osx-64
-  [[ $(uname -m) == "arm64" ]] && conda install --yes clang_osx-arm64
-fi
-
-# FIXME: workaround until we address
+# Required to use pocl on macOS Big Sur+:
+# https://github.com/illinois-ceesd/emirge/issues/114
 # https://github.com/conda-forge/pocl-feedstock/pull/96
 if [[ $(uname) == "Darwin" ]]; then
-  if conda list | grep -q ld64; then
-    conda install --yes ld64=609
-  fi
+  [[ $(uname -m) == "x86_64" ]] && conda install --yes clang_osx-64 ld64=609
+  [[ $(uname -m) == "arm64" ]] && conda install --yes clang_osx-arm64 ld64=609
+  echo 'ld64=609' >> "$CONDA_PREFIX"/conda-meta/pinned
 fi
+
 
 if [[ $(hostname) == tioga* ]]; then
   echo "**** Installing AMD OpenCL ICD (rocm) for Tioga"
