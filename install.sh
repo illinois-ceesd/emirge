@@ -180,6 +180,18 @@ if [[ -n $opt_py_ver ]]; then
   sed -i.bak "s,- python=3[0-9\.]*,- python=$opt_py_ver," "$conda_env_file"
 fi
 
+# Due to https://github.com/conda/conda/issues/8089, we have to install these
+# packages manually on specific operating systems:
+# Required to use pocl on macOS Big Sur+:
+# https://github.com/illinois-ceesd/emirge/issues/114
+# https://github.com/conda-forge/pocl-feedstock/pull/96
+if [[ $(uname) == "Darwin" ]]; then
+  echo "=== adding clang_osx and ld64 to conda environment file"
+  echo "- ld64=609" >> "$conda_env_file"
+  [[ $(uname -m) == "x86_64" ]] && echo "- clang_osx-64" >> "$conda_env_file"
+  [[ $(uname -m) == "arm64" ]] &&  echo "- clang_osx-arm64" >> "$conda_env_file"
+fi
+
 cat "$conda_env_file"
 
 mamba env create --name "$env_name" --yes --file="$conda_env_file"
@@ -203,26 +215,14 @@ if [[ -n "$conda_pkg_file" ]]; then
   done
 fi
 
-# Due to https://github.com/conda/conda/issues/8089, we have to install these
-# packages manually on specific operating systems:
+# shellcheck disable=SC2153
+echo "==== Creating pin file for conda packages: $CONDA_PREFIX/conda-meta/pinned"
+echo 'pocl=5.0=*_6' > "$CONDA_PREFIX"/conda-meta/pinned
 
-# Required for Nvidia GPU support on Linux (package does not exist on macOS)
-[[ $(uname) == "Linux" ]] && mamba install --yes pocl-cuda nvtop
-
-# Required to use pocl on macOS Big Sur
-# (https://github.com/illinois-ceesd/emirge/issues/114)
 if [[ $(uname) == "Darwin" ]]; then
-  [[ $(uname -m) == "x86_64" ]] && conda install --yes clang_osx-64
-  [[ $(uname -m) == "arm64" ]] && conda install --yes clang_osx-arm64
+  echo 'ld64=609' >> "$CONDA_PREFIX"/conda-meta/pinned
 fi
 
-# FIXME: workaround until we address
-# https://github.com/conda-forge/pocl-feedstock/pull/96
-if [[ $(uname) == "Darwin" ]]; then
-  if conda list | grep -q ld64; then
-    conda install --yes ld64=609
-  fi
-fi
 
 if [[ $(hostname) == tioga* ]]; then
   echo "**** Installing AMD OpenCL ICD (rocm) for Tioga"
