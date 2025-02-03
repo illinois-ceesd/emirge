@@ -16,7 +16,7 @@ if ! command -v mpicc &> /dev/null ;then
 fi
 
 
-if [[ $(hostname) == tioga* || $(hostname) == tuolumne* || $(hostname) == odessey* ]]; then
+if [[ $(hostname) == tioga* || $(hostname) == tuolumne* || $(hostname) == odyssey* ]]; then
   if [[ -z $ROCM_PATH ]]; then
     # ROCM_PATH is needed below to install the AMD OpenCL ICD link
     echo "**** Error: No ROCM_PATH environment variable set."
