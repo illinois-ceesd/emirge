@@ -78,21 +78,32 @@ uname -a
 
 
 echo
-echo "*** Emirge modules"
+echo "*** OS packages"
+
+set +e
+
+command -v brew && echo "brew list --versions" && brew list --versions 2>/dev/null
+command -v apt && echo "apt list --installed" && apt list --installed 2>/dev/null
+command -v rpm && echo "rpm -qa" && rpm -qa 2>/dev/null
+
+set -e
+
+
+echo
+echo "*** OS modules"
+
+command -v module && module --redirect list
+
+
+echo
+echo "*** Emirge git modules"
 
 res="Package|Branch|Commit|Date|URL\n"
 res+="=======|======|======|======|======\n"
 
 for name in */; do
     if [[ -d $name ]]; then
-        if [[ $name == "loopy" && -d loo-py ]]; then
-            # FIXME: this is a hack that was needed before loo-py was renamed to loopy;
-            # remove this by 12/2021.
-            # https://github.com/illinois-ceesd/emirge/pull/85
-            cd "loo-py" || exit 1
-        else
-            cd "$name" || exit 1
-        fi
+        cd "$name" || exit 1
 
         url=$(git config --get remote.origin.url)
         branch=$(git branch --show-current)
@@ -142,14 +153,7 @@ for name in */; do
         continue
     fi
 
-    if [[ $name == "loopy" && -d loo-py ]]; then
-        # FIXME: this is a hack that was needed before loo-py was renamed to loopy;
-        # remove this by 12/2021.
-        # https://github.com/illinois-ceesd/emirge/pull/85
-        cd "loo-py" || exit 1
-    else
-        cd "$name" || exit 1
-    fi
+    cd "$name" || exit 1
 
     giturl=$(git config --get remote.origin.url)
     if [[ $giturl == https://* ]]; then
@@ -170,7 +174,7 @@ for name in */; do
     echo "--editable $giturl@$commit$egg" | tee -a $output_requirements
 done
 
-# Record mirgecom version as well, if it is not part of the requirements.txt
+# Record mirgecom version as well, if it is not part of the requirements.txt file
 if [[ $seen_mirgecom -eq 0 ]]; then
     mcremote=$(cd mirgecom && git checkout | cut -d "'" -f 2 | cut -d "/" -f 1)
     mcurl=$(cd mirgecom && git config --get remote."$mcremote".url)
@@ -188,9 +192,9 @@ fi
 echo
 echo "*** Conda env file with current conda package versions"
 
-# remove f2py since it can' t be pip install'ed
+# remove f2py/feinsum/minikanren since they can't be pip install'ed
 #shellcheck disable=SC2086
-conda env export | grep -v f2py | tee $output_conda_env
+conda env export | grep -v f2py | grep -v feinsum | grep -v minikanren | tee $output_conda_env
 
 # If output is a conda environment file, tell user how to install it
 if [[ -f "$output_conda_env" ]]; then

@@ -21,6 +21,15 @@ function version
 }
 
 
+if [[ $(hostname) == tioga* ]]; then
+  if [[ -z $ROCM_PATH ]]; then
+    # ROCM_PATH is needed below to install the AMD OpenCL ICD link
+    echo "**** Error: No ROCM_PATH environment variable set."
+    echo "**** Please load the appropriate 'rocm' module."
+    exit 3
+  fi
+fi
+
 usage()
 {
   echo "Usage: $0 [--install-prefix=DIR] [--branch=NAME] [--conda-prefix=DIR]"
@@ -34,6 +43,7 @@ usage()
   echo "  --conda-pkgs=FILE     Install these additional packages with conda."
   echo "  --conda-env=FILE      Obtain conda package versions from conda environment file FILE."
   echo "  --pip-pkgs=FILE       Install these additional packages with pip."
+  echo "  --py-ver=VERSION      Replace the Python version specified in the conda environment file with VERSION (e.g., --py-ver=3.10)."
   echo "  --git-ssh             Use SSH-based URL to clone mirgecom."
   echo "  --debug               Show debugging output of this script (set -x)."
   echo "  --skip-clone          Skip cloning mirgecom, assume it will be manually copied."
@@ -67,6 +77,9 @@ opt_skip_clone=0
 
 # Check out version of the branch before a certain date
 opt_before_date=
+
+
+opt_py_ver=
 
 while [[ $# -gt 0 ]]; do
   arg=$1
@@ -122,6 +135,10 @@ while [[ $# -gt 0 ]]; do
     --before=*)
         opt_before_date=${arg#*=}
         ;;
+    --py-ver=*)
+        # Install this python version instead of the version specified in the conda env file.
+        opt_py_ver=${arg#*=}
+        ;;
     --help)
         usage
         exit 0
@@ -143,7 +160,7 @@ echo "==== Conda installation"
 
 # Make sure we get the just installed conda.
 # See https://github.com/conda/conda/issues/10133 for details.
-#shellcheck disable=SC1090
+#shellcheck disable=SC1091
 source "$MY_CONDA_DIR"/bin/activate
 
 export PATH=$MY_CONDA_DIR/bin:$PATH
@@ -181,7 +198,26 @@ echo "==== Create $env_name conda environment"
 
 [[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
 
-conda env create --name "$env_name" --force --file="$conda_env_file"
+if [[ -n $opt_py_ver ]]; then
+  echo "=== Overriding Python version with $opt_py_ver"
+  sed -i.bak "s,- python=3[0-9\.]*,- python=$opt_py_ver," "$conda_env_file"
+fi
+
+# Due to https://github.com/conda/conda/issues/8089, we have to install these
+# packages manually on specific operating systems:
+# Required to use pocl on macOS Big Sur+:
+# https://github.com/illinois-ceesd/emirge/issues/114
+# https://github.com/conda-forge/pocl-feedstock/pull/96
+if [[ $(uname) == "Darwin" ]]; then
+  echo "=== adding clang_osx and ld64 to conda environment file"
+  echo "- ld64=609" >> "$conda_env_file"
+  [[ $(uname -m) == "x86_64" ]] && echo "- clang_osx-64" >> "$conda_env_file"
+  [[ $(uname -m) == "arm64" ]] &&  echo "- clang_osx-arm64" >> "$conda_env_file"
+fi
+
+cat "$conda_env_file"
+
+mamba env create --name "$env_name" --yes --file="$conda_env_file"
 
 # Avoid a 'frankenconda' env that uses Python from the base env.
 # See https://github.com/illinois-ceesd/emirge/pull/132 for details.
@@ -190,7 +226,7 @@ conda deactivate
 # Strike 2: deactivate conda base env:
 conda deactivate
 # Strike 3: activate the desired env, which now actually works:
-#shellcheck disable=SC1090
+#shellcheck disable=SC1091
 source "$MY_CONDA_DIR"/bin/activate "$env_name"
 
 if [[ -n "$conda_pkg_file" ]]; then
@@ -198,41 +234,24 @@ if [[ -n "$conda_pkg_file" ]]; then
   # shellcheck disable=SC2013
   for package in $(cat "$conda_pkg_file"); do
     echo "=== Installing user-custom package ($package)."
-    conda install --yes "$package"
+    mamba install --yes "$package"
   done
 fi
 
-# Due to https://github.com/conda/conda/issues/8089, we have to install these
-# packages manually on specific operating systems:
+# shellcheck disable=SC2153
+echo "==== Creating pin file for conda packages: $CONDA_PREFIX/conda-meta/pinned"
+echo 'pocl=5.0=*_6' > "$CONDA_PREFIX"/conda-meta/pinned
 
-# Required for Nvidia GPU support on Linux (package does not exist on macOS)
-[[ $(uname) == "Linux" ]] && conda install --yes pocl-cuda
-
-# Required to use pocl on macOS Big Sur
-# (https://github.com/illinois-ceesd/emirge/issues/114)
 if [[ $(uname) == "Darwin" ]]; then
-  [[ $(uname -m) == "x86_64" ]] && conda install --yes clang_osx-64
-  [[ $(uname -m) == "arm64" ]] && conda install --yes clang_osx-arm64
+  echo 'ld64=609' >> "$CONDA_PREFIX"/conda-meta/pinned
 fi
 
-# Remove spurious (and almost empty) sysroot caused by a bug in the 'qt' package
-# (at least version 5.12.9). See https://github.com/conda-forge/qt-feedstock/issues/208
-# for details.
-(
-BROKEN_SYSROOT="$MY_CONDA_DIR/envs/$env_name/x86_64-conda-linux-gnu/sysroot/"
-if [[ -d $BROKEN_SYSROOT ]]; then
-  cd "$BROKEN_SYSROOT"
-  nFiles=$(find .//. ! -name . -print | grep -c //)
-  if [[ $nFiles != "4" ]]; then
-    echo "**** WARNING: SYSROOT at $BROKEN_SYSROOT not empty, refusing to remove it."
-    echo "**** Installation of mpi4py might fail."
-    echo "**** See https://github.com/conda-forge/qt-feedstock/issues/208 for details."
-  else
-    echo "**** Removing SYSROOT at $BROKEN_SYSROOT"
-    rm -rf "$BROKEN_SYSROOT"
-  fi
+
+if [[ $(hostname) == tioga* ]]; then
+  echo "**** Installing AMD OpenCL ICD (rocm) for Tioga"
+  #shellcheck disable=SC2153
+  echo "$ROCM_PATH/lib/libamdocl64.so" > "$CONDA_PREFIX/etc/OpenCL/vendors/amd_ceesd.icd"
 fi
-)
 
 # Install an environment activation script
 rm -rf "$mcprefix"/config
