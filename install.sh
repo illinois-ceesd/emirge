@@ -22,6 +22,8 @@ if [[ $(hostname) == tioga* || $(hostname) == odyssey ]]; then
     echo "**** Error: No ROCM_PATH environment variable set."
     echo "**** Please load the appropriate 'rocm' module."
     exit 3
+  else
+    echo "Using system ROCM at $ROCM_PATH"
   fi
 fi
 
