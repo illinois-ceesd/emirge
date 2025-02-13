@@ -178,7 +178,7 @@ echo "==== Create $env_name conda environment"
 [[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
 
 # Make a copy of the file since we might modify it
-cp $conda_env_file $conda_env_file.yml
+cp "$conda_env_file" "$conda_env_file".yml
 conda_env_file=$conda_env_file.yml
 
 if [[ -n $opt_py_ver ]]; then
