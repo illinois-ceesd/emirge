@@ -16,14 +16,14 @@ if ! command -v mpicc &> /dev/null ;then
 fi
 
 
-if [[ $(hostname) == tioga* || $(hostname) == odyssey ]]; then
+if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
   if [[ -z $ROCM_PATH ]]; then
     # ROCM_PATH is needed below to install the AMD OpenCL ICD link
     echo "**** Error: No ROCM_PATH environment variable set."
     echo "**** Please load the appropriate 'rocm' module."
     exit 3
   else
-    echo "Using system ROCM at $ROCM_PATH"
+    echo "==== Using system ROCM at $ROCM_PATH"
   fi
 fi
 
@@ -226,8 +226,8 @@ if [[ $(uname) == "Darwin" ]]; then
 fi
 
 
-if [[ $(hostname) == tioga* || $(hostname) == odyssey ]]; then
-  echo "**** Installing AMD OpenCL ICD (rocm) for Tioga/Odyssey"
+if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
+  echo "**** Installing AMD OpenCL ICD (rocm) for Tioga/Odyssey/Tuolumne"
   #shellcheck disable=SC2153
   echo "$ROCM_PATH/lib/libamdocl64.so" > "$CONDA_PREFIX/etc/OpenCL/vendors/amd_ceesd.icd"
 fi
