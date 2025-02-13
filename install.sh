@@ -177,6 +177,10 @@ echo "==== Create $env_name conda environment"
 
 [[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
 
+# Make a copy of the file since we might modify it
+cp $conda_env_file $conda_env_file.yml
+conda_env_file=$conda_env_file.yml
+
 if [[ -n $opt_py_ver ]]; then
   echo "=== Overriding Python version with $opt_py_ver"
   sed -i.bak "s,- python=3[0-9\.]*,- python=$opt_py_ver," "$conda_env_file"
@@ -264,6 +268,9 @@ fi
 ./install-src-package.sh "$mcsrc" "develop"
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
+
+# Remove the temporary conda environment file
+rm -f "$conda_env_file"
 
 echo
 echo "==================================================================="
