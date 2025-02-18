@@ -15,15 +15,14 @@ if ! command -v mpicc &> /dev/null ;then
     exit 2
 fi
 
-
-if [[ $(hostname) == tioga* || $(hostname) == tuolumne* || $(hostname) == odyssey ]]; then
+if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
   if [[ -z $ROCM_PATH ]]; then
     # ROCM_PATH is needed below to install the AMD OpenCL ICD link
     echo "**** Error: No ROCM_PATH environment variable set."
     echo "**** Please load the appropriate 'rocm' module for AMD platforms."
     exit 3
   else
-    echo "Using system ROCM at $ROCM_PATH"
+    echo "==== Using system ROCM at $ROCM_PATH"
   fi
 fi
 
@@ -177,6 +176,10 @@ echo "==== Create $env_name conda environment"
 
 [[ -z $conda_env_file ]] && conda_env_file="$mcsrc/conda-env.yml"
 
+# Make a copy of the file since we might modify it
+cp "$conda_env_file" "$conda_env_file".yml
+conda_env_file=$conda_env_file.yml
+
 if [[ -n $opt_py_ver ]]; then
   echo "=== Overriding Python version with $opt_py_ver"
   sed -i.bak "s,- python=3[0-9\.]*,- python=$opt_py_ver," "$conda_env_file"
@@ -226,8 +229,8 @@ if [[ $(uname) == "Darwin" ]]; then
 fi
 
 
-if [[ $(hostname) == tioga* || $(hostname) == tuolumne* || $(hostname) == odyssey ]]; then
-  echo "**** Installing AMD OpenCL ICD (rocm) for $(hostname)"
+if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
+  echo "**** Installing AMD OpenCL ICD (rocm) for Tioga/Odyssey/Tuolumne"
   #shellcheck disable=SC2153
   echo "$ROCM_PATH/lib/libamdocl64.so" > "$CONDA_PREFIX/etc/OpenCL/vendors/amd_ceesd.icd"
 fi
@@ -264,6 +267,9 @@ fi
 ./install-src-package.sh "$mcsrc" "develop"
 
 [[ $opt_modules -eq 1 ]] && ./makezip.sh
+
+# Remove the temporary conda environment file
+rm -f "$conda_env_file"
 
 echo
 echo "==================================================================="
