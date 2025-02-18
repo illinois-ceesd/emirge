@@ -41,7 +41,7 @@ fi
 # Install the packages from the requirements file
 export MPI4PY_BUILD_CONFIGURE=1
 
-if [[ $(hostname) == tioga* ]]; then
+if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
     # Need extra flags for the mpi4py build
     LDFLAGS="$LDFLAGS -Wl,-rpath $CRAYLIBS_X86_64" \
         pip install 'mpi4py>=4'
