@@ -56,7 +56,7 @@ switch_requirements_to_ssh() {
 
 export MPI4PY_BUILD_CONFIGURE=1
 
-if [[ $(hostname) == tioga* || $(hostname) == tuolumne* || $(hostname) == odessey* ]]; then
+if [[ $(hostname) == tioga* || $(hostname) == tuolumne* || $(hostname) == odyssey* ]]; then
     # Need extra flags for the mpi4py build
     LDFLAGS="$LDFLAGS -Wl,-rpath $CRAYLIBS_X86_64" \
         pip install 'mpi4py>=4'
