@@ -88,12 +88,10 @@ command -v rpm && echo "rpm -qa" && rpm -qa 2>/dev/null
 
 set -e
 
-
 echo
 echo "*** OS modules"
 
 command -v module && module --redirect list
-
 
 echo
 echo "*** Emirge git modules"
