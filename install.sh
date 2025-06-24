@@ -15,12 +15,11 @@ if ! command -v mpicc &> /dev/null ;then
     exit 2
 fi
 
-
 if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
   if [[ -z $ROCM_PATH ]]; then
     # ROCM_PATH is needed below to install the AMD OpenCL ICD link
     echo "**** Error: No ROCM_PATH environment variable set."
-    echo "**** Please load the appropriate 'rocm' module."
+    echo "**** Please load the appropriate 'rocm' module for AMD platforms."
     exit 3
   else
     echo "==== Using system ROCM at $ROCM_PATH"
@@ -66,7 +65,7 @@ conda_env_file=""
 opt_modules=0
 
 # Switch mirgecom to use ssh URL
-opt_git_ssh=0
+opt_git_ssh=1
 
 # Skip cloning mirgecom
 opt_skip_clone=0

@@ -37,8 +37,23 @@ if [[ $(mpicc --version) == "IBM XL"* ]]; then
     exit 1
 fi
 
+switch_requirements_to_ssh() {
+  input_file="$1"
+  output_file="$2"
 
-# Install the packages from the requirements file
+  # Read the input file
+  while IFS= read -r line; do
+    # Check if the line starts with "git+https://github"
+    if [[ $line == *editable\ git+https://github* ]]; then
+      # Replace "git+https://github" with "git+ssh://git@github"
+      modified_line=${line//git+https:\/\/github/git+ssh:\/\/git@github}
+      echo "$modified_line"
+    else
+      echo "$line"
+    fi
+  done < "$input_file" > "$output_file"
+}
+
 export MPI4PY_BUILD_CONFIGURE=1
 
 if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
@@ -47,4 +62,7 @@ if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne
         pip install 'mpi4py>=4'
 fi
 
-pip install --src . -r "$requirements_file"
+# Update the requirements file to use ssh for git cloning
+switch_requirements_to_ssh $requirements_file ssh_requirements.txt
+# Install the packages from the new requirements file
+pip install --src . -r ssh_requirements.txt
