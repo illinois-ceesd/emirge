@@ -27,7 +27,7 @@ python -m pip install pybind11
 
 # Some nice-to haves for development
 python -m pip install pytest pudb flake8 pep8-naming flake8-quotes flake8-bugbear \
-                      flake8-comprehensions pytest-pudb sphinx \
+                      flake8-comprehensions sphinx \
                       sphinx_math_dollar sphinx_copybutton furo ruff
 
 
