@@ -15,6 +15,11 @@ if ! command -v mpicc &> /dev/null ;then
     exit 2
 fi
 
+function version
+{
+  echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }';
+}
+
 
 if [[ $(hostname) == tioga* || $(hostname) == odyssey || $(hostname) == tuolumne* ]]; then
   if [[ -z $ROCM_PATH ]]; then
@@ -44,6 +49,7 @@ usage()
   echo "  --git-ssh             Use SSH-based URL to clone mirgecom."
   echo "  --debug               Show debugging output of this script (set -x)."
   echo "  --skip-clone          Skip cloning mirgecom, assume it will be manually copied."
+  echo "  --before=DATE         Check out a specific version of the branch before DATE (in the form yyyy-mm-dd)."
   echo "  --help                Print this help text."
 }
 
@@ -70,6 +76,10 @@ opt_git_ssh=0
 
 # Skip cloning mirgecom
 opt_skip_clone=0
+
+# Check out version of the branch before a certain date
+opt_before_date=
+
 
 opt_py_ver=
 
@@ -124,6 +134,9 @@ while [[ $# -gt 0 ]]; do
     --skip-clone)
         opt_skip_clone=1
         ;;
+    --before=*)
+        opt_before_date=${arg#*=}
+        ;;
     --py-ver=*)
         # Install this python version instead of the version specified in the conda env file.
         opt_py_ver=${arg#*=}
@@ -171,6 +184,16 @@ if [[ $opt_skip_clone -eq 0 ]]; then
       (cd "$mcprefix" && git clone --branch "$mcbranch" git@github.com:"$mcfork"/mirgecom)
     fi
   fi
+fi
+
+if [[ -n $opt_before_date ]]; then
+  if [[ $(version "$(git --version | awk '{print $3}')") -ge $(version "2.23.0") ]]; then
+    echo "Your git version is too old for the --before option, please upgrade to 2.23 or newer."
+    exit 4
+  fi
+  git checkout "$(git rev-list -n1 --before=$opt_before_date $mcbranch)"
+  # Maybe use https://github.com/astrofrog/pypi-timemachine for pip.
+  # What to do with conda?
 fi
 
 echo "==== Create $env_name conda environment"
